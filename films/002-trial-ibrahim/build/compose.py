@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
-"""v3 composition. Captions follow REFERENCE.md exactly:
-- Montserrat Bold (running words, CAPS for hero claims) + Parisienne (title-case emphasis words);
-- every word appears on its own spoken onset (word timings from the VO transcripts);
-- script words wipe in left→right over 3 frames, sans words fade in over 2 frames with a hint of blur;
-- words accumulate into a staircase block for the phrase; the block never moves; it clears at the phrase end;
-- warm-white fill with a soft shadow, scene-tinted on B-roll (gold over the jetski sky), navy over the bright window.
+"""v4 composition. Captions follow REFERENCE.md "ref3" (the person's chosen typography):
+- Inter Black, -4% tracking, centred at 56% height; words appear on their spoken onsets (VO transcripts);
+- single words replace each other; a small connector stacks over its big key word; key words lowercase with end punctuation;
+- every word blurs in (12 px -> 0) with a 108 -> 100% settle over 4 frames; hard exits; soft drop shadow;
+- 2 key words overlay-blended into the plate.
 Plus: light-leak streak transitions (ref1), the drop flash + punch, slow pushes on held shots.
 """
 import json, os, re, sys
@@ -16,17 +15,20 @@ from cutlist import SHOTS, VO, END, DROP, LEAKS, b  # noqa: E402
 
 SMALL = {"is", "the", "a", "in", "an", "for", "my", "to", "and", "of", "i've", "if", "you're", "we're", "about", "what", "this", "are", "like", "your", "had", "ever", "now"}
 
-# Per VO line: chunk sizes (words per block), emphasis words (script), CAPS words, block position, tint
-STYLE = {
-    "V1": dict(chunks=[3, 3], script={"dreams"}, caps=set(), top=1120, align="left", tint="ink"),
-    "V2": dict(chunks=[3, 3], script={"you"}, caps=set(), top=250, align="left", tint="ink"),
-    "V3a": dict(chunks=[3, 3, 2], script=set(), caps={"monthly"}, top=250, align="left", tint="ink"),
-    "V3b": dict(chunks=[3], script={"uphill"}, caps=set(), top=250, align="left", tint="ink"),
-    "V4": dict(chunks=[5, 2, 3, 3, 3], script={"honest", "changed"}, caps=set(), top=250, align="left", tint="ink"),
-    "V5": dict(chunks=[3, 2, 2], script={"valuations"}, caps={"million"}, top=260, align="left", tint="gold"),
-    "V6": dict(chunks=[3, 2, 2], script={"another"}, caps=set(), top=250, align="left", tint="navy"),
-    "V7": dict(chunks=[3, 2, 2], script={"lock", "in."}, caps=set(), top=250, align="left", tint="ink"),
+# ref3 caption units per VO line: lists of (word index, role). role: "" single word (replaces the previous),
+# "c" small connector stacked over the key, "k" key word (+ "." / "?" adds end punctuation, "C" caps, "b" overlay-blend).
+UNITS = {
+    "V1": [[(0, "")], [(1, "")], [(2, "c"), (3, "k")], [(4, "")], [(5, "k?")]],
+    "V2": [[(0, "")], [(1, "")], [(2, "c"), (3, "k")], [(4, "c"), (5, "k.")]],
+    "V3a": [[(0, "")], [(1, "")], [(2, "")], [(3, "c"), (4, "k")], [(5, "kC")], [(6, "")], [(7, "k")]],
+    "V3b": [[(0, "c"), (1, "k")], [(2, "k.b")]],
+    "V4": [[(0, "c"), (1, "k")], [(2, "")], [(3, "c"), (4, "k")], [(5, "k")], [(6, "k")], [(7, "c"), (8, "k")], [(9, "")],
+           [(10, "")], [(11, "c"), (12, "k")], [(13, "k")], [(14, "c"), (15, "k.")]],
+    "V5": [[(0, "c"), (1, "kC")], [(2, "")], [(3, "c"), (4, "kb")], [(5, "")], [(6, "k.")]],
+    "V6": [[(0, "c"), (1, "k")], [(2, "c"), (3, "k")], [(4, "")], [(5, "c"), (6, "k.")]],
+    "V7": [[(0, "c"), (1, "k")], [(2, "")], [(3, "c"), (4, "k.")], [(5, "c"), (6, "k.")]],
 }
+TOP = {"V2": 1290, "V3a": 1400, "V3b": 1400, "V4": 1290, "V7": 700}  # block centre y; default 1075 (56%); faces kept clear
 PUNCH = [(DROP, 1.14)]
 PUSH = {16: 1.07, 21: 1.05, 2: 1.04}
 
@@ -60,39 +62,44 @@ def html():
 
     g = 0
     for key, f, a, z, place in VO:
-        st = STYLE[key]
-        words = vo_words(key, f, a, z, place)[: sum(st["chunks"])]  # only the words this line's blocks carry
+        words = vo_words(key, f, a, z, place)
         later = [v[4] for v in VO if v[4] > place]
-        end_line = min(place + (z - a) + 0.2, (min(later) - 0.02) if later else END)
-        idx = 0
-        for n in st["chunks"]:
-            chunk = words[idx: idx + n]
-            idx += n
-            if not chunk:
+        end_line = min(place + (z - a) + 0.25, (min(later) - 0.02) if later else END)
+        units = UNITS[key]
+        for ui, unit in enumerate(units):
+            idxs = [i for i, _ in unit]
+            if max(idxs) >= len(words):
                 continue
-            c_start = max(0.0, chunk[0][1] - 0.02)
-            nxt = words[idx][1] - 0.02 if idx < len(words) else end_line
+            u_start = max(0.0, words[idxs[0]][1] - 0.02)
+            nxt_i = units[ui + 1][0][0] if ui + 1 < len(units) else None
+            u_end = min((words[nxt_i][1] - 0.02) if nxt_i is not None and nxt_i < len(words) else end_line, END)
             spans = []
-            for wi, (text, at) in enumerate(chunk):
-                bare = re.sub(r"[^a-z.']", "", text.lower())
-                core = re.sub(r"[^a-z']", "", text.lower())
-                wid = f"w{g}_{wi}"
-                if core in st["script"] or bare in st["script"]:
-                    t = text[:1].upper() + text[1:]
-                    spans.append(word_html(t, "script", 200, wid))
-                    tl.append(f'tl.fromTo("#{wid}", {{clipPath: "inset(-20% 100% -30% -5%)"}}, {{clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}}, {at:.3f});')
-                    tl.append(f'tl.set("#{wid}", {{clipPath: "inset(-20% 100% -30% -5%)"}}, {c_start:.3f});')
+            for (wi, role) in unit:
+                raw, at = words[wi]
+                text = re.sub(r",$", "", raw)
+                if "k" in role:
+                    text = text.lower().rstrip(".?!")
+                    if "C" in role:
+                        text = text.upper()
+                    if "." in role:
+                        text += "."
+                    if "?" in role:
+                        text += "?"
+                    size = min(200, int(1600 / max(4, len(text))))
+                    cls = "key blend" if "b" in role else "key"
+                elif "c" in role:
+                    size, cls = 88, "conn"
+                    text = text if text.startswith("I") else text.lower()
                 else:
-                    small = core in SMALL and core not in st["caps"]
-                    t = text.upper() if core in st["caps"] else text
-                    spans.append(word_html(t, "sans small" if small else "sans", 72 if small else 118, wid))
-                    tl.append(f'tl.fromTo("#{wid}", {{opacity: 0, filter: "blur(4px)"}}, {{opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}}, {at:.3f});')
-                    tl.append(f'tl.set("#{wid}", {{opacity: 0}}, {c_start:.3f});')
-            c_end = min(nxt, END)
-            unders = [sh for sh in SHOTS if sh[0] < c_end - 0.02 and sh[1] > c_start + 0.02]  # every shot the block sits over
-            tint = st["tint"] if (st["tint"] != "navy" or all(str(sh[2]).startswith("vo:ibrahim-and-ramin") for sh in unders)) else "ink"
-            caps.append(f'      <div id="cap{g}" class="clip cap {st["align"]} tint-{tint}" style="top:{st["top"]}px" '
-                        f'data-start="{c_start:.3f}" data-duration="{max(0.2, min(nxt, END) - c_start):.3f}" data-track-index="1">{"".join(spans)}</div>')
+                    size, cls = min(140, int(1500 / max(4, len(text)))), "single"
+                wid = f"w{g}_{wi}"
+                spans.append(f'<span id="{wid}" class="{cls}" style="font-size:{size}px">{text}</span>')
+                tl.append(f'tl.fromTo("#{wid}", {{opacity: 0, filter: "blur(12px)", scale: 1.08}}, {{opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}}, {at:.3f});')
+                if at > u_start + 0.03:
+                    tl.append(f'tl.set("#{wid}", {{opacity: 0}}, {u_start:.3f});')
+            top = TOP.get(key, 1075)
+            caps.append(f'      <div id="cap{g}" class="clip cap" style="top:{top}px" data-start="{u_start:.3f}" '
+                        f'data-duration="{max(0.12, u_end - u_start):.3f}" data-track-index="1">{"".join(spans)}</div>')
             g += 1
 
     for k, t in enumerate(LEAKS):
@@ -108,24 +115,18 @@ def html():
     <meta name="viewport" content="width=1080, height=1920" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
-      @font-face {{ font-family: "Parisienne"; font-style: normal; font-weight: 400; font-display: block; src: url("assets/fonts/parisienne-400.woff2") format("woff2"); }}
-      @font-face {{ font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: block; src: url("assets/fonts/montserrat-700.woff2") format("woff2"); }}
-      :root {{ --ink: #f5f1ea; --gold: #f3c76b; --navy: #1b2440; --script: "Parisienne", cursive; --sans: "Montserrat", sans-serif; }}
+      @font-face {{ font-family: "Inter"; font-style: normal; font-weight: 900; font-display: block; src: url("assets/fonts/inter-900.woff2") format("woff2"); }}
+      :root {{ --ink: #f5f1ea; --gold: #f3c76b; --navy: #1b2440; --sans: "Inter", sans-serif; }}
       * {{ margin: 0; padding: 0; box-sizing: border-box; }}
       html, body {{ width: 1080px; height: 1920px; overflow: hidden; background: #070708; }}
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; }}
       .cam {{ position: absolute; inset: 0; overflow: hidden; }}
       .cam video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
-      .cap {{ position: absolute; left: 80px; width: 900px; z-index: 100; display: flex; flex-wrap: wrap; align-items: baseline;
-              column-gap: 0; row-gap: 0; color: var(--ink); text-shadow: 0 2px 14px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.35); }}
-      .cap.tint-gold {{ color: #fff6e6; }} .cap.tint-gold .script {{ color: var(--gold); text-shadow: 0 0 12px rgba(243,199,107,.55), 0 2px 10px rgba(0,0,0,.35); }}
-      .cap.tint-navy {{ color: var(--navy); text-shadow: 0 1px 10px rgba(255,255,255,.35); }}
-      .cap span {{ display: inline-block; position: relative; z-index: 1; margin-right: 0.24em; }}
-      .cap.tint-ink::before, .cap.tint-gold::before {{ content: ''; position: absolute; inset: -50px -70px; z-index: 0;
-              background: radial-gradient(closest-side, rgba(0,0,0,.32), rgba(0,0,0,0)); }}
-      .sans {{ font-family: var(--sans); font-weight: 700; letter-spacing: -0.005em; line-height: 1.02; }}
-      .sans.small {{ opacity: 0.9; }}
-      .script {{ font-family: var(--script); font-weight: 400; line-height: 0.95; padding: 0 0.12em 0.05em 0.02em; margin: -0.12em 0 -0.06em; }}
+      .cap {{ position: absolute; left: 60px; right: 60px; z-index: 100; display: flex; flex-direction: column; align-items: center;
+              transform: translateY(-50%); color: #fff; font-family: var(--sans); font-weight: 900; letter-spacing: -0.04em; text-align: center; }}
+      .cap span {{ display: block; line-height: 0.92; text-shadow: 0 3px 10px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35); white-space: nowrap; }}
+      .cap .conn {{ margin-bottom: -0.02em; }}
+      .cap .key.blend {{ mix-blend-mode: overlay; text-shadow: none; color: #fff; }}
       .leak {{ position: absolute; inset: 0; z-index: 150; pointer-events: none; overflow: hidden; mix-blend-mode: screen; }}
       .leak i {{ position: absolute; left: -40%; top: -20%; width: 180%; height: 140%; opacity: 0;
                  background: repeating-linear-gradient(72deg, rgba(255,120,40,0) 0 40px, rgba(255,140,60,.85) 60px, rgba(80,220,255,.7) 90px, rgba(255,60,140,.6) 120px, rgba(255,255,255,0) 170px); filter: blur(6px); }}

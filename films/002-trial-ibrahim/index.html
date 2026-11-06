@@ -5,24 +5,18 @@
     <meta name="viewport" content="width=1080, height=1920" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
     <style>
-      @font-face { font-family: "Parisienne"; font-style: normal; font-weight: 400; font-display: block; src: url("assets/fonts/parisienne-400.woff2") format("woff2"); }
-      @font-face { font-family: "Montserrat"; font-style: normal; font-weight: 700; font-display: block; src: url("assets/fonts/montserrat-700.woff2") format("woff2"); }
-      :root { --ink: #f5f1ea; --gold: #f3c76b; --navy: #1b2440; --script: "Parisienne", cursive; --sans: "Montserrat", sans-serif; }
+      @font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: block; src: url("assets/fonts/inter-900.woff2") format("woff2"); }
+      :root { --ink: #f5f1ea; --gold: #f3c76b; --navy: #1b2440; --sans: "Inter", sans-serif; }
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { width: 1080px; height: 1920px; overflow: hidden; background: #070708; }
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
       .cam { position: absolute; inset: 0; overflow: hidden; }
       .cam video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
-      .cap { position: absolute; left: 80px; width: 900px; z-index: 100; display: flex; flex-wrap: wrap; align-items: baseline;
-              column-gap: 0; row-gap: 0; color: var(--ink); text-shadow: 0 2px 14px rgba(0,0,0,.45), 0 1px 3px rgba(0,0,0,.35); }
-      .cap.tint-gold { color: #fff6e6; } .cap.tint-gold .script { color: var(--gold); text-shadow: 0 0 12px rgba(243,199,107,.55), 0 2px 10px rgba(0,0,0,.35); }
-      .cap.tint-navy { color: var(--navy); text-shadow: 0 1px 10px rgba(255,255,255,.35); }
-      .cap span { display: inline-block; position: relative; z-index: 1; margin-right: 0.24em; }
-      .cap.tint-ink::before, .cap.tint-gold::before { content: ''; position: absolute; inset: -50px -70px; z-index: 0;
-              background: radial-gradient(closest-side, rgba(0,0,0,.32), rgba(0,0,0,0)); }
-      .sans { font-family: var(--sans); font-weight: 700; letter-spacing: -0.005em; line-height: 1.02; }
-      .sans.small { opacity: 0.9; }
-      .script { font-family: var(--script); font-weight: 400; line-height: 0.95; padding: 0 0.12em 0.05em 0.02em; margin: -0.12em 0 -0.06em; }
+      .cap { position: absolute; left: 60px; right: 60px; z-index: 100; display: flex; flex-direction: column; align-items: center;
+              transform: translateY(-50%); color: #fff; font-family: var(--sans); font-weight: 900; letter-spacing: -0.04em; text-align: center; }
+      .cap span { display: block; line-height: 0.92; text-shadow: 0 3px 10px rgba(0,0,0,.5), 0 1px 2px rgba(0,0,0,.35); white-space: nowrap; }
+      .cap .conn { margin-bottom: -0.02em; }
+      .cap .key.blend { mix-blend-mode: overlay; text-shadow: none; color: #fff; }
       .leak { position: absolute; inset: 0; z-index: 150; pointer-events: none; overflow: hidden; mix-blend-mode: screen; }
       .leak i { position: absolute; left: -40%; top: -20%; width: 180%; height: 140%; opacity: 0;
                  background: repeating-linear-gradient(72deg, rgba(255,120,40,0) 0 40px, rgba(255,140,60,.85) 60px, rgba(80,220,255,.7) 90px, rgba(255,60,140,.6) 120px, rgba(255,255,255,0) 170px); filter: blur(6px); }
@@ -31,184 +25,162 @@
     </style>
   </head>
   <body>
-    <div id="root" data-composition-id="main" data-start="0" data-duration="30.157" data-width="1080" data-height="1920">
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30.621" data-width="1080" data-height="1920">
       <div class="cam" id="cam00" style="z-index:1"><video id="v00" class="clip" src="assets/shots/00.mp4" muted playsinline data-start="0.000" data-duration="2.050" data-track-index="0"></video></div>
       <div class="cam" id="cam01" style="z-index:2"><video id="v01" class="clip" src="assets/shots/01.mp4" muted playsinline data-start="2.050" data-duration="2.150" data-track-index="0"></video></div>
       <div class="cam" id="cam02" style="z-index:3"><video id="v02" class="clip" src="assets/shots/02.mp4" muted playsinline data-start="4.200" data-duration="3.280" data-track-index="0"></video></div>
       <div class="cam" id="cam03" style="z-index:4"><video id="v03" class="clip" src="assets/shots/03.mp4" muted playsinline data-start="7.480" data-duration="1.770" data-track-index="0"></video></div>
       <div class="cam" id="cam04" style="z-index:5"><video id="v04" class="clip" src="assets/shots/04.mp4" muted playsinline data-start="9.250" data-duration="2.150" data-track-index="0"></video></div>
-      <div class="cam" id="cam05" style="z-index:6"><video id="v05" class="clip" src="assets/shots/05.mp4" muted playsinline data-start="11.400" data-duration="0.929" data-track-index="0"></video></div>
-      <div class="cam" id="cam06" style="z-index:7"><video id="v06" class="clip" src="assets/shots/06.mp4" muted playsinline data-start="12.329" data-duration="1.371" data-track-index="0"></video></div>
-      <div class="cam" id="cam07" style="z-index:8"><video id="v07" class="clip" src="assets/shots/07.mp4" muted playsinline data-start="13.700" data-duration="0.686" data-track-index="0"></video></div>
-      <div class="cam" id="cam08" style="z-index:9"><video id="v08" class="clip" src="assets/shots/08.mp4" muted playsinline data-start="14.386" data-duration="0.686" data-track-index="0"></video></div>
-      <div class="cam" id="cam09" style="z-index:10"><video id="v09" class="clip" src="assets/shots/09.mp4" muted playsinline data-start="15.072" data-duration="0.342" data-track-index="0"></video></div>
-      <div class="cam" id="cam10" style="z-index:11"><video id="v10" class="clip" src="assets/shots/10.mp4" muted playsinline data-start="15.414" data-duration="0.343" data-track-index="0"></video></div>
-      <div class="cam" id="cam11" style="z-index:12"><video id="v11" class="clip" src="assets/shots/11.mp4" muted playsinline data-start="15.757" data-duration="0.686" data-track-index="0"></video></div>
-      <div class="cam" id="cam12" style="z-index:13"><video id="v12" class="clip" src="assets/shots/12.mp4" muted playsinline data-start="16.443" data-duration="0.686" data-track-index="0"></video></div>
-      <div class="cam" id="cam13" style="z-index:14"><video id="v13" class="clip" src="assets/shots/13.mp4" muted playsinline data-start="17.129" data-duration="1.028" data-track-index="0"></video></div>
-      <div class="cam" id="cam14" style="z-index:15"><video id="v14" class="clip" src="assets/shots/14.mp4" muted playsinline data-start="18.500" data-duration="1.371" data-track-index="0"></video></div>
-      <div class="cam" id="cam15" style="z-index:16"><video id="v15" class="clip" src="assets/shots/15.mp4" muted playsinline data-start="19.871" data-duration="0.686" data-track-index="0"></video></div>
-      <div class="cam" id="cam16" style="z-index:17"><video id="v16" class="clip" src="assets/shots/16.mp4" muted playsinline data-start="20.557" data-duration="2.057" data-track-index="0"></video></div>
-      <div class="cam" id="cam17" style="z-index:18"><video id="v17" class="clip" src="assets/shots/17.mp4" muted playsinline data-start="22.614" data-duration="0.343" data-track-index="0"></video></div>
-      <div class="cam" id="cam18" style="z-index:19"><video id="v18" class="clip" src="assets/shots/18.mp4" muted playsinline data-start="22.957" data-duration="0.343" data-track-index="0"></video></div>
-      <div class="cam" id="cam19" style="z-index:20"><video id="v19" class="clip" src="assets/shots/19.mp4" muted playsinline data-start="23.300" data-duration="0.685" data-track-index="0"></video></div>
-      <div class="cam" id="cam20" style="z-index:21"><video id="v20" class="clip" src="assets/shots/20.mp4" muted playsinline data-start="23.985" data-duration="1.372" data-track-index="0"></video></div>
-      <div class="cam" id="cam21" style="z-index:22"><video id="v21" class="clip" src="assets/shots/21.mp4" muted playsinline data-start="25.357" data-duration="2.193" data-track-index="0"></video></div>
-      <div class="cam" id="cam22" style="z-index:23"><video id="v22" class="clip" src="assets/shots/22.mp4" muted playsinline data-start="27.550" data-duration="2.607" data-track-index="0"></video></div>
-      <div id="cap0" class="clip cap left tint-ink" style="top:1120px" data-start="0.000" data-duration="0.840" data-track-index="1"><span id="w0_0" class="sans" style="font-size:118px">Feeling</span><span id="w0_1" class="sans small" style="font-size:72px">like</span><span id="w0_2" class="sans small" style="font-size:72px">your</span></div>
-      <div id="cap1" class="clip cap left tint-ink" style="top:1120px" data-start="0.840" data-duration="1.190" data-track-index="1"><span id="w1_0" class="script" style="font-size:200px">Dreams</span><span id="w1_1" class="sans small" style="font-size:72px">are</span><span id="w1_2" class="sans" style="font-size:118px">impossible.</span></div>
-      <div id="cap2" class="clip cap left tint-ink" style="top:250px" data-start="2.220" data-duration="0.590" data-track-index="1"><span id="w2_0" class="sans small" style="font-size:72px">This</span><span id="w2_1" class="sans small" style="font-size:72px">is</span><span id="w2_2" class="sans small" style="font-size:72px">the</span></div>
-      <div id="cap3" class="clip cap left tint-ink" style="top:250px" data-start="2.810" data-duration="1.370" data-track-index="1"><span id="w3_0" class="sans" style="font-size:118px">video</span><span id="w3_1" class="sans small" style="font-size:72px">for</span><span id="w3_2" class="script" style="font-size:200px">You</span></div>
-      <div id="cap4" class="clip cap left tint-ink" style="top:250px" data-start="4.350" data-duration="0.690" data-track-index="1"><span id="w4_0" class="sans small" style="font-size:72px">if</span><span id="w4_1" class="sans small" style="font-size:72px">you're</span><span id="w4_2" class="sans" style="font-size:118px">earning</span></div>
-      <div id="cap5" class="clip cap left tint-ink" style="top:250px" data-start="5.040" data-duration="1.340" data-track-index="1"><span id="w5_0" class="sans" style="font-size:118px">under</span><span id="w5_1" class="sans" style="font-size:118px">$1,000</span><span id="w5_2" class="sans" style="font-size:118px">MONTHLY</span></div>
-      <div id="cap6" class="clip cap left tint-ink" style="top:250px" data-start="6.380" data-duration="1.080" data-track-index="1"><span id="w6_0" class="sans small" style="font-size:72px">you're</span><span id="w6_1" class="sans" style="font-size:118px">fighting</span></div>
-      <div id="cap7" class="clip cap left tint-ink" style="top:250px" data-start="7.770" data-duration="1.460" data-track-index="1"><span id="w7_0" class="sans small" style="font-size:72px">an</span><span id="w7_1" class="script" style="font-size:200px">Uphill</span><span id="w7_2" class="sans" style="font-size:118px">battle.</span></div>
-      <div id="cap8" class="clip cap left tint-ink" style="top:250px" data-start="9.250" data-duration="0.840" data-track-index="1"><span id="w8_0" class="sans small" style="font-size:72px">and</span><span id="w8_1" class="sans small" style="font-size:72px">this</span><span id="w8_2" class="sans small" style="font-size:72px">is</span><span id="w8_3" class="sans small" style="font-size:72px">the</span><span id="w8_4" class="sans" style="font-size:118px">most</span></div>
-      <div id="cap9" class="clip cap left tint-ink" style="top:250px" data-start="10.090" data-duration="1.200" data-track-index="1"><span id="w9_0" class="script" style="font-size:200px">Honest</span><span id="w9_1" class="sans" style="font-size:118px">conversation</span></div>
-      <div id="cap10" class="clip cap left tint-ink" style="top:250px" data-start="11.290" data-duration="0.690" data-track-index="1"><span id="w10_0" class="sans small" style="font-size:72px">I've</span><span id="w10_1" class="sans small" style="font-size:72px">ever</span><span id="w10_2" class="sans small" style="font-size:72px">had</span></div>
-      <div id="cap11" class="clip cap left tint-ink" style="top:250px" data-start="11.980" data-duration="0.930" data-track-index="1"><span id="w11_0" class="sans small" style="font-size:72px">about</span><span id="w11_1" class="sans small" style="font-size:72px">what</span><span id="w11_2" class="sans" style="font-size:118px">really</span></div>
-      <div id="cap12" class="clip cap left tint-ink" style="top:250px" data-start="12.910" data-duration="1.340" data-track-index="1"><span id="w12_0" class="script" style="font-size:200px">Changed</span><span id="w12_1" class="sans small" style="font-size:72px">my</span><span id="w12_2" class="sans" style="font-size:118px">life</span></div>
-      <div id="cap13" class="clip cap left tint-gold" style="top:260px" data-start="18.480" data-duration="1.090" data-track-index="1"><span id="w13_0" class="sans" style="font-size:118px">10</span><span id="w13_1" class="sans" style="font-size:118px">MILLION</span><span id="w13_2" class="sans" style="font-size:118px">dollars</span></div>
-      <div id="cap14" class="clip cap left tint-gold" style="top:260px" data-start="19.570" data-duration="0.680" data-track-index="1"><span id="w14_0" class="sans small" style="font-size:72px">in</span><span id="w14_1" class="script" style="font-size:200px">Valuations</span></div>
-      <div id="cap15" class="clip cap left tint-gold" style="top:260px" data-start="20.250" data-duration="0.780" data-track-index="1"><span id="w15_0" class="sans" style="font-size:118px">going</span><span id="w15_1" class="sans" style="font-size:118px">up.</span></div>
-      <div id="cap16" class="clip cap left tint-navy" style="top:250px" data-start="24.095" data-duration="0.920" data-track-index="1"><span id="w16_0" class="sans small" style="font-size:72px">and</span><span id="w16_1" class="sans small" style="font-size:72px">now</span><span id="w16_2" class="sans small" style="font-size:72px">we're</span></div>
-      <div id="cap17" class="clip cap left tint-ink" style="top:250px" data-start="25.015" data-duration="0.930" data-track-index="1"><span id="w17_0" class="sans" style="font-size:118px">launching</span><span id="w17_1" class="script" style="font-size:200px">Another</span></div>
-      <div id="cap18" class="clip cap left tint-ink" style="top:250px" data-start="25.945" data-duration="0.985" data-track-index="1"><span id="w18_0" class="sans" style="font-size:118px">software</span><span id="w18_1" class="sans" style="font-size:118px">company</span></div>
-      <div id="cap19" class="clip cap left tint-ink" style="top:250px" data-start="26.930" data-duration="1.320" data-track-index="1"><span id="w19_0" class="script" style="font-size:200px">Lock</span><span id="w19_1" class="sans small" style="font-size:72px">in</span><span id="w19_2" class="sans" style="font-size:118px">boys,</span></div>
-      <div id="cap20" class="clip cap left tint-ink" style="top:250px" data-start="28.250" data-duration="0.680" data-track-index="1"><span id="w20_0" class="script" style="font-size:200px">Lock</span><span id="w20_1" class="script" style="font-size:200px">In.</span></div>
-      <div id="cap21" class="clip cap left tint-ink" style="top:250px" data-start="28.930" data-duration="1.227" data-track-index="1"><span id="w21_0" class="sans" style="font-size:118px">Let's</span><span id="w21_1" class="sans" style="font-size:118px">go.</span></div>
+      <div class="cam" id="cam05" style="z-index:6"><video id="v05" class="clip" src="assets/shots/05.mp4" muted playsinline data-start="11.400" data-duration="1.039" data-track-index="0"></video></div>
+      <div class="cam" id="cam06" style="z-index:7"><video id="v06" class="clip" src="assets/shots/06.mp4" muted playsinline data-start="12.439" data-duration="1.347" data-track-index="0"></video></div>
+      <div class="cam" id="cam07" style="z-index:8"><video id="v07" class="clip" src="assets/shots/07.mp4" muted playsinline data-start="13.786" data-duration="0.674" data-track-index="0"></video></div>
+      <div class="cam" id="cam08" style="z-index:9"><video id="v08" class="clip" src="assets/shots/08.mp4" muted playsinline data-start="14.460" data-duration="0.673" data-track-index="0"></video></div>
+      <div class="cam" id="cam09" style="z-index:10"><video id="v09" class="clip" src="assets/shots/09.mp4" muted playsinline data-start="15.133" data-duration="0.337" data-track-index="0"></video></div>
+      <div class="cam" id="cam10" style="z-index:11"><video id="v10" class="clip" src="assets/shots/10.mp4" muted playsinline data-start="15.470" data-duration="0.336" data-track-index="0"></video></div>
+      <div class="cam" id="cam11" style="z-index:12"><video id="v11" class="clip" src="assets/shots/11.mp4" muted playsinline data-start="15.806" data-duration="0.674" data-track-index="0"></video></div>
+      <div class="cam" id="cam12" style="z-index:13"><video id="v12" class="clip" src="assets/shots/12.mp4" muted playsinline data-start="16.480" data-duration="0.673" data-track-index="0"></video></div>
+      <div class="cam" id="cam13" style="z-index:14"><video id="v13" class="clip" src="assets/shots/13.mp4" muted playsinline data-start="17.153" data-duration="1.010" data-track-index="0"></video></div>
+      <div class="cam" id="cam14" style="z-index:15"><video id="v14" class="clip" src="assets/shots/14.mp4" muted playsinline data-start="18.500" data-duration="1.347" data-track-index="0"></video></div>
+      <div class="cam" id="cam15" style="z-index:16"><video id="v15" class="clip" src="assets/shots/15.mp4" muted playsinline data-start="19.847" data-duration="0.673" data-track-index="0"></video></div>
+      <div class="cam" id="cam16" style="z-index:17"><video id="v16" class="clip" src="assets/shots/16.mp4" muted playsinline data-start="20.520" data-duration="2.020" data-track-index="0"></video></div>
+      <div class="cam" id="cam17" style="z-index:18"><video id="v17" class="clip" src="assets/shots/17.mp4" muted playsinline data-start="22.540" data-duration="0.337" data-track-index="0"></video></div>
+      <div class="cam" id="cam18" style="z-index:19"><video id="v18" class="clip" src="assets/shots/18.mp4" muted playsinline data-start="22.877" data-duration="0.337" data-track-index="0"></video></div>
+      <div class="cam" id="cam19" style="z-index:20"><video id="v19" class="clip" src="assets/shots/19.mp4" muted playsinline data-start="23.214" data-duration="0.771" data-track-index="0"></video></div>
+      <div class="cam" id="cam20" style="z-index:21"><video id="v20" class="clip" src="assets/shots/20.mp4" muted playsinline data-start="23.985" data-duration="1.249" data-track-index="0"></video></div>
+      <div class="cam" id="cam21" style="z-index:22"><video id="v21" class="clip" src="assets/shots/21.mp4" muted playsinline data-start="25.234" data-duration="2.316" data-track-index="0"></video></div>
+      <div class="cam" id="cam22" style="z-index:23"><video id="v22" class="clip" src="assets/shots/22.mp4" muted playsinline data-start="27.550" data-duration="3.071" data-track-index="0"></video></div>
+      <div id="cap0" class="clip cap" style="top:1075px" data-start="0.000" data-duration="0.440" data-track-index="1"><span id="w0_0" class="single" style="font-size:140px">Feeling</span></div>
+      <div id="cap1" class="clip cap" style="top:1075px" data-start="0.440" data-duration="0.180" data-track-index="1"><span id="w1_1" class="single" style="font-size:140px">like</span></div>
+      <div id="cap2" class="clip cap" style="top:1075px" data-start="0.620" data-duration="0.580" data-track-index="1"><span id="w2_2" class="conn" style="font-size:88px">your</span><span id="w2_3" class="key" style="font-size:200px">dreams</span></div>
+      <div id="cap3" class="clip cap" style="top:1075px" data-start="1.200" data-duration="0.170" data-track-index="1"><span id="w3_4" class="single" style="font-size:140px">are</span></div>
+      <div id="cap4" class="clip cap" style="top:1075px" data-start="1.370" data-duration="0.660" data-track-index="1"><span id="w4_5" class="key" style="font-size:145px">impossible?</span></div>
+      <div id="cap5" class="clip cap" style="top:1290px" data-start="2.220" data-duration="0.250" data-track-index="1"><span id="w5_0" class="single" style="font-size:140px">This</span></div>
+      <div id="cap6" class="clip cap" style="top:1290px" data-start="2.470" data-duration="0.140" data-track-index="1"><span id="w6_1" class="single" style="font-size:140px">is</span></div>
+      <div id="cap7" class="clip cap" style="top:1290px" data-start="2.610" data-duration="0.550" data-track-index="1"><span id="w7_2" class="conn" style="font-size:88px">the</span><span id="w7_3" class="key" style="font-size:200px">video</span></div>
+      <div id="cap8" class="clip cap" style="top:1290px" data-start="3.160" data-duration="1.020" data-track-index="1"><span id="w8_4" class="conn" style="font-size:88px">for</span><span id="w8_5" class="key" style="font-size:200px">you.</span></div>
+      <div id="cap9" class="clip cap" style="top:1400px" data-start="4.350" data-duration="0.120" data-track-index="1"><span id="w9_0" class="single" style="font-size:140px">if</span></div>
+      <div id="cap10" class="clip cap" style="top:1400px" data-start="4.460" data-duration="0.360" data-track-index="1"><span id="w10_1" class="single" style="font-size:140px">you're</span></div>
+      <div id="cap11" class="clip cap" style="top:1400px" data-start="4.820" data-duration="0.220" data-track-index="1"><span id="w11_2" class="single" style="font-size:140px">earning</span></div>
+      <div id="cap12" class="clip cap" style="top:1400px" data-start="5.040" data-duration="0.900" data-track-index="1"><span id="w12_3" class="conn" style="font-size:88px">under</span><span id="w12_4" class="key" style="font-size:200px">$1,000</span></div>
+      <div id="cap13" class="clip cap" style="top:1400px" data-start="5.940" data-duration="0.440" data-track-index="1"><span id="w13_5" class="key" style="font-size:200px">MONTHLY</span></div>
+      <div id="cap14" class="clip cap" style="top:1400px" data-start="6.380" data-duration="0.240" data-track-index="1"><span id="w14_6" class="single" style="font-size:140px">you're</span></div>
+      <div id="cap15" class="clip cap" style="top:1400px" data-start="6.620" data-duration="0.840" data-track-index="1"><span id="w15_7" class="key" style="font-size:200px">fighting</span></div>
+      <div id="cap16" class="clip cap" style="top:1400px" data-start="7.770" data-duration="0.320" data-track-index="1"><span id="w16_0" class="conn" style="font-size:88px">an</span><span id="w16_1" class="key" style="font-size:200px">uphill</span></div>
+      <div id="cap17" class="clip cap" style="top:1400px" data-start="8.090" data-duration="1.140" data-track-index="1"><span id="w17_2" class="key blend" style="font-size:200px">battle.</span></div>
+      <div id="cap18" class="clip cap" style="top:1290px" data-start="9.250" data-duration="0.360" data-track-index="1"><span id="w18_0" class="conn" style="font-size:88px">and</span><span id="w18_1" class="key" style="font-size:200px">this</span></div>
+      <div id="cap19" class="clip cap" style="top:1290px" data-start="9.610" data-duration="0.120" data-track-index="1"><span id="w19_2" class="single" style="font-size:140px">is</span></div>
+      <div id="cap20" class="clip cap" style="top:1290px" data-start="9.720" data-duration="0.370" data-track-index="1"><span id="w20_3" class="conn" style="font-size:88px">the</span><span id="w20_4" class="key" style="font-size:200px">most</span></div>
+      <div id="cap21" class="clip cap" style="top:1290px" data-start="10.090" data-duration="0.400" data-track-index="1"><span id="w21_5" class="key" style="font-size:200px">honest</span></div>
+      <div id="cap22" class="clip cap" style="top:1290px" data-start="10.490" data-duration="0.800" data-track-index="1"><span id="w22_6" class="key" style="font-size:133px">conversation</span></div>
+      <div id="cap23" class="clip cap" style="top:1290px" data-start="11.290" data-duration="0.500" data-track-index="1"><span id="w23_7" class="conn" style="font-size:88px">I've</span><span id="w23_8" class="key" style="font-size:200px">ever</span></div>
+      <div id="cap24" class="clip cap" style="top:1290px" data-start="11.790" data-duration="0.190" data-track-index="1"><span id="w24_9" class="single" style="font-size:140px">had</span></div>
+      <div id="cap25" class="clip cap" style="top:1290px" data-start="11.980" data-duration="0.320" data-track-index="1"><span id="w25_10" class="single" style="font-size:140px">about</span></div>
+      <div id="cap26" class="clip cap" style="top:1290px" data-start="12.300" data-duration="0.610" data-track-index="1"><span id="w26_11" class="conn" style="font-size:88px">what</span><span id="w26_12" class="key" style="font-size:200px">really</span></div>
+      <div id="cap27" class="clip cap" style="top:1290px" data-start="12.910" data-duration="0.460" data-track-index="1"><span id="w27_13" class="key" style="font-size:200px">changed</span></div>
+      <div id="cap28" class="clip cap" style="top:1290px" data-start="13.370" data-duration="0.930" data-track-index="1"><span id="w28_14" class="conn" style="font-size:88px">my</span><span id="w28_15" class="key" style="font-size:200px">life.</span></div>
+      <div id="cap29" class="clip cap" style="top:1075px" data-start="18.480" data-duration="0.710" data-track-index="1"><span id="w29_0" class="conn" style="font-size:88px">10</span><span id="w29_1" class="key" style="font-size:200px">MILLION</span></div>
+      <div id="cap30" class="clip cap" style="top:1075px" data-start="19.190" data-duration="0.380" data-track-index="1"><span id="w30_2" class="single" style="font-size:140px">dollars</span></div>
+      <div id="cap31" class="clip cap" style="top:1075px" data-start="19.570" data-duration="0.680" data-track-index="1"><span id="w31_3" class="conn" style="font-size:88px">in</span><span id="w31_4" class="key blend" style="font-size:160px">valuations</span></div>
+      <div id="cap32" class="clip cap" style="top:1075px" data-start="20.250" data-duration="0.230" data-track-index="1"><span id="w32_5" class="single" style="font-size:140px">going</span></div>
+      <div id="cap33" class="clip cap" style="top:1075px" data-start="20.480" data-duration="0.600" data-track-index="1"><span id="w33_6" class="key" style="font-size:200px">up.</span></div>
+      <div id="cap34" class="clip cap" style="top:1075px" data-start="24.095" data-duration="0.690" data-track-index="1"><span id="w34_0" class="conn" style="font-size:88px">and</span><span id="w34_1" class="key" style="font-size:200px">now</span></div>
+      <div id="cap35" class="clip cap" style="top:1075px" data-start="24.785" data-duration="0.780" data-track-index="1"><span id="w35_2" class="conn" style="font-size:88px">we're</span><span id="w35_3" class="key" style="font-size:177px">launching</span></div>
+      <div id="cap36" class="clip cap" style="top:1075px" data-start="25.565" data-duration="0.380" data-track-index="1"><span id="w36_4" class="single" style="font-size:140px">another</span></div>
+      <div id="cap37" class="clip cap" style="top:1075px" data-start="25.945" data-duration="0.985" data-track-index="1"><span id="w37_5" class="conn" style="font-size:88px">software</span><span id="w37_6" class="key" style="font-size:200px">company.</span></div>
+      <div id="cap38" class="clip cap" style="top:700px" data-start="26.930" data-duration="0.710" data-track-index="1"><span id="w38_0" class="conn" style="font-size:88px">lock</span><span id="w38_1" class="key" style="font-size:200px">in</span></div>
+      <div id="cap39" class="clip cap" style="top:700px" data-start="27.640" data-duration="0.610" data-track-index="1"><span id="w39_2" class="single" style="font-size:140px">boys</span></div>
+      <div id="cap40" class="clip cap" style="top:700px" data-start="28.250" data-duration="0.680" data-track-index="1"><span id="w40_3" class="conn" style="font-size:88px">lock</span><span id="w40_4" class="key" style="font-size:200px">in.</span></div>
+      <div id="cap41" class="clip cap" style="top:700px" data-start="28.930" data-duration="1.380" data-track-index="1"><span id="w41_5" class="conn" style="font-size:88px">let's</span><span id="w41_6" class="key" style="font-size:200px">go.</span></div>
       <div id="leak0" class="clip leak" data-start="4.150" data-duration="0.17" data-track-index="2"><i></i></div>
       <div id="leak1" class="clip leak" data-start="9.200" data-duration="0.17" data-track-index="2"><i></i></div>
       <div id="leak2" class="clip leak" data-start="11.350" data-duration="0.17" data-track-index="2"><i></i></div>
       <div id="flash0" class="clip flash" data-start="18.500" data-duration="0.2" data-track-index="2"><i></i></div>
-      <audio id="soundtrack" class="clip" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="30.157" data-track-index="3" data-volume="1"></audio>
+      <audio id="soundtrack" class="clip" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="30.621" data-track-index="3" data-volume="1"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
       tl.fromTo("#cam02", {scale: 1}, {scale: 1.04, duration: 3.280, ease: "sine.inOut"}, 4.200);
       tl.fromTo("#cam14", {scale: 1.14}, {scale: 1, duration: 0.3, ease: "power3.out", immediateRender: false}, 18.500);
-      tl.fromTo("#cam16", {scale: 1}, {scale: 1.07, duration: 2.057, ease: "sine.inOut"}, 20.557);
-      tl.fromTo("#cam21", {scale: 1}, {scale: 1.05, duration: 2.193, ease: "sine.inOut"}, 25.357);
-      tl.fromTo("#w0_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 0.000);
-      tl.set("#w0_0", {opacity: 0}, 0.000);
-      tl.fromTo("#w0_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 0.460);
-      tl.set("#w0_1", {opacity: 0}, 0.000);
-      tl.fromTo("#w0_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 0.640);
-      tl.set("#w0_2", {opacity: 0}, 0.000);
-      tl.fromTo("#w1_0", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 0.860);
-      tl.set("#w1_0", {clipPath: "inset(-20% 100% -30% -5%)"}, 0.840);
-      tl.fromTo("#w1_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 1.220);
-      tl.set("#w1_1", {opacity: 0}, 0.840);
-      tl.fromTo("#w1_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 1.390);
-      tl.set("#w1_2", {opacity: 0}, 0.840);
-      tl.fromTo("#w2_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 2.240);
-      tl.set("#w2_0", {opacity: 0}, 2.220);
-      tl.fromTo("#w2_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 2.490);
-      tl.set("#w2_1", {opacity: 0}, 2.220);
-      tl.fromTo("#w2_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 2.630);
-      tl.set("#w2_2", {opacity: 0}, 2.220);
-      tl.fromTo("#w3_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 2.830);
-      tl.set("#w3_0", {opacity: 0}, 2.810);
-      tl.fromTo("#w3_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 3.180);
-      tl.set("#w3_1", {opacity: 0}, 2.810);
-      tl.fromTo("#w3_2", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 3.500);
-      tl.set("#w3_2", {clipPath: "inset(-20% 100% -30% -5%)"}, 2.810);
-      tl.fromTo("#w4_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 4.370);
-      tl.set("#w4_0", {opacity: 0}, 4.350);
-      tl.fromTo("#w4_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 4.480);
-      tl.set("#w4_1", {opacity: 0}, 4.350);
-      tl.fromTo("#w4_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 4.840);
-      tl.set("#w4_2", {opacity: 0}, 4.350);
-      tl.fromTo("#w5_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 5.060);
-      tl.set("#w5_0", {opacity: 0}, 5.040);
-      tl.fromTo("#w5_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 5.240);
-      tl.set("#w5_1", {opacity: 0}, 5.040);
-      tl.fromTo("#w5_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 5.960);
-      tl.set("#w5_2", {opacity: 0}, 5.040);
-      tl.fromTo("#w6_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 6.400);
-      tl.set("#w6_0", {opacity: 0}, 6.380);
-      tl.fromTo("#w6_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 6.640);
-      tl.set("#w6_1", {opacity: 0}, 6.380);
-      tl.fromTo("#w7_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 7.790);
-      tl.set("#w7_0", {opacity: 0}, 7.770);
-      tl.fromTo("#w7_1", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 7.870);
-      tl.set("#w7_1", {clipPath: "inset(-20% 100% -30% -5%)"}, 7.770);
-      tl.fromTo("#w7_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 8.110);
-      tl.set("#w7_2", {opacity: 0}, 7.770);
-      tl.fromTo("#w8_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 9.270);
-      tl.set("#w8_0", {opacity: 0}, 9.250);
-      tl.fromTo("#w8_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 9.430);
-      tl.set("#w8_1", {opacity: 0}, 9.250);
-      tl.fromTo("#w8_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 9.630);
-      tl.set("#w8_2", {opacity: 0}, 9.250);
-      tl.fromTo("#w8_3", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 9.740);
-      tl.set("#w8_3", {opacity: 0}, 9.250);
-      tl.fromTo("#w8_4", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 9.960);
-      tl.set("#w8_4", {opacity: 0}, 9.250);
-      tl.fromTo("#w9_0", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 10.110);
-      tl.set("#w9_0", {clipPath: "inset(-20% 100% -30% -5%)"}, 10.090);
-      tl.fromTo("#w9_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 10.510);
-      tl.set("#w9_1", {opacity: 0}, 10.090);
-      tl.fromTo("#w10_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 11.310);
-      tl.set("#w10_0", {opacity: 0}, 11.290);
-      tl.fromTo("#w10_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 11.590);
-      tl.set("#w10_1", {opacity: 0}, 11.290);
-      tl.fromTo("#w10_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 11.810);
-      tl.set("#w10_2", {opacity: 0}, 11.290);
-      tl.fromTo("#w11_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 12.000);
-      tl.set("#w11_0", {opacity: 0}, 11.980);
-      tl.fromTo("#w11_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 12.320);
-      tl.set("#w11_1", {opacity: 0}, 11.980);
-      tl.fromTo("#w11_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 12.570);
-      tl.set("#w11_2", {opacity: 0}, 11.980);
-      tl.fromTo("#w12_0", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 12.930);
-      tl.set("#w12_0", {clipPath: "inset(-20% 100% -30% -5%)"}, 12.910);
-      tl.fromTo("#w12_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 13.390);
-      tl.set("#w12_1", {opacity: 0}, 12.910);
-      tl.fromTo("#w12_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 13.500);
-      tl.set("#w12_2", {opacity: 0}, 12.910);
-      tl.fromTo("#w13_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 18.500);
-      tl.set("#w13_0", {opacity: 0}, 18.480);
-      tl.fromTo("#w13_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 18.830);
-      tl.set("#w13_1", {opacity: 0}, 18.480);
-      tl.fromTo("#w13_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 19.210);
-      tl.set("#w13_2", {opacity: 0}, 18.480);
-      tl.fromTo("#w14_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 19.590);
-      tl.set("#w14_0", {opacity: 0}, 19.570);
-      tl.fromTo("#w14_1", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 19.700);
-      tl.set("#w14_1", {clipPath: "inset(-20% 100% -30% -5%)"}, 19.570);
-      tl.fromTo("#w15_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 20.270);
-      tl.set("#w15_0", {opacity: 0}, 20.250);
-      tl.fromTo("#w15_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 20.500);
-      tl.set("#w15_1", {opacity: 0}, 20.250);
-      tl.fromTo("#w16_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 24.115);
-      tl.set("#w16_0", {opacity: 0}, 24.095);
-      tl.fromTo("#w16_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 24.595);
-      tl.set("#w16_1", {opacity: 0}, 24.095);
-      tl.fromTo("#w16_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 24.805);
-      tl.set("#w16_2", {opacity: 0}, 24.095);
-      tl.fromTo("#w17_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 25.035);
-      tl.set("#w17_0", {opacity: 0}, 25.015);
-      tl.fromTo("#w17_1", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 25.585);
-      tl.set("#w17_1", {clipPath: "inset(-20% 100% -30% -5%)"}, 25.015);
-      tl.fromTo("#w18_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 25.965);
-      tl.set("#w18_0", {opacity: 0}, 25.945);
-      tl.fromTo("#w18_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 26.425);
-      tl.set("#w18_1", {opacity: 0}, 25.945);
-      tl.fromTo("#w19_0", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 26.950);
-      tl.set("#w19_0", {clipPath: "inset(-20% 100% -30% -5%)"}, 26.930);
-      tl.fromTo("#w19_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 27.390);
-      tl.set("#w19_1", {opacity: 0}, 26.930);
-      tl.fromTo("#w19_2", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 27.660);
-      tl.set("#w19_2", {opacity: 0}, 26.930);
-      tl.fromTo("#w20_0", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 28.270);
-      tl.set("#w20_0", {clipPath: "inset(-20% 100% -30% -5%)"}, 28.250);
-      tl.fromTo("#w20_1", {clipPath: "inset(-20% 100% -30% -5%)"}, {clipPath: "inset(-20% -5% -30% -5%)", duration: 0.125, ease: "power1.out", immediateRender: false}, 28.710);
-      tl.set("#w20_1", {clipPath: "inset(-20% 100% -30% -5%)"}, 28.250);
-      tl.fromTo("#w21_0", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 28.950);
-      tl.set("#w21_0", {opacity: 0}, 28.930);
-      tl.fromTo("#w21_1", {opacity: 0, filter: "blur(4px)"}, {opacity: 1, filter: "blur(0px)", duration: 0.083, ease: "none", immediateRender: false}, 29.660);
-      tl.set("#w21_1", {opacity: 0}, 28.930);
+      tl.fromTo("#cam16", {scale: 1}, {scale: 1.07, duration: 2.020, ease: "sine.inOut"}, 20.520);
+      tl.fromTo("#cam21", {scale: 1}, {scale: 1.05, duration: 2.316, ease: "sine.inOut"}, 25.234);
+      tl.fromTo("#w0_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 0.000);
+      tl.fromTo("#w1_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 0.460);
+      tl.fromTo("#w2_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 0.640);
+      tl.fromTo("#w2_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 0.860);
+      tl.set("#w2_3", {opacity: 0}, 0.620);
+      tl.fromTo("#w3_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 1.220);
+      tl.fromTo("#w4_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 1.390);
+      tl.fromTo("#w5_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 2.240);
+      tl.fromTo("#w6_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 2.490);
+      tl.fromTo("#w7_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 2.630);
+      tl.fromTo("#w7_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 2.830);
+      tl.set("#w7_3", {opacity: 0}, 2.610);
+      tl.fromTo("#w8_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 3.180);
+      tl.fromTo("#w8_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 3.500);
+      tl.set("#w8_5", {opacity: 0}, 3.160);
+      tl.fromTo("#w9_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 4.370);
+      tl.fromTo("#w10_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 4.480);
+      tl.fromTo("#w11_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 4.840);
+      tl.fromTo("#w12_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 5.060);
+      tl.fromTo("#w12_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 5.240);
+      tl.set("#w12_4", {opacity: 0}, 5.040);
+      tl.fromTo("#w13_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 5.960);
+      tl.fromTo("#w14_6", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 6.400);
+      tl.fromTo("#w15_7", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 6.640);
+      tl.fromTo("#w16_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 7.790);
+      tl.fromTo("#w16_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 7.870);
+      tl.set("#w16_1", {opacity: 0}, 7.770);
+      tl.fromTo("#w17_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 8.110);
+      tl.fromTo("#w18_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 9.270);
+      tl.fromTo("#w18_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 9.430);
+      tl.set("#w18_1", {opacity: 0}, 9.250);
+      tl.fromTo("#w19_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 9.630);
+      tl.fromTo("#w20_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 9.740);
+      tl.fromTo("#w20_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 9.960);
+      tl.set("#w20_4", {opacity: 0}, 9.720);
+      tl.fromTo("#w21_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 10.110);
+      tl.fromTo("#w22_6", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 10.510);
+      tl.fromTo("#w23_7", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 11.310);
+      tl.fromTo("#w23_8", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 11.590);
+      tl.set("#w23_8", {opacity: 0}, 11.290);
+      tl.fromTo("#w24_9", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 11.810);
+      tl.fromTo("#w25_10", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 12.000);
+      tl.fromTo("#w26_11", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 12.320);
+      tl.fromTo("#w26_12", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 12.570);
+      tl.set("#w26_12", {opacity: 0}, 12.300);
+      tl.fromTo("#w27_13", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 12.930);
+      tl.fromTo("#w28_14", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 13.390);
+      tl.fromTo("#w28_15", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 13.500);
+      tl.set("#w28_15", {opacity: 0}, 13.370);
+      tl.fromTo("#w29_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 18.500);
+      tl.fromTo("#w29_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 18.830);
+      tl.set("#w29_1", {opacity: 0}, 18.480);
+      tl.fromTo("#w30_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 19.210);
+      tl.fromTo("#w31_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 19.590);
+      tl.fromTo("#w31_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 19.700);
+      tl.set("#w31_4", {opacity: 0}, 19.570);
+      tl.fromTo("#w32_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 20.270);
+      tl.fromTo("#w33_6", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 20.500);
+      tl.fromTo("#w34_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 24.115);
+      tl.fromTo("#w34_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 24.595);
+      tl.set("#w34_1", {opacity: 0}, 24.095);
+      tl.fromTo("#w35_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 24.805);
+      tl.fromTo("#w35_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 25.035);
+      tl.set("#w35_3", {opacity: 0}, 24.785);
+      tl.fromTo("#w36_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 25.585);
+      tl.fromTo("#w37_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 25.965);
+      tl.fromTo("#w37_6", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 26.425);
+      tl.set("#w37_6", {opacity: 0}, 25.945);
+      tl.fromTo("#w38_0", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 26.950);
+      tl.fromTo("#w38_1", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 27.390);
+      tl.set("#w38_1", {opacity: 0}, 26.930);
+      tl.fromTo("#w39_2", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 27.660);
+      tl.fromTo("#w40_3", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 28.270);
+      tl.fromTo("#w40_4", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 28.710);
+      tl.set("#w40_4", {opacity: 0}, 28.250);
+      tl.fromTo("#w41_5", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 28.950);
+      tl.fromTo("#w41_6", {opacity: 0, filter: "blur(12px)", scale: 1.08}, {opacity: 1, filter: "blur(0px)", scale: 1, duration: 0.17, ease: "power2.out", immediateRender: false}, 29.660);
+      tl.set("#w41_6", {opacity: 0}, 28.930);
       tl.fromTo("#leak0 i", {xPercent: -60, opacity: 0.95}, {xPercent: 40, opacity: 0, duration: 0.16, ease: "power1.in"}, 4.150);
       tl.fromTo("#leak1 i", {xPercent: -60, opacity: 0.95}, {xPercent: 40, opacity: 0, duration: 0.16, ease: "power1.in"}, 9.200);
       tl.fromTo("#leak2 i", {xPercent: -60, opacity: 0.95}, {xPercent: 40, opacity: 0, duration: 0.16, ease: "power1.in"}, 11.350);

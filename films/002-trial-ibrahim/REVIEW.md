@@ -1,7 +1,26 @@
-# Review · 002 trial edit (v3)
+# Review · 002 trial edit (v4)
 
-Delivered: `renders/ibrahim-trial-edit.mp4`, 1080×1920, 30 fps, 30.2 s, H.264 CRF 17 + AAC 256k (137 MB; not in git).
-Preview: `renders/v3-preview.mp4` (25 MB).
+## v4 changes (person's notes: "this kind of typography", motivational music, more professional SFX)
+- **Typography:** ref3 studied (REFERENCE.md "ref3").
+  - Inter Black at -4% (a Helvetica Neue Heavy match), centred on the chest, word-by-word replacing.
+  - A small connector stacks over a big key word. Key words are lowercase with end punctuation; "$1,000" and "MILLION" in caps.
+  - Every word blurs in from 12 px with a 108→100% scale settle over 4 frames.
+  - Two key words are overlay-blended into the plate. Lines moved off faces.
+- **Music:** Mixkit #31 "Dreaming Big" (uplifting film score, piano + strings → drums), 89.1 BPM.
+  - Soft piano under the story; the measured drum entry (30.22 s) lands on "10 million dollars".
+  - B-roll re-cut to the new beat grid.
+- **SFX, rebuilt:**
+  - Removed coins, notification pops and the alarm.
+  - Added the footage's own sound (jetski, desert, wake, water, car) under the music.
+  - A long swell plus riser that stop dead at the silence, then a layered sub-boom and punch on the drop; one air sweep into the montage.
+  - Every effect is now placed by its measured peak. v3's "big cinematic impact" peaked 2.1 s after its start, so its hit had landed late.
+- Loudness −14.0 LUFS, true peak −1.4 dBTP, no clipping. Measured, not heard.
+
+---
+
+
+Delivered: `renders/ibrahim-trial-edit.mp4`, 1080×1920, 30 fps, 30.6 s, H.264 CRF 17 + AAC 256k (141 MB; not in git).
+Preview: `renders/v4-preview.mp4` (26 MB).
 
 ## Scroll test (v3)
 | Time | What a stranger sees and hears | Stay? |

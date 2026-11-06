@@ -39,3 +39,34 @@ Sizes (as % of frame height, measured on 720 px): script word 9–11%; sans hero
 - Copy exactly: Montserrat Bold + Parisienne; word-on-onset sync; script L→R wipe 3 f, sans fade 2 f; staircase blocks that never move, cleared on cut; scene-tinted words; soft shadow; light-leak transition between story sections; B&W → colour pop on the hook's first beat.
 - Adapt: 9:16 placement (blocks in the upper or lower third beside the head, inside Reels-safe area).
 - The story is carried by **Ibrahim's own voiceover** from the footage (ref2 model), not by written slogans.
+
+---
+
+# ref3 (refs/ref3.mp4): the person's chosen typography for this film (replaces the ref1/ref2 caption style)
+
+576×1024, 24 fps, 20.7 s. Motivational speech VO over cinematic B-roll, TikTok template style.
+
+## Font (measured: side-by-side render vs. crops of "Stay humble.", "with yourself.", "need")
+- A Helvetica Neue Heavy-style grotesque: large x-height, straight "y" tail, angled "t" top, double-storey "a", tight tracking.
+  Closest free match: **Inter Black (900), letter-spacing −0.04em**.
+- Mostly lowercase with a period on the key word ("humble.", "hungry.", "true.", "yourself.", "world.", "originals."); occasional
+  all-caps lines ("NEVER FORGET WHERE YOU CAME FROM", "AND TRUST ME").
+- Sizes (of 1024 px height): key word ~9–11%; connector word ~4–5%; single words in the replace sequence ~6–8%.
+
+## Caption animation (measured frame by frame at 24 fps)
+- **Word by word, replacing**: each spoken word appears alone in the same spot and is replaced by the next ("what" → "you" → "do").
+- **Pairs**: a small connector stacks over its big key word ("Stay / humble.", "with / yourself.", "the / world.", "Keep / that / fire")
+  and both hold until the phrase ends.
+- **Entrance**: blur ~12 px → 0 with opacity 0 → 1 and a slight scale settle (~108% → 100%) over **4 frames** (0.17 s). No slide.
+- **Exit**: hard cut on the next word / phrase.
+- **Placement**: centred horizontally, block centre at ~55–58% of frame height (over the subject's chest), single block.
+
+## Text effects (measured)
+- Fill white, soft dark drop shadow (~0 3px 8px rgba(0,0,0,.5)).
+- **Blend on key words**: some key words are composited into the plate (overlay / soft-light): "hungry." takes the warm sunset
+  colour, "world" over the earth is translucent. Used on ~1 word in 5, never on connector words.
+- A white flash frame between some shots (1 frame).
+
+## Apply
+Inter Black −4%, centred at 56% height; word-by-word replace with connector+key pairs; 4-frame blur/scale entrance; hard exits;
+soft shadow; overlay-blend on 1–2 key words per line; key words lowercase with a period at line ends.

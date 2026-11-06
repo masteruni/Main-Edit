@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
-"""v3: the story is Ibrahim's own voice (assets/vo-video, from the client's Dropbox), cut into one
-arc, with the music's drop (first 808, measured at 14.769 s in Mixkit #364) on "10 million dollars".
+"""v4: the story is Ibrahim's own voice (assets/vo-video, from the client's Dropbox), cut into one arc,
+over Mixkit "Dreaming Big" with its drum entry (measured 30.22 s) on "10 million dollars".
 
-Grid: beat n = DROP + 0.6857 n (87.5 BPM); B-roll cuts sit on it, talking-head cuts sit on the words.
+Grid: beat n = DROP + 0.6734 n (89.1 BPM); B-roll cuts sit on it, talking-head cuts sit on the words.
 Shot tuple: (start, end, source, src_in, speed, zoom, cx, cy, grade, fx)
   source = proxy slug (read from the 4K original in the Dropbox zip) or "vo:<file>" (assets/vo-video)
   fx     = "" | "bw-open" (first 0.25 s black & white, the reference's opening pop) | "ramp" (100→30→100 % speed)
 """
-BEAT = 0.6857
+BEAT = 0.6734                     # Mixkit #31 "Dreaming Big" (Ahjay Stelino), 89.1 BPM
 DROP = 18.5
-MUSIC_IN = DROP - 14.769          # the track starts (from 0) at this video time: 3.731 s
+MUSIC_FILE = "music-mixkit-31-dreaming-big.mp3"
+MUSIC_DROP = 30.22                # measured: drums/percussion entry in the track
+MUSIC_IN = DROP - MUSIC_DROP      # negative: the track is entered 11.72 s in (soft piano) at video 0
 
 
 def b(n):
@@ -20,7 +22,7 @@ def h(n):
     return round(DROP + BEAT * n + BEAT / 2, 3)
 
 
-END = b(17)  # 30.157
+END = b(18)  # 30.621: one beat after "Let's go."
 
 # Voiceover: (key, file in assets/vo-candidates/*.wav + vo-video, src_in, src_out, place at video t)
 VO = [
