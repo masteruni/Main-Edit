@@ -25,3 +25,10 @@ Format: `- <the tell, concretely> → <what to do instead>  (source)`
 ## Added by films
 
 <!-- newest at the bottom: - tell → instead  (films/NNN-slug) -->
+- The seamless mockup sweep: hero object centred on an empty grey wall with a soft drop shadow and vignette → fill and bleed the frame, or mount it in a place with nameable fixtures and a hard contact shadow  (films/001-same-look)
+- Fake coverage: consecutive "close-ups" that are the same plate reframed by < 10% → each cut changes shot size ≥ 1.5× or changes axis; a repeated phrase moves to a new subject at the same size  (films/001-same-look)
+- Maker's-jargon copy (BLUR-IN TITLES, CREAM + SERIF) that only toolmakers recognise → name things by what a viewer saw or heard (WHOOSH ON CUT)  (films/001-same-look)
+- Setup shown for under a second, so the turn lands on nothing → hold a premise ≥ 0.25 s per word before the first change  (films/001-same-look)
+- Airbrushed wear: scuffs/dust as soft round radial blobs → hard-edged, directional marks that follow how the object is handled  (films/001-same-look)
+- Phantom background shape: an unexplained pale rectangle on the backdrop as "depth" → a nameable object from the place, or nothing  (films/001-same-look)
+- A wide establishing shot as the hook: the first frame is small, unreadable on a phone → open tight on the one readable thing, reveal the wide as the re-hook  (films/001-same-look, scroll test)

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 
 DIR = Path(__file__).resolve().parent.parent
-SR, DUR = 48000, 13.6
+SR, DUR = 48000, 15.4
 N = int(SR * DUR)
 rng = np.random.default_rng(1994)
 sched = json.loads((DIR / "assets/schedule.json").read_text())
@@ -22,6 +22,9 @@ def place(sig, t, gain=1.0, pan=0.0):
     out[i:i + len(sig), 1] += sig * gain * r
 
 def flap(kind):
+    if kind == 2:  # heavy settle: the whole row's mechanism stops
+        n = int(SR * 0.09); tt = np.arange(n) / SR
+        return 0.8 * np.sin(2 * np.pi * 140 * tt) * np.exp(-tt / 0.025) + 0.5 * rng.standard_normal(n) * np.exp(-tt / 0.004)
     n = int(SR * (0.012 if kind == 0 else 0.035))
     tt = np.arange(n) / SR
     noise = rng.standard_normal(n)
@@ -32,7 +35,7 @@ def flap(kind):
     return (0.55 * noise * env + 0.45 * body) * rng.uniform(0.6, 1.0)
 
 # which row the camera is on, per shot (None = wide)
-SHOTS = [(0, 3.6, None), (3.6, 4.4, 1), (4.4, 5.1, 2), (5.1, 5.9, 3), (5.9, 6.7, 5), (6.7, 9.7, 5), (9.7, 13.6, None)]
+SHOTS = [(0, 3.1, 0), (3.1, 5.6, None), (5.6, 6.5, 1), (6.5, 7.2, 2), (7.2, 8.0, 3), (8.0, 8.7, 7), (8.7, 10.3, 7), (10.3, 11.7, 7), (11.7, 15.4, None)]
 def focus(t):
     for a, b, r in SHOTS:
         if a <= t < b: return r
@@ -42,8 +45,8 @@ clicks = np.zeros((N, 2))
 for t, col, row, kind in sched["clicks"]:
     f = focus(t)
     g = 1.0 if f is None else (1.7 if row == f else 0.45)
-    g *= 0.9 if kind == 0 else 1.6
-    pan = (col / 29 - 0.5) * (1.1 if f is None else 0.5)
+    g *= 0.9 if kind == 0 else 1.6 if kind == 1 else 2.6
+    pan = (col / 36 - 0.5) * (1.1 if f is None else 0.5)
     i = int(t * SR)
     s = flap(kind)[: max(0, N - i)]
     if len(s) == 0: continue
@@ -71,8 +74,8 @@ b -= np.stack([np.convolve(b[:, c], np.ones(4800) / 4800, mode="same") for c in 
 b /= np.max(np.abs(b))
 tt = np.arange(N) / SR
 hum = 0.02 * np.sin(2 * np.pi * 100 * tt) + 0.008 * np.sin(2 * np.pi * 200 * tt)
-room = 0.11 * b + hum[:, None]
-room[: int(SR * 0.15)] *= np.linspace(0, 1, int(SR * 0.15))[:, None]
+room = 0.35 * b + 2.5 * hum[:, None]  # hall tone sits around -32 dB under everything
+room[: int(SR * 0.02)] *= np.linspace(0, 1, int(SR * 0.02))[:, None]
 out += room
 
 # PA chime: two soft notes, E5 then C5, with the hall on them
@@ -81,7 +84,7 @@ def note(f, dur):
     env = np.minimum(1, t / 0.012) * np.exp(-t / 0.42)
     return env * (np.sin(2*np.pi*f*t) + 0.3*np.sin(2*np.pi*2*f*t) + 0.08*np.sin(2*np.pi*3*f*t))
 chime = np.zeros(N)
-for f, t0 in ((659.25, 5.98), (523.25, 6.36)):
+for f, t0 in ((659.25, 0.08), (523.25, 0.46), (659.25, 8.05), (523.25, 8.43)):  # audio hook on frame 1, echoed at the hold
     s = note(f, 1.4); i = int(t0 * SR); chime[i:i + len(s)] += s[: N - i]
 out += 0.16 * np.stack([chime, chime], axis=1) + 0.12 * np.stack([convolve(chime, ir(3)), convolve(chime, ir(4))], axis=1)
 

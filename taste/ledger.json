@@ -1,1 +1,48 @@
-{ "films": [] }
+{
+  "films": [
+    {
+      "project": "001-same-look",
+      "look": "split-flap",
+      "date": "2026-11-06",
+      "duration": 15.4,
+      "faces": [
+        "barlow condensed"
+      ],
+      "palette": [
+        "#121311",
+        "#8c8a84",
+        "#5d5c57",
+        "#1e1f1d",
+        "#2e2f2c",
+        "#2a2b28",
+        "#efe7d3",
+        "#ffb21a"
+      ],
+      "eases": {
+        "none": 2
+      },
+      "dominantEase": "none",
+      "dominantEaseShare": 0,
+      "tweens": 2,
+      "onTwos": false,
+      "blurIns": 0,
+      "glow": 0,
+      "gradientText": false,
+      "motionBlurOn": false,
+      "centred": 2,
+      "shots": [
+        3.1,
+        2.5,
+        0.9,
+        0.7,
+        0.8,
+        0.7,
+        1.6,
+        1.4,
+        3.7
+      ],
+      "shotCV": 0.62,
+      "client": null
+    }
+  ]
+}

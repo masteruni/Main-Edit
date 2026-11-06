@@ -15,6 +15,8 @@ HyperFrames already bans the first wave of AI-video clichés (dark void + glow, 
 | **Growing ban list** (`taste/BANNED.md`) | Every film's review adds the new clichés it caught. The list only gets longer. |
 | **Edit doctrine** (`.claude/skills/house/references/`) | Shot-length shapes, cut-on-action/sound, sound design before music, copy rules that ban "Introducing…" & friends. |
 | **Footage editing** (`.claude/skills/footage-edit/`, `tools/edit-plan.mjs`) | For real video: paper edit first, cut fillers but **keep breath**, framing changes that hide jump cuts (never zoom-on-every-cut), captions without the yellow-word-pop look, non-literal B-roll. |
+| **Retention** (`.claude/skills/house/references/retention.md`) | Three hook options per video, sound and picture hook on frame 1, re-hooks every 3–6 s, payoff then end. A second-by-second "would I scroll?" test is written into every REVIEW.md. |
+| **Client presets** (`clients/`) | Every edit starts with one question: general edit (no preset, nothing saved) or which client. Client taste lives in `clients/<slug>/PROFILE.md`, updated only when you confirm. References never leak into other videos. |
 | **Fresh-eyes critic** (`.claude/agents/slop-critic.md`) | A separate agent that reviews the frames without seeing the author's reasoning, and names every generated-video tell. |
 
 ## Using it
@@ -33,7 +35,7 @@ Claude follows `CLAUDE.md`: `/hyperframes` → `/house` → (footage → `/foota
 
 | # | Film | Look | Notes |
 | --- | --- | --- | --- |
-| 001 | [Same Look](films/001-same-look/) | split-flap | Every departure goes to SAME LOOK; one goes SOMEWHERE ELSE. Picture and sound generated from one flap schedule. |
+| 001 | [Same Look](films/001-same-look/) ([mp4](films/001-same-look/renders/final.mp4)) | split-flap | Every cliché departs to SAME LOOK via AI EDIT; one train goes SOMEWHERE ELSE. Picture and sound come from one flap schedule. |
 
 ## Requirements
 

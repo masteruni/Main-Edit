@@ -8,8 +8,9 @@ import { fileURLToPath } from "node:url";
 
 const DIR = join(dirname(fileURLToPath(import.meta.url)), "..");
 export const ALPHABET = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:.-+&";
-export const FIELDS = { time: [0, 5], dest: [5, 14], plat: [19, 2], rem: [21, 9] }; // [first tile, width]
-const COLS = 30;
+export const FIELDS = { time: [0, 5], dest: [5, 14], via: [19, 9], rem: [28, 9] }; // [first tile, width]
+const ORDER = ["time", "dest", "via", "rem"];
+const COLS = 37;
 
 function mulberry32(a) {
   return () => {
@@ -21,27 +22,29 @@ function mulberry32(a) {
 }
 const rnd = mulberry32(1994);
 
-const start = [
-  ["09:00", "DARK VOID", "2", "ON TIME"],
-  ["09:04", "BLUR-IN TITLES", "4", "ON TIME"],
-  ["09:08", "CREAM + SERIF", "1", "ON TIME"],
-  ["09:12", "WORD-POP CAPS", "3", "ON TIME"],
-  ["09:16", "NEON GLOW", "2", "ON TIME"],
-  ["", "", "", ""],
-];
+// Viewer-facing tells (things people have seen or heard), all routed via AI EDIT. Row 7 is the payoff.
+const TELLS = ["WHOOSH ON CUT", "ZOOM EVERY CUT", "YELLOW CAPS", "SLOW-MO DRONE", "TIKTOK VOICE", "STOCK B-ROLL", "NEON GLOW"];
+const start = TELLS.map((d, r) => [`09:${String(r * 4).padStart(2, "0")}`, d, "AI EDIT", "ON TIME"]);
+start.push(["", "", "", ""]);
+export const PAYOFF_ROW = 7;
 // [t, row, field, text, flapSeconds]
 const changes = [];
-for (let r = 0; r < 5; r++) changes.push([0.75 + r * 0.09, r, "dest", "SAME LOOK", 0.026]);
-// Each AGAIN starts before its close-up (cut on action) and lands >= 0.4 s before the next cut, so it is read.
-changes.push([2.7, 1, "rem", "AGAIN", 0.028], [3.45, 2, "rem", "AGAIN", 0.028], [4.35, 3, "rem", "AGAIN", 0.028]);
-changes.push([4.5, 0, "rem", "AGAIN", 0.028], [4.62, 4, "rem", "AGAIN", 0.028]); // land before the silent hold at 5.9
-changes.push([6.75, 5, "time", "10:00", 0.04], [6.8, 5, "dest", "SOMEWHERE ELSE", 0.04], [6.86, 5, "plat", "1", 0.04], [6.9, 5, "rem", "BOARDING", 0.04]);
-for (let r = 0; r < 5; r++) changes.push([9.85 + r * 0.12, r, "rem", "CANCELLED", 0.03]);
+changes.push([1.35, 0, "dest", "SAME LOOK", 0.026]); // the hook's turn, in close-up
+for (let r = 1; r < 7; r++) {
+  changes.push([3.15 + (r - 1) * 0.09, r, "dest", "SAME LOOK", 0.026]); // the reveal: the whole board goes the same way
+  changes.push([3.3 + (r - 1) * 0.09, r, "time", "09:00", 0.03]); //  and every train leaves at once
+}
+// Each AGAIN starts before its close-up (cut on action) and lands >= 0.4 s before the next cut.
+changes.push([5.0, 1, "rem", "AGAIN", 0.028], [5.75, 2, "rem", "AGAIN", 0.028], [6.45, 3, "rem", "AGAIN", 0.028]);
+for (const [r, t] of [[0, 6.5], [4, 6.56], [5, 6.62], [6, 6.68]]) changes.push([t, r, "rem", "AGAIN", 0.028]);
+changes.push([8.7, 7, "time", "10:00", 0.04], [8.72, 7, "dest", "SOMEWHERE ELSE", 0.034], [8.85, 7, "via", "MAIN EDIT", 0.034]);
+changes.push([10.05, 7, "rem", "BOARDING", 0.03]);
+for (let r = 0; r < 7; r++) changes.push([12.2 + r * 0.08, r, "rem", "CANCELLED", 0.03]);
 
 const pad = (s, n) => (s.toUpperCase() + " ".repeat(n)).slice(0, n);
 const rows = start.map((row) => {
   const chars = [];
-  for (const [i, f] of ["time", "dest", "plat", "rem"].entries()) chars.push(...pad(row[i], FIELDS[f][1]));
+  for (const [i, f] of ORDER.entries()) chars.push(...pad(row[i], FIELDS[f][1]));
   return chars;
 });
 
@@ -64,12 +67,15 @@ for (const [t, r, field, text] of changes.sort((a, b) => a[0] - b[0])) {
     tile.ev.push({ t: t0, from: cur, to, n, dt });
     for (let j = 0; j < n; j++) clicks.push([+(t0 + j * dt + dt * 0.55).toFixed(4), first + k, r, 0]);
     clicks.push([+(t0 + n * dt).toFixed(4), first + k, r, 1]);
-    if (r === 5) lampOn = Math.max(lampOn, t0 + n * dt);
+    if (r === PAYOFF_ROW && field === "rem") lampOn = Math.max(lampOn, t0 + n * dt);
   }
 }
-lampOn = +(lampOn + 0.12).toFixed(3);
+lampOn = +(lampOn + 0.08).toFixed(3);
+clicks.push([lampOn - 0.08, 36, PAYOFF_ROW, 2]);
+const lastCancel = Math.max(...clicks.filter((c) => c[3] === 1 && c[0] > 12).map((c) => c[0]));
+clicks.push([lastCancel, 30, 6, 2]);
 
-const schedule = { alphabet: ALPHABET, cols: COLS, rows: tiles, lampRow: 5, lampOn };
+const schedule = { alphabet: ALPHABET, cols: COLS, rows: tiles, lampRow: PAYOFF_ROW, lampOn };
 writeFileSync(join(DIR, "assets/schedule.json"), JSON.stringify({ lampOn, clicks }));
 const html = readFileSync(join(DIR, "index.html"), "utf8");
 const out = html.replace(/\/\*SCHEDULE\*\/[\s\S]*?\/\*END\*\//, `/*SCHEDULE*/ ${JSON.stringify(schedule)} /*END*/`);
