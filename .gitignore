@@ -4,6 +4,7 @@ node_modules/
 films/*/.hyperframes/
 films/*/snapshots/
 films/*/.thumbnails/
+films/*/.waveform-cache/
 # Heavy source media stays out of git (share via Drive/links). Small renders are allowed explicitly.
 *.mov
 *.MOV
