@@ -8,7 +8,7 @@ The person is a freelance video editor with several clients. Most jobs are **gen
 
 ## Before any video work
 
-0. **Ask: general edit or client?** (AskUserQuestion; "General edit (no preset)" first, then each client in `clients/`, then "New client".) Skip only if the request already says. General = no preset, nothing saved; a reference they send applies to that one video only and never becomes a default anywhere. Client = load `clients/<slug>/PROFILE.md`. See `clients/README.md`.
+0. If the request is a filled `BRIEF.md`, take its answers and don't re-ask them. Otherwise **ask: general edit or client?** (AskUserQuestion; "General edit (no preset)" first, then each client in `clients/`, then "New client".) Skip only if the request already says. General = no preset, nothing saved; a reference they send applies to that one video only and never becomes a default anywhere. Client = load `clients/<slug>/PROFILE.md`. See `clients/README.md`.
 1. Invoke `/hyperframes`: the render contract and work loop. Non-negotiable.
 2. Invoke `/house`: our looks, anti-convergence rules, edit doctrine, critic loop.
 3. Real footage involved → also `/footage-edit`.
@@ -31,6 +31,8 @@ The person is a freelance video editor with several clients. Most jobs are **gen
 
 ```bash
 npx hyperframes@0.9.19 init films/NNN-slug --skip-skills   # new film (skills are already vendored)
+npx hyperframes preview --background                       # in the film dir: Studio for the person; then report the port (report_preview_port)
+npx hyperframes history --since mine                       # in the film dir, before any change: what the person edited in Studio
 node tools/pick-look.mjs --brief "<one line>"               # propose a medium
 node tools/fetch-font.mjs --project films/NNN-slug --family "Face" --weights 400,700
 npx hyperframes check --json                                # in the film dir

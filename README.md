@@ -21,7 +21,7 @@ HyperFrames already bans the first wave of AI-video clichés (dark void + glow, 
 
 ## Using it
 
-Open this repo in Claude Code and ask for a video. Examples:
+Open this repo in Claude Code and ask for a video, or paste a filled [`BRIEF.md`](BRIEF.md) (fastest, fewest back-and-forths). Examples:
 
 - "Make a 20 s vertical clip announcing our price change from $12 to $9."
 - "Here's my talking-head recording (link). Cut it to 45 s for Reels with captions."
