@@ -4,8 +4,8 @@ editing proxies, without needing the zip's central directory and without unzippi
 
   python3 -I tools/carve-zip.py raw.zip out_dir [--short 1080] [--keep-originals]
 
-Each entry is copied to a temp file, probed, and transcoded to an H.264 proxy whose short side is
---short px (original fps and audio kept), then the temp file is deleted. A manifest.json lists
+Each entry is read in place (ffmpeg subfile protocol), probed, and transcoded to an H.264 proxy whose short side is
+--short px (original fps and audio kept). A manifest.json lists
 name, duration, fps, resolution, rotation and audio for every proxy. An entry cut off by the end of
 a partial download is reported and skipped.
 """
@@ -58,18 +58,9 @@ for k, (o, nlen, elen, flag, name) in enumerate(entries):
     end = nxt - (24 if flag & 8 else 0)  # zip64 data descriptor; ffmpeg ignores a few stray bytes anyway
     stem = os.path.splitext(os.path.basename(name))[0]
     safe = re.sub(r"[^A-Za-z0-9]+", "-", stem).strip("-").lower()
-    tmp = tempfile.NamedTemporaryFile(delete=False, dir=out, suffix=os.path.splitext(name)[1])
-    with open(zpath, "rb") as f:
-        f.seek(start)
-        left = end - start
-        while left > 0:
-            b = f.read(min(left, 32 << 20))
-            if not b:
-                break
-            tmp.write(b)
-            left -= len(b)
-    tmp.close()
-    pr = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", tmp.name], capture_output=True, text=True).stdout or "{}")
+    # Read the entry in place through ffmpeg's subfile protocol: no temp copy, so a nearly full disk is fine.
+    src = f"subfile,,start,{start},end,{end},,:{os.path.abspath(zpath)}"
+    pr = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", src], capture_output=True, text=True).stdout or "{}")
     vs = next((s for s in pr.get("streams", []) if s.get("codec_type") == "video"), None)
     has_audio = any(s.get("codec_type") == "audio" for s in pr.get("streams", []))
     info = {"name": name, "bytes": end - start, "has_audio": has_audio}
@@ -90,7 +81,7 @@ for k, (o, nlen, elen, flag, name) in enumerate(entries):
         # HDR (HLG/PQ) phone footage: tone-map to SDR so it doesn't render washed out
         vf = scale if vs.get("color_transfer") not in ("arib-std-b67", "smpte2084") else \
             f"zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv,format=yuv420p,{scale}"
-        cmd = ["ffmpeg", "-loglevel", "error", "-y", "-i", tmp.name, "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
+        cmd = ["ffmpeg", "-loglevel", "error", "-y", "-i", src, "-vf", vf, "-c:v", "libx264", "-preset", "veryfast", "-crf", "18",
                "-pix_fmt", "yuv420p", "-movflags", "+faststart"] + (["-c:a", "aac", "-b:a", "192k"] if has_audio else ["-an"]) + [proxy]
         r = subprocess.run(cmd, capture_output=True, text=True)
         if r.returncode != 0 and "zscale" in vf:  # no zscale in this ffmpeg: plain scale
@@ -101,12 +92,10 @@ for k, (o, nlen, elen, flag, name) in enumerate(entries):
             info["error"] = r.stderr[-400:]
     elif has_audio:
         proxy = os.path.join(out, f"{safe}.m4a")
-        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", tmp.name, "-c:a", "aac", "-b:a", "256k", proxy])
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", src, "-c:a", "aac", "-b:a", "256k", proxy])
         info.update(proxy=os.path.basename(proxy), duration=float(pr["format"].get("duration", 0)))
     if keep:
-        os.rename(tmp.name, os.path.join(out, "orig-" + os.path.basename(name)))
-    else:
-        os.unlink(tmp.name)
+        subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", src, "-c", "copy", os.path.join(out, "orig-" + os.path.basename(name))])
     manifest.append(info)
     json.dump(manifest, open(manifest_path, "w"), indent=1)
     print(f"[{k + 1}/{len(entries)}] {name} → {info.get('proxy')}  {info.get('width')}x{info.get('height')} {info.get('fps')}fps {info.get('duration', 0):.1f}s audio={has_audio}", flush=True)
