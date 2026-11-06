@@ -5,12 +5,13 @@
 // HyperFrames' transcript-cut:
 //
 //   npx hyperframes transcribe talk.mp4 --model small.en --json        # -> assets/transcript.json
-//   node tools/edit-plan.mjs assets/transcript.json --style social > edit-plan.json
+//   node tools/edit-plan.mjs assets/transcript.json --audio talk.mp4 --style social > edit-plan.json
 //   node .claude/skills/media-use/scripts/transcript-cut.mjs --input talk.mp4 \
 //        --transcript assets/transcript.json --remove "$(node -e 'console.log(require("./edit-plan.json").remove)')" --out talk.cut.mp4
 //
 // Transcript: [{text,start,end}] or {words:[...]}.
 import { readFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
 import { parseArgs } from "node:util";
 
 const { values: a, positionals } = parseArgs({
@@ -18,6 +19,8 @@ const { values: a, positionals } = parseArgs({
   options: {
     style: { type: "string", default: "social" }, // social | conversational | calm
     "keep-fillers": { type: "boolean", default: false },
+    audio: { type: "string" }, // the source media: measure real silences (whisper stretches words over pauses)
+    "noise-db": { type: "string", default: "-35" },
   },
 });
 if (!positionals[0]) {
@@ -68,6 +71,22 @@ for (let k = 1; k < words.length; k++) {
   const s = words[k - 1].end + keep * 0.45;
   const e = words[k].start - keep * 0.55;
   if (e - s > 0.05) remove.push([s, e, `pause ${gap.toFixed(2)}s → ${keep}s`]);
+}
+// Measured silences: whisper often stretches the last word of a phrase across the pause after it,
+// so the transcript alone under-reports dead air. Trim every long measured silence to the same air.
+if (a.audio) {
+  const r = spawnSync("ffmpeg", ["-hide_banner", "-nostats", "-i", a.audio, "-af", `silencedetect=noise=${a["noise-db"]}dB:d=${STYLE.maxPause}`, "-f", "null", "-"], { encoding: "utf8" });
+  const log = r.stderr || "";
+  const starts = [...log.matchAll(/silence_start: ([\d.]+)/g)].map((m) => +m[1]);
+  const ends = [...log.matchAll(/silence_end: ([\d.]+)/g)].map((m) => +m[1]);
+  starts.forEach((s0, k) => {
+    const e0 = ends[k];
+    if (e0 === undefined || s0 < 0.05) return; // head silence handled below
+    const before = [...words].reverse().find((w) => w.start < s0);
+    const keep = before && /\?$/.test(before.text) ? STYLE.keepQuestion : before && /[.!]$/.test(before.text) ? STYLE.keepSentence : STYLE.keep;
+    const s = s0 + keep * 0.45, e = e0 - keep * 0.55;
+    if (e - s > 0.05) remove.push([s, e, `measured silence ${(e0 - s0).toFixed(2)}s → ${keep}s`]);
+  });
 }
 // Leading/trailing silence
 if (words.length && words[0].start > 0.3) remove.push([0, words[0].start - 0.12, "head silence"]);

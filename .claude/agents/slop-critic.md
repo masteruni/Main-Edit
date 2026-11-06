@@ -29,6 +29,8 @@ Do not read the composition source unless a note needs a timing you can't see in
 4. **Check against the look file.** Is the medium actually being obeyed (its motion, its transitions, its surface numbers), or is it a normal layout with a texture on top? A look applied as a filter is a P0.
 5. **Rhythm.** From the shot list / timestamps: is it metronomic? Is there a hold before the payoff? Does the first frame work as a thumbnail?
 6. **Phone read.** At 360 px wide, can every line meant to be read be read?
+7. **Scroll test, blind.** Read `.claude/skills/house/references/retention.md`. Be a stranger with a moving thumb, sound off at first. Second by second: what do I see, would I stop, what do I want to know now, is something new arriving before I get bored, do I get paid off, would I rewatch or share? Any "I'd scroll" in the first 3 s is a P0. A stretch over ~3 s with nothing new is a P1. Also propose **one stronger hook** in a single line if you'd open the video differently.
+8. If the project's `house.json` names a client, read `clients/<slug>/PROFILE.md` and flag anything that breaks the client's preset (P1), but don't flag the preset's own deliberate choices as tells.
 
 ## Output
 
@@ -38,6 +40,12 @@ Return only this, nothing else:
 FRAMES
 t=… · one-sentence stranger description
 …
+
+SCROLL TEST
+0.0–0.5 · what I see · stop? yes/no because …
+…
+end · paid off? rewatch/share?
+STRONGER HOOK: one line, or "none, the current one is right"
 
 NOTES
 P0 · t=… · where · problem → exact change · what stays

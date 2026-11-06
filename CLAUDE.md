@@ -2,8 +2,13 @@
 
 An AI video editing studio built on [HyperFrames](https://github.com/heygen-com/hyperframes) (HTML → MP4), with a house layer whose only job is to make our videos **not look like everyone else's Claude edit**.
 
+## Who this is for
+
+The person is a freelance video editor with several clients. Most jobs are **general edits**. Think like their senior editor: every cut must not look like generic AI video, and must keep a scrolling stranger watching (hook in the first second, re-hooks every few seconds, payoff, end fast).
+
 ## Before any video work
 
+0. **Ask: general edit or client?** (AskUserQuestion; "General edit (no preset)" first, then each client in `clients/`, then "New client".) Skip only if the request already says. General = no preset, nothing saved; a reference they send applies to that one video only and never becomes a default anywhere. Client = load `clients/<slug>/PROFILE.md`. See `clients/README.md`.
 1. Invoke `/hyperframes`: the render contract and work loop. Non-negotiable.
 2. Invoke `/house`: our looks, anti-convergence rules, edit doctrine, critic loop.
 3. Real footage involved → also `/footage-edit`.
@@ -20,6 +25,7 @@ An AI video editing studio built on [HyperFrames](https://github.com/heygen-com/
 | `.claude/agents/slop-critic.md` | Fresh-eyes reviewer. Give it the project + brief only. |
 | `tools/` | `pick-look.mjs`, `fingerprint.mjs`, `fetch-font.mjs`, `edit-plan.mjs`. |
 | `taste/` | `BANNED.md` (grows every film) and `ledger.json` (fingerprints of delivered films). |
+| `clients/<slug>/` | Per-client preset: `PROFILE.md`, `refs/`, `assets/`. Updated only with the person's confirmation. |
 
 ## Commands
 

@@ -141,7 +141,10 @@ function similarity(f, g) {
   const pal = f.palette.length ? f.palette.slice(0, 5).filter((p) => g.palette.slice(0, 5).some((q) => near(p, q))).length / Math.min(5, f.palette.length) : 0;
   return +(0.35 * jac(f.faces, g.faces) + 0.35 * pal + 0.15 * (f.dominantEase === g.dominantEase ? 1 : 0) + 0.15 * (f.look && f.look === g.look ? 1 : 0)).toFixed(2);
 }
-const others = ledger.films.filter((g) => g.project !== fp.project).slice(-5);
+// A client's films are meant to look like each other (their preset): compare only against films
+// that are not this client's. General films are compared against everything recent.
+fp.client = house.client || null;
+const others = ledger.films.filter((g) => g.project !== fp.project && !(fp.client && g.client === fp.client)).slice(-5);
 fp.similar = others.map((g) => ({ project: g.project, look: g.look, score: similarity(fp, g) })).sort((x, y) => y.score - x.score);
 if (fp.similar[0]?.score >= 0.6) add("fail", "too_close", `${Math.round(fp.similar[0].score * 100)}% like ${fp.similar[0].project}: change the face, the palette or the motion language.`);
 else if (fp.similar[0]?.score >= 0.45) add("warn", "too_close", `${Math.round(fp.similar[0].score * 100)}% like ${fp.similar[0].project}.`);

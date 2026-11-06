@@ -9,6 +9,10 @@ description: Main-Edit's house layer on top of HyperFrames. Read it right after 
 
 Read `/hyperframes` first, always. This skill adds to it; where they conflict on craft, this skill wins; on the render contract, `/hyperframes` always wins.
 
+## Think like the editor *and* the scroller
+
+You are a working video editor whose videos have to keep a stranger watching. Every decision answers two questions: *does this look like everyone else's AI edit?* and *would I keep watching, or scroll?* A beautiful film that loses people at second 2 has failed; so has a sticky one that looks like slop. `references/retention.md` is as binding as `references/tells.md`.
+
 ## The four rules
 
 1. **A look comes from a medium, and the medium comes from the subject.** Before anything visual, answer: *where in the real world would this message physically live?* A refund policy lives on a receipt. A launch date lives on a departure board. A recipe lives on a stained card. Pick the medium from `looks/` (`node tools/pick-look.mjs --brief "<one line>"`) or write a new one in the same format. The medium dictates palette, type, texture, **and how things move and transition**. No motion idea may come from outside the medium.
@@ -18,15 +22,17 @@ Read `/hyperframes` first, always. This skill adds to it; where they conflict on
 
 ## Work order
 
+0. **Intake: general or client?** Unless the request already says, ask with AskUserQuestion: "General edit (no preset)" first (it's the usual case), then one option per folder in `clients/` (not `_template`), then "New client". General: load no preset, save nothing, any reference applies to this film only. Client: read `clients/<slug>/PROFILE.md` and treat it as the brief's constraints. Rules in `clients/README.md`. Write `"client": "<slug>"` (or `"general": true`) into the film's `house.json`.
 1. Brief → one sentence: who watches, where (phone feed, TV, a landing page), what they do after.
-2. `references/tells.md`: read it every time. It is short on purpose.
+2. `references/tells.md` and `references/retention.md`: read both every time. In `SPEC.md` write **three hook options** (different patterns) and pick one.
 3. Medium → `node tools/pick-look.mjs --brief "..."`; read the chosen `looks/<id>.md` in full. If none fits the subject, write a new look file in the same shape before building, and say why.
 4. `SPEC.md` per `/hyperframes` `references/spec.md`, with the look's numbers copied in, and the BANNED line = HyperFrames' list + `taste/BANNED.md` + the look's own "How this look fails".
 5. Fonts: `node tools/fetch-font.mjs --project <dir> --family "<face>" --weights ...` and paste the printed `@font-face` rules.
 6. Build. Scenes per `/hyperframes`. Motion per the look file. Rhythm per `references/edit-doctrine.md`.
 7. `npx hyperframes check --json` → `node tools/fingerprint.mjs <dir>` → `npx hyperframes snapshot --review`.
-8. `slop-critic` agent pass. Fix P0s, then P1s worth their time. Re-snapshot what changed.
-9. Render. `node tools/fingerprint.mjs <dir> --record`. Write `REVIEW.md` per `/hyperframes`.
+8. **Scroll test** yourself (`references/retention.md`), then the `slop-critic` agent pass (it runs its own scroll test blind). Fix P0s, then P1s worth their time. Re-snapshot what changed.
+9. Render. `node tools/fingerprint.mjs <dir> --record`. Write `REVIEW.md` per `/hyperframes`, including the scroll test.
+10. Client film with feedback → propose profile updates, save only what the person confirms.
 
 Projects live in `films/NNN-slug/`. Scaffold with `npx hyperframes init films/NNN-slug --skip-skills` (skills are vendored in `.claude/skills/`, pinned to the CLI version in `CLAUDE.md`).
 
@@ -34,7 +40,8 @@ Projects live in `films/NNN-slug/`. Scaffold with `npx hyperframes init films/NN
 
 | Need | Read |
 | --- | --- |
-| Every film | `references/tells.md`, `references/edit-doctrine.md` |
+| Every film | `references/tells.md`, `references/retention.md`, `references/edit-doctrine.md` |
+| Client work, presets, references | `clients/README.md`, `clients/<slug>/PROFILE.md` |
 | Choosing / writing a look | `looks/README.md`, then one `looks/<id>.md` |
 | Real footage: talking head, vlog, podcast, interview, B-roll | `/footage-edit` |
 | Copy on screen or in voiceover | `references/copy.md` |

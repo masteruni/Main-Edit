@@ -34,7 +34,8 @@ const stem = (w) => w.toLowerCase().replace(/[^a-z0-9-]/g, "").replace(/(ing|es|
 const words = new Set(a.brief.split(/\s+/).map(stem).filter(Boolean));
 const ENERGY = { high: ["loud", "hype", "bold", "energetic", "fast", "punchy", "fun", "viral"], low: ["calm", "quiet", "slow", "thoughtful", "premium", "serious", "gentle"] };
 
-const recent = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, "utf8")).films.slice(-3).map((f) => f.look) : [];
+// Client films follow their preset's look, so only general films push a look down.
+const recent = existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, "utf8")).films.filter((f) => !f.client).slice(-3).map((f) => f.look) : [];
 
 const looks = readdirSync(LOOKS)
   .filter((f) => f.endsWith(".md") && f !== "README.md")
