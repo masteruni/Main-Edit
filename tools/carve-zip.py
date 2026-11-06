@@ -2,7 +2,7 @@
 """Pull media out of a (possibly partial) STORED zip, e.g. a Dropbox folder download, and make
 editing proxies, without needing the zip's central directory and without unzipping everything.
 
-  python3 -I tools/carve-zip.py raw.zip out_dir [--short 1080] [--keep-originals]
+  python3 -I tools/carve-zip.py raw.zip out_dir [--short 1080] [--keep-originals] [--only "a.mov,b.MP4"]
 
 Each entry is read in place (ffmpeg subfile protocol), probed, and transcoded to an H.264 proxy whose short side is
 --short px (original fps and audio kept). A manifest.json lists
@@ -11,9 +11,11 @@ a partial download is reported and skipped.
 """
 import json, os, re, struct, subprocess, sys, tempfile
 
-args = [a for a in sys.argv[1:] if not a.startswith("--")]
+args = [a for i, a in enumerate(sys.argv[1:], 1) if not a.startswith("--") and sys.argv[i - 1] not in ("--short", "--only")]
 short = int(next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--short"), 1080))
 keep = "--keep-originals" in sys.argv
+only = next((sys.argv[i + 1] for i, a in enumerate(sys.argv) if a == "--only"), None)  # comma-separated names
+only = set(x.strip() for x in only.split(",")) if only else None
 zpath, out = args[0], args[1]
 os.makedirs(out, exist_ok=True)
 size = os.path.getsize(zpath)
@@ -48,7 +50,7 @@ manifest = json.load(open(manifest_path)) if os.path.exists(manifest_path) else 
 done = {m["name"] for m in manifest}
 
 for k, (o, nlen, elen, flag, name) in enumerate(entries):
-    if not MEDIA.search(name) or name in done:
+    if not MEDIA.search(name) or name in done or (only and name not in only):
         continue
     start = o + 30 + nlen + elen
     nxt = next((e[0] for e in offs if e[0] > o), None)
@@ -58,6 +60,10 @@ for k, (o, nlen, elen, flag, name) in enumerate(entries):
     end = nxt - (24 if flag & 8 else 0)  # zip64 data descriptor; ffmpeg ignores a few stray bytes anyway
     stem = os.path.splitext(os.path.basename(name))[0]
     safe = re.sub(r"[^A-Za-z0-9]+", "-", stem).strip("-").lower()
+    used = {(m.get("proxy") or "").rsplit(".", 1)[0] for m in manifest}
+    base, n = safe, 2
+    while safe in used:  # "Ibrahim praying.mov" vs "Ibrahim Praying.MP4": never overwrite
+        safe, n = f"{base}-{n}", n + 1
     # Read the entry in place through ffmpeg's subfile protocol: no temp copy, so a nearly full disk is fine.
     src = f"subfile,,start,{start},end,{end},,:{os.path.abspath(zpath)}"
     pr = json.loads(subprocess.run(["ffprobe", "-v", "error", "-show_streams", "-show_format", "-of", "json", src], capture_output=True, text=True).stdout or "{}")
