@@ -14,3 +14,7 @@ films/*/assets/footage/
 films/*/renders/*
 !films/*/renders/*.gif
 !films/*/renders/final.mp4
+# Editing proxies and client reference videos: regenerated / private, never in git
+films/*/assets/proxies/
+films/*/refs/*.mp4
+films/*/refs/*-sheet.png
