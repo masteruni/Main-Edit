@@ -1,0 +1,80 @@
+[
+  {
+    "text": "$1,000",
+    "start": 0,
+    "end": 2,
+    "id": "w0"
+  },
+  {
+    "text": "monthly",
+    "start": 2,
+    "end": 2.41,
+    "id": "w1"
+  },
+  {
+    "text": "if",
+    "start": 2.41,
+    "end": 2.51,
+    "id": "w2"
+  },
+  {
+    "text": "you're",
+    "start": 2.52,
+    "end": 2.88,
+    "id": "w3"
+  },
+  {
+    "text": "earning",
+    "start": 2.88,
+    "end": 3.1,
+    "id": "w4"
+  },
+  {
+    "text": "under",
+    "start": 3.1,
+    "end": 3.28,
+    "id": "w5"
+  },
+  {
+    "text": "$1,000",
+    "start": 3.28,
+    "end": 4,
+    "id": "w6"
+  },
+  {
+    "text": "monthly",
+    "start": 4,
+    "end": 4.44,
+    "id": "w7"
+  },
+  {
+    "text": "you're",
+    "start": 4.44,
+    "end": 4.68,
+    "id": "w8"
+  },
+  {
+    "text": "fighting",
+    "start": 4.68,
+    "end": 13.28,
+    "id": "w9"
+  },
+  {
+    "text": "an",
+    "start": 13.28,
+    "end": 13.36,
+    "id": "w10"
+  },
+  {
+    "text": "uphill",
+    "start": 13.36,
+    "end": 13.6,
+    "id": "w11"
+  },
+  {
+    "text": "battle.",
+    "start": 13.6,
+    "end": 14.48,
+    "id": "w12"
+  }
+]

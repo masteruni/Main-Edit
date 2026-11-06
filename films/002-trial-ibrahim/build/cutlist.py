@@ -1,58 +1,77 @@
 #!/usr/bin/env python3
-"""The edit, as data. Every cut is on the music grid: beat n = 0.457 + 0.6857 n (video seconds; 87.5 BPM),
-music entered at 6.769 s so its drop (the first 808 at 14.769 s, measured) lands on beat 11 = 8.000 s.
+"""v3: the story is Ibrahim's own voice (assets/vo-video, from the client's Dropbox), cut into one
+arc, with the music's drop (first 808, measured at 14.769 s in Mixkit #364) on "10 million dollars".
 
-Each shot: proxy file, source in-point, speed (0.5 = half speed from 60 fps), crop zoom + centre
-(fractions of the frame), and a grade preset. build/render_shots.py turns these into
-assets/shots/NN.mp4 (1080x1920, 30 fps, graded, silent); index.html places them.
+Grid: beat n = DROP + 0.6857 n (87.5 BPM); B-roll cuts sit on it, talking-head cuts sit on the words.
+Shot tuple: (start, end, source, src_in, speed, zoom, cx, cy, grade, fx)
+  source = proxy slug (read from the 4K original in the Dropbox zip) or "vo:<file>" (assets/vo-video)
+  fx     = "" | "bw-open" (first 0.25 s black & white, the reference's opening pop) | "ramp" (100→30→100 % speed)
 """
-BEAT0, BEAT = 0.457, 0.6857
+BEAT = 0.6857
+DROP = 18.5
+MUSIC_IN = DROP - 14.769          # the track starts (from 0) at this video time: 3.731 s
 
 
-def b(n):  # time of beat n
-    return round(BEAT0 + BEAT * n, 3)
+def b(n):
+    return round(DROP + BEAT * n, 3)
 
 
-def h(n):  # half a beat after beat n
-    return round(BEAT0 + BEAT * n + BEAT / 2, 3)
+def h(n):
+    return round(DROP + BEAT * n + BEAT / 2, 3)
 
 
-MUSIC_OFFSET = 6.769
-END = b(37)  # 25.828: last downbeat; the replay loops back into the hook
+END = b(17)  # 30.157
 
-# (start, end, proxy, src_in, speed, zoom, cx, cy, grade)
-SHOTS = [
-    # HOOK: the reward everyone wants, then the part nobody wants
-    (0.0, b(2), "ibrahim-yacht-jump", 3.35, 0.6, 1.25, 0.55, 0.32, "day"),  # all three mid-air on frame 1
-    (b(2), b(4), "ibrahim-waking-up", 1.35, 1.0, 1.08, 0.50, 0.55, "dawn"),
-    # BUILD: discipline, shots getting shorter into the drop
-    (b(4), b(5), "ibrahim-praying", 22.85, 1.0, 1.15, 0.50, 0.62, "night"),
-    (b(5), b(6), "ibrahim-running-2", 8.4, 1.0, 1.0, 0.50, 0.50, "day"),
-    (b(6), b(7), "ibrahim-pulldown", 11.2, 1.0, 1.05, 0.50, 0.45, "warm"),
-    (b(7), h(7), "ibrahim-clap-pushups", 14.0, 1.0, 1.0, 0.50, 0.50, "warm"),
-    (h(7), b(8), "cold-plunge-ibrahim", 2.2, 1.0, 1.1, 0.50, 0.45, "day"),
-    (b(8), b(9), "ibrahim-night-work", 6.0, 1.0, 1.1, 0.55, 0.45, "neon"),
-    (b(9), b(10), "stripe-payment-2", 0.6, 1.0, 1.55, 0.36, 0.83, "night"),
-    (b(10), b(11), "stripe-payment", 0.05, 1.0, 1.35, 0.28, 0.55, "night"),
-    # DROP: it pays
-    (b(11), b(13), "jetski-takeoff", 5.3, 0.75, 1.1, 0.48, 0.55, "day"),
-    (b(13), b(14), "burj-khalifa-clip", 2.0, 1.0, 1.0, 0.50, 0.40, "night"),
-    (b(14), b(16), "ibrahim-desert-eagle", 7.1, 0.5, 1.12, 0.50, 0.45, "golden"),
-    (b(16), b(17), "ibrahim-atv-desert", 4.0, 1.0, 1.0, 0.50, 0.50, "golden"),
-    (b(17), h(17), "ibrahim-wakesurfing", 6.0, 1.0, 1.15, 0.50, 0.40, "day"),
-    (h(17), b(18), "jetski-spin", 3.9, 1.0, 1.15, 0.50, 0.50, "day"),
-    (b(18), b(19), "ibrahim-yacht-king", 1.5, 1.0, 1.12, 0.45, 0.62, "day"),
-    (b(19), b(20), "rolls-royce-inside", 1.0, 1.0, 1.0, 0.50, 0.50, "night"),
-    (b(20), b(21), "jetski-drone-ibrahim", 14.8, 1.0, 1.1, 0.50, 0.50, "day"),
-    (b(21), b(22), "ibrahim-rolls-royce", 1.0, 1.0, 1.0, 0.50, 0.55, "night"),
-    (b(22), b(23), "ibrahim-driving-boat", 5.0, 1.0, 1.0, 0.50, 0.50, "day"),
-    (b(23), h(23), "dubai-yachts", 1.0, 1.0, 1.25, 0.50, 0.45, "golden"),
-    (h(23), b(24), "ibrahim-on-a-yacht", 2.3, 1.0, 1.0, 0.50, 0.50, "day"),
-    (b(24), b(25), "ibrahim-cigar", 2.0, 1.0, 1.05, 0.50, 0.45, "night"),
-    (b(25), b(26), "ibrahim-dinner", 0.5, 1.0, 1.0, 0.50, 0.50, "night"),
-    # BREATHER: same 24 hours
-    (b(26), b(30), "ibrahim-riding-horse", 29.0, 0.5, 1.05, 0.50, 0.50, "day"),
-    # RETURN + LOOP
-    (b(30), b(32), "ibrahim-with-friends", 1.8, 0.75, 1.0, 0.50, 0.50, "golden"),
-    (b(32), END, "fireworks-broll-yacht", 9.5, 1.0, 1.0, 0.50, 0.50, "night"),
+# Voiceover: (key, file in assets/vo-candidates/*.wav + vo-video, src_in, src_out, place at video t)
+VO = [
+    ("V1", "ibrahim-filming-and-talking", 0.00, 1.92, 0.00),    # Feeling like your dreams are impossible?
+    ("V2", "ibrahim-filming-and-talking", 2.57, 4.56, 2.05),    # This is the video for you.
+    ("V3a", "ibrahim-recording-in-miami-crib", 2.24, 5.52, 4.20),  # If you're earning under $1,000 monthly, you're fighting
+    ("V3b", "ibrahim-recording-in-miami-crib", 12.97, 14.55, 7.48),  # an uphill battle.
+    ("V4", "ibrahim-filming-and-talking", 9.24, 14.04, 9.25),   # This is the most honest conversation ... changed my life.
+    ("V5", "ibrahim-and-ramin-podcast-in-dubai", 0.00, 2.33, DROP),  # 10 million dollars in valuations going up.
+    ("V6", "ibrahim-and-ramin-podcast-in-dubai", 7.63, 10.50, 23.985),  # And now we're launching another software company
+    ("V7", "ibrahim-selfie-on-yacht", 0.00, 3.11, 26.95),         # Lock in boys, lock in. Let's go.
 ]
+
+FILM = "vo:ibrahim-filming-and-talking.mov"
+MIAMI = "vo:ibrahim-recording-in-miami-crib.mov"
+POD = "vo:ibrahim-and-ramin-podcast-in-dubai.mov"
+SELFIE = "vo:ibrahim-selfie-on-yacht.mov"
+
+SHOTS = [
+    # HOOK: the dream (the jump) under "Feeling like your dreams are impossible?"
+    (0.00, 2.05, "ibrahim-yacht-jump", 3.35, 0.6, 1.25, 0.55, 0.32, "day", "bw-open"),
+    # the man saying it, in sync
+    (2.05, 4.20, FILM, 2.57, 1.0, 1.75, 0.57, 0.42, "neon", ""),
+    # the problem, in sync; the jump cut is hidden by a 1.4x change of framing
+    (4.20, 7.48, MIAMI, 2.24, 1.0, 1.55, 0.56, 0.56, "warm", ""),
+    (7.48, 9.25, MIAMI, 12.97, 1.0, 2.15, 0.55, 0.58, "warm", ""),
+    # "This is the most honest conversation..." in sync, then L-cut into the discipline
+    (9.25, 11.40, FILM, 9.24, 1.0, 1.75, 0.60, 0.42, "neon", ""),
+    (11.40, b(-9), "ibrahim-waking-up", 1.35, 1.0, 1.25, 0.48, 0.58, "dawn", ""),
+    (b(-9), b(-7), "ibrahim-praying", 22.6, 1.0, 1.15, 0.50, 0.62, "night", ""),
+    (b(-7), b(-6), "ibrahim-running-2", 8.4, 1.0, 1.0, 0.50, 0.50, "day", ""),
+    (b(-6), b(-5), "ibrahim-pulldown", 11.2, 1.0, 1.05, 0.50, 0.45, "warm", ""),
+    (b(-5), h(-5), "ibrahim-clap-pushups", 14.0, 1.0, 1.0, 0.50, 0.50, "warm", ""),
+    (h(-5), b(-4), "cold-plunge-ibrahim", 2.2, 1.0, 1.1, 0.50, 0.45, "day", ""),
+    (b(-4), b(-3), "ibrahim-night-work", 6.0, 1.0, 1.1, 0.55, 0.45, "neon", ""),
+    # proof, punched until the number reads on a phone
+    (b(-3), b(-2), "stripe-payment-2", 0.6, 1.0, 2.6, 0.27, 0.86, "night", ""),
+    (b(-2), h(-1), "stripe-payment", 0.05, 1.0, 2.3, 0.54, 0.53, "night", ""),
+    # (h(-1) → DROP: half a beat of black and silence)
+    # DROP: "10 million dollars in valuations going up."
+    (b(0), b(2), "jetski-takeoff", 5.3, 1.0, 1.1, 0.48, 0.55, "day", "ramp"),
+    (b(2), b(3), "ibrahim-atv-desert", 4.0, 1.0, 1.0, 0.50, 0.50, "golden", ""),
+    (b(3), b(6), "ibrahim-desert-eagle", 6.9, 0.5, 1.12, 0.50, 0.45, "golden", ""),
+    (b(6), h(6), "ibrahim-wakesurfing", 6.0, 1.0, 1.15, 0.50, 0.40, "day", ""),
+    (h(6), b(7), "jetski-spin", 3.9, 1.0, 1.15, 0.50, 0.50, "day", ""),
+    (b(7), 23.985, "rolls-royce-inside", 1.0, 1.0, 1.0, 0.50, 0.50, "night", ""),
+    # "And now we're launching another software company", in sync, then his night
+    (23.985, b(10), POD, 7.63, 1.0, 1.7, 0.27, 0.52, "day", ""),
+    (b(10), 27.55, "ibrahim-cigar", 2.0, 1.0, 1.05, 0.50, 0.45, "night", ""),
+    # "Lock in boys, lock in. Let's go." (the selfie; its first 0.6 s of audio plays under the last cigar frames)
+    (27.55, END, SELFIE, 0.60, 1.0, 1.25, 0.45, 0.45, "day", ""),  # in sync with V7 (placed 26.95)
+]
+
+LEAKS = [4.20, 9.25, 11.40]   # light-leak / prism-streak transitions (3 frames), as in ref1

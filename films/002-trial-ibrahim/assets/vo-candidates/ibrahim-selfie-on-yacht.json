@@ -1,0 +1,44 @@
+[
+  {
+    "text": "Lock",
+    "start": 0,
+    "end": 0.44,
+    "id": "w0"
+  },
+  {
+    "text": "in",
+    "start": 0.44,
+    "end": 0.66,
+    "id": "w1"
+  },
+  {
+    "text": "boys,",
+    "start": 0.71,
+    "end": 1.32,
+    "id": "w2"
+  },
+  {
+    "text": "lock",
+    "start": 1.32,
+    "end": 1.76,
+    "id": "w3"
+  },
+  {
+    "text": "in.",
+    "start": 1.76,
+    "end": 2,
+    "id": "w4"
+  },
+  {
+    "text": "Let's",
+    "start": 2,
+    "end": 2.7,
+    "id": "w5"
+  },
+  {
+    "text": "go.",
+    "start": 2.71,
+    "end": 3,
+    "id": "w6"
+  }
+]

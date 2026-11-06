@@ -1,0 +1,146 @@
+[
+  {
+    "text": "It's",
+    "start": 0.04,
+    "end": 0.28,
+    "id": "w0"
+  },
+  {
+    "text": "all",
+    "start": 0.28,
+    "end": 0.5,
+    "id": "w1"
+  },
+  {
+    "text": "about",
+    "start": 0.5,
+    "end": 0.87,
+    "id": "w2"
+  },
+  {
+    "text": "maybe",
+    "start": 0.87,
+    "end": 1.23,
+    "id": "w3"
+  },
+  {
+    "text": "in",
+    "start": 1.23,
+    "end": 1.38,
+    "id": "w4"
+  },
+  {
+    "text": "like",
+    "start": 1.38,
+    "end": 1.67,
+    "id": "w5"
+  },
+  {
+    "text": "the",
+    "start": 1.67,
+    "end": 1.89,
+    "id": "w6"
+  },
+  {
+    "text": "year",
+    "start": 1.89,
+    "end": 2.24,
+    "id": "w7"
+  },
+  {
+    "text": "or",
+    "start": 2.24,
+    "end": 2.37,
+    "id": "w8"
+  },
+  {
+    "text": "so",
+    "start": 2.38,
+    "end": 2.52,
+    "id": "w9"
+  },
+  {
+    "text": "you've",
+    "start": 2.52,
+    "end": 3.84,
+    "id": "w10"
+  },
+  {
+    "text": "had",
+    "start": 3.84,
+    "end": 3.97,
+    "id": "w11"
+  },
+  {
+    "text": "you",
+    "start": 4.01,
+    "end": 4.18,
+    "id": "w12"
+  },
+  {
+    "text": "don't",
+    "start": 4.18,
+    "end": 4.46,
+    "id": "w13"
+  },
+  {
+    "text": "you",
+    "start": 4.46,
+    "end": 4.63,
+    "id": "w14"
+  },
+  {
+    "text": "have",
+    "start": 4.63,
+    "end": 4.86,
+    "id": "w15"
+  },
+  {
+    "text": "don't",
+    "start": 4.86,
+    "end": 5.04,
+    "id": "w16"
+  },
+  {
+    "text": "know",
+    "start": 5.04,
+    "end": 5.2,
+    "id": "w17"
+  },
+  {
+    "text": "that's",
+    "start": 5.2,
+    "end": 5.47,
+    "id": "w18"
+  },
+  {
+    "text": "what",
+    "start": 5.48,
+    "end": 5.64,
+    "id": "w19"
+  },
+  {
+    "text": "you",
+    "start": 5.66,
+    "end": 5.81,
+    "id": "w20"
+  },
+  {
+    "text": "said",
+    "start": 5.81,
+    "end": 6.02,
+    "id": "w21"
+  },
+  {
+    "text": "you",
+    "start": 6.02,
+    "end": 6.15,
+    "id": "w22"
+  },
+  {
+    "text": "did",
+    "start": 6.16,
+    "end": 6.3,
+    "id": "w23"
+  }
+]

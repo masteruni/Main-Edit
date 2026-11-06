@@ -1,1 +1,1 @@
-{ "look": "reference:ibrahim-trial", "general": true, "allow": { "centred": "reference grammar: captions stacked in negative space" } }
+{ "look": "reference:ibrahim-trial", "general": true, "allow": { "banned_face": "client reference uses Montserrat (identified in REFERENCE.md)", "hf_signature": "reference grammar: sans words fade in with slight blur", "centred": "reference grammar" } }

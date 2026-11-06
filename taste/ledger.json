@@ -43,6 +43,44 @@
       ],
       "shotCV": 0.62,
       "client": null
+    },
+    {
+      "project": "002-trial-ibrahim",
+      "look": "reference:ibrahim-trial",
+      "date": "2026-11-06",
+      "duration": 30.157,
+      "faces": [
+        "montserrat",
+        "parisienne"
+      ],
+      "palette": [
+        "#f5f1ea",
+        "#f3c76b",
+        "#1b2440",
+        "#070708",
+        "#fff6e6",
+        "#fffaf0"
+      ],
+      "eases": {
+        "sine.inOut": 3,
+        "power3.out": 1,
+        "none": 50,
+        "power1.out": 10,
+        "power1.in": 3,
+        "power2.out": 1
+      },
+      "dominantEase": "power1.out",
+      "dominantEaseShare": 0.56,
+      "tweens": 68,
+      "onTwos": false,
+      "blurIns": 50,
+      "glow": 0,
+      "gradientText": false,
+      "motionBlurOn": false,
+      "centred": 0,
+      "shots": [],
+      "shotCV": null,
+      "client": null
     }
   ]
 }

@@ -31,11 +31,16 @@ GRADES = {
     "neon": "eq=contrast=1.06:saturation=1.0:gamma=0.97",
     "dawn": "eq=contrast=1.10:saturation=0.85:brightness=-0.06:gamma=0.92,colorbalance=rs=-0.04:gs=-0.01:bs=0.06:rm=-0.02:bm=0.04",
 }
-FINISH = "vignette=angle=PI/5:mode=forward,noise=alls=5:allf=t,format=yuv420p"
+FINISH = "vignette=angle=PI/5:mode=forward,noise=alls=5:allf=t,tpad=stop_mode=clone:stop_duration=1,format=yuv420p"
 
 
 def source(proxy):
-    """(input spec, is_hlg) for a proxy slug: the original in the zip when we know its byte range."""
+    """(input spec, is_hlg, original) for a proxy slug (original read in place from the zip) or "vo:<file>"."""
+    if proxy.startswith("vo:"):
+        path = os.path.join(FILM, "assets/vo-video", proxy[3:])
+        tr = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v", "-show_entries", "stream=color_transfer",
+                             "-of", "csv=p=0", path], capture_output=True, text=True).stdout.strip().splitlines()[0].strip(",")
+        return path, tr in ("arib-std-b67", "smpte2084"), True
     # last match wins: when two sources once shared a name, the later one wrote the proxy file
     rec = next((m for m in reversed(manifest) if (m.get("proxy") or "").rsplit(".", 1)[0] == proxy), None)
     if rec is None:
@@ -48,7 +53,7 @@ def source(proxy):
 
 
 def render(i, shot):
-    start, end, proxy, src_in, speed, zoom, cx, cy, grade = shot
+    start, end, proxy, src_in, speed, zoom, cx, cy, grade, fx = shot
     dur = end - start
     frames = round(dur * 30)
     src, hlg, original = source(proxy)
@@ -56,9 +61,18 @@ def render(i, shot):
     # crop a 9:16 window of 1/zoom of the frame around (cx, cy), clamped inside the frame
     crop = (f"crop=w='trunc(min(iw,ih*9/16)/{zoom}/2)*2':h='trunc(min(iw,ih*9/16)/{zoom}*16/9/2)*2':"
             f"x='max(0,min(iw-ow,iw*{cx}-ow/2))':y='max(0,min(ih-oh,ih*{cy}-oh/2))'")
-    vf = f"{pre}setpts=(PTS-STARTPTS)/{speed},fps=30,{crop},scale=1080:1920:flags=lanczos,{GRADES[grade]},{FINISH}"
+    if fx == "ramp":
+        # 100% for 0.35 s, 50% for 0.6 s (0.3 s of source), back to 100%: the reference's one speed ramp
+        t = "((PTS-STARTPTS)*TB)"
+        timing = f"setpts='(if(lt({t},0.35),{t},if(lt({t},0.65),0.35+({t}-0.35)/0.5,0.95+({t}-0.65))))/TB'"
+        src_len = 0.65 + (dur - 0.95) + 0.5
+    else:
+        timing = f"setpts=(PTS-STARTPTS)/{speed}"
+        src_len = dur * speed + 0.5
+    bw = ",hue=s=0:enable='lt(t,0.25)'" if fx == "bw-open" else ""
+    vf = f"{pre}{timing},fps=30,{crop},scale=1080:1920:flags=lanczos,{GRADES[grade]}{bw},{FINISH}"
     out = os.path.join(OUT, f"{i:02d}.mp4")
-    cmd = ["ffmpeg", "-loglevel", "error", "-y", "-ss", str(src_in), "-t", str(dur * speed + 0.5), "-i", src,
+    cmd = ["ffmpeg", "-loglevel", "error", "-y", "-ss", str(src_in), "-t", str(src_len), "-i", src,
            "-vf", vf, "-frames:v", str(frames), "-an", "-c:v", "libx264", "-preset", "medium", "-crf", "16",
            "-g", "15", "-movflags", "+faststart", out]
     r = subprocess.run(cmd, capture_output=True, text=True)

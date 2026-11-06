@@ -21,3 +21,6 @@ films/*/refs/*-sheet.png
 films/*/assets/audio/candidates/
 films/*/assets/shots/
 __pycache__/
+films/*/assets/vo-candidates/*.m4a
+films/*/assets/vo-candidates/*.jpg
+films/*/assets/vo-video/

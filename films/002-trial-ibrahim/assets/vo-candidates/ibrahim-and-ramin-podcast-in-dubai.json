@@ -1,0 +1,266 @@
+[
+  {
+    "text": "10",
+    "start": 0,
+    "end": 0.33,
+    "id": "w0"
+  },
+  {
+    "text": "million",
+    "start": 0.33,
+    "end": 0.71,
+    "id": "w1"
+  },
+  {
+    "text": "dollars",
+    "start": 0.71,
+    "end": 1.09,
+    "id": "w2"
+  },
+  {
+    "text": "in",
+    "start": 1.09,
+    "end": 1.2,
+    "id": "w3"
+  },
+  {
+    "text": "valuations",
+    "start": 1.2,
+    "end": 1.74,
+    "id": "w4"
+  },
+  {
+    "text": "going",
+    "start": 1.77,
+    "end": 2,
+    "id": "w5"
+  },
+  {
+    "text": "up.",
+    "start": 2,
+    "end": 3,
+    "id": "w6"
+  },
+  {
+    "text": "It's",
+    "start": 3,
+    "end": 3.11,
+    "id": "w7"
+  },
+  {
+    "text": "one",
+    "start": 3.15,
+    "end": 3.21,
+    "id": "w8"
+  },
+  {
+    "text": "of",
+    "start": 3.21,
+    "end": 3.28,
+    "id": "w9"
+  },
+  {
+    "text": "the",
+    "start": 3.28,
+    "end": 3.36,
+    "id": "w10"
+  },
+  {
+    "text": "groundbreaking",
+    "start": 3.36,
+    "end": 4.07,
+    "id": "w11"
+  },
+  {
+    "text": "things",
+    "start": 4.07,
+    "end": 4.32,
+    "id": "w12"
+  },
+  {
+    "text": "that",
+    "start": 4.32,
+    "end": 4.52,
+    "id": "w13"
+  },
+  {
+    "text": "we've",
+    "start": 4.52,
+    "end": 4.76,
+    "id": "w14"
+  },
+  {
+    "text": "just",
+    "start": 4.79,
+    "end": 4.97,
+    "id": "w15"
+  },
+  {
+    "text": "launched",
+    "start": 4.97,
+    "end": 5.37,
+    "id": "w16"
+  },
+  {
+    "text": "out",
+    "start": 5.37,
+    "end": 5.52,
+    "id": "w17"
+  },
+  {
+    "text": "of",
+    "start": 5.52,
+    "end": 5.61,
+    "id": "w18"
+  },
+  {
+    "text": "the",
+    "start": 5.63,
+    "end": 5.77,
+    "id": "w19"
+  },
+  {
+    "text": "public.",
+    "start": 5.77,
+    "end": 6.24,
+    "id": "w20"
+  },
+  {
+    "text": "I",
+    "start": 6.24,
+    "end": 6.29,
+    "id": "w21"
+  },
+  {
+    "text": "saw",
+    "start": 6.29,
+    "end": 6.46,
+    "id": "w22"
+  },
+  {
+    "text": "a",
+    "start": 6.46,
+    "end": 6.51,
+    "id": "w23"
+  },
+  {
+    "text": "comeback",
+    "start": 6.51,
+    "end": 6.92,
+    "id": "w24"
+  },
+  {
+    "text": "story.",
+    "start": 6.97,
+    "end": 7.52,
+    "id": "w25"
+  },
+  {
+    "text": "Yeah",
+    "start": 7.52,
+    "end": 7.76,
+    "id": "w26"
+  },
+  {
+    "text": "and",
+    "start": 7.76,
+    "end": 8.24,
+    "id": "w27"
+  },
+  {
+    "text": "now",
+    "start": 8.24,
+    "end": 8.45,
+    "id": "w28"
+  },
+  {
+    "text": "we're",
+    "start": 8.45,
+    "end": 8.67,
+    "id": "w29"
+  },
+  {
+    "text": "launching",
+    "start": 8.68,
+    "end": 9.2,
+    "id": "w30"
+  },
+  {
+    "text": "another",
+    "start": 9.23,
+    "end": 9.61,
+    "id": "w31"
+  },
+  {
+    "text": "software",
+    "start": 9.61,
+    "end": 10.07,
+    "id": "w32"
+  },
+  {
+    "text": "company",
+    "start": 10.07,
+    "end": 10.47,
+    "id": "w33"
+  },
+  {
+    "text": "that's",
+    "start": 10.48,
+    "end": 10.82,
+    "id": "w34"
+  },
+  {
+    "text": "going",
+    "start": 10.82,
+    "end": 11.11,
+    "id": "w35"
+  },
+  {
+    "text": "to",
+    "start": 11.11,
+    "end": 11.22,
+    "id": "w36"
+  },
+  {
+    "text": "just",
+    "start": 11.22,
+    "end": 11.5,
+    "id": "w37"
+  },
+  {
+    "text": "dead",
+    "start": 11.51,
+    "end": 11.79,
+    "id": "w38"
+  },
+  {
+    "text": "in",
+    "start": 11.83,
+    "end": 11.95,
+    "id": "w39"
+  },
+  {
+    "text": "this",
+    "start": 11.95,
+    "end": 12.25,
+    "id": "w40"
+  },
+  {
+    "text": "space",
+    "start": 12.25,
+    "end": 12.64,
+    "id": "w41"
+  },
+  {
+    "text": "and",
+    "start": 12.64,
+    "end": 13,
+    "id": "w42"
+  },
+  {
+    "text": "now",
+    "start": 13,
+    "end": 13.72,
+    "id": "w43"
+  }
+]

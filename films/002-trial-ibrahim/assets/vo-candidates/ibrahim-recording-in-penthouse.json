@@ -1,0 +1,374 @@
+[
+  {
+    "text": "with",
+    "start": 0,
+    "end": 0.25,
+    "id": "w0"
+  },
+  {
+    "text": "another",
+    "start": 0.25,
+    "end": 0.7,
+    "id": "w1"
+  },
+  {
+    "text": "video",
+    "start": 0.7,
+    "end": 1.02,
+    "id": "w2"
+  },
+  {
+    "text": "today",
+    "start": 1.02,
+    "end": 1.34,
+    "id": "w3"
+  },
+  {
+    "text": "is",
+    "start": 1.34,
+    "end": 1.46,
+    "id": "w4"
+  },
+  {
+    "text": "actually",
+    "start": 1.46,
+    "end": 2,
+    "id": "w5"
+  },
+  {
+    "text": "day",
+    "start": 2,
+    "end": 2.2,
+    "id": "w6"
+  },
+  {
+    "text": "three",
+    "start": 2.21,
+    "end": 2.56,
+    "id": "w7"
+  },
+  {
+    "text": "not",
+    "start": 2.56,
+    "end": 2.77,
+    "id": "w8"
+  },
+  {
+    "text": "day",
+    "start": 2.77,
+    "end": 2.98,
+    "id": "w9"
+  },
+  {
+    "text": "two",
+    "start": 2.98,
+    "end": 3.2,
+    "id": "w10"
+  },
+  {
+    "text": "and",
+    "start": 3.2,
+    "end": 3.52,
+    "id": "w11"
+  },
+  {
+    "text": "we",
+    "start": 3.52,
+    "end": 3.61,
+    "id": "w12"
+  },
+  {
+    "text": "have",
+    "start": 3.61,
+    "end": 3.8,
+    "id": "w13"
+  },
+  {
+    "text": "a",
+    "start": 3.8,
+    "end": 3.84,
+    "id": "w14"
+  },
+  {
+    "text": "lot",
+    "start": 3.84,
+    "end": 4,
+    "id": "w15"
+  },
+  {
+    "text": "of",
+    "start": 4,
+    "end": 4.16,
+    "id": "w16"
+  },
+  {
+    "text": "fun",
+    "start": 4.16,
+    "end": 4.24,
+    "id": "w17"
+  },
+  {
+    "text": "things",
+    "start": 4.24,
+    "end": 4.48,
+    "id": "w18"
+  },
+  {
+    "text": "planned",
+    "start": 4.48,
+    "end": 4.64,
+    "id": "w19"
+  },
+  {
+    "text": "today",
+    "start": 4.64,
+    "end": 4.93,
+    "id": "w20"
+  },
+  {
+    "text": "a",
+    "start": 4.93,
+    "end": 4.98,
+    "id": "w21"
+  },
+  {
+    "text": "lot",
+    "start": 4.98,
+    "end": 5.15,
+    "id": "w22"
+  },
+  {
+    "text": "of",
+    "start": 5.15,
+    "end": 5.26,
+    "id": "w23"
+  },
+  {
+    "text": "cool",
+    "start": 5.26,
+    "end": 5.49,
+    "id": "w24"
+  },
+  {
+    "text": "questions",
+    "start": 5.49,
+    "end": 6.02,
+    "id": "w25"
+  },
+  {
+    "text": "that",
+    "start": 6.02,
+    "end": 6.25,
+    "id": "w26"
+  },
+  {
+    "text": "i'm",
+    "start": 6.25,
+    "end": 6.4,
+    "id": "w27"
+  },
+  {
+    "text": "gonna",
+    "start": 6.41,
+    "end": 6.7,
+    "id": "w28"
+  },
+  {
+    "text": "be",
+    "start": 6.7,
+    "end": 6.81,
+    "id": "w29"
+  },
+  {
+    "text": "fucking",
+    "start": 6.81,
+    "end": 7.22,
+    "id": "w30"
+  },
+  {
+    "text": "up",
+    "start": 7.22,
+    "end": 7.33,
+    "id": "w31"
+  },
+  {
+    "text": "for",
+    "start": 7.33,
+    "end": 7.5,
+    "id": "w32"
+  },
+  {
+    "text": "the",
+    "start": 7.5,
+    "end": 7.66,
+    "id": "w33"
+  },
+  {
+    "text": "grand",
+    "start": 7.67,
+    "end": 8.08,
+    "id": "w34"
+  },
+  {
+    "text": "and",
+    "start": 8.08,
+    "end": 8.32,
+    "id": "w35"
+  },
+  {
+    "text": "potentially",
+    "start": 8.32,
+    "end": 8.72,
+    "id": "w36"
+  },
+  {
+    "text": "go",
+    "start": 8.72,
+    "end": 8.82,
+    "id": "w37"
+  },
+  {
+    "text": "tomorrow",
+    "start": 8.82,
+    "end": 9.23,
+    "id": "w38"
+  },
+  {
+    "text": "hopefully",
+    "start": 9.23,
+    "end": 9.69,
+    "id": "w39"
+  },
+  {
+    "text": "i",
+    "start": 9.69,
+    "end": 9.74,
+    "id": "w40"
+  },
+  {
+    "text": "don't",
+    "start": 9.74,
+    "end": 9.99,
+    "id": "w41"
+  },
+  {
+    "text": "get",
+    "start": 9.99,
+    "end": 10.14,
+    "id": "w42"
+  },
+  {
+    "text": "cancelled",
+    "start": 10.14,
+    "end": 10.6,
+    "id": "w43"
+  },
+  {
+    "text": "so",
+    "start": 10.6,
+    "end": 10.7,
+    "id": "w44"
+  },
+  {
+    "text": "i'm",
+    "start": 10.7,
+    "end": 10.85,
+    "id": "w45"
+  },
+  {
+    "text": "really",
+    "start": 10.85,
+    "end": 11.16,
+    "id": "w46"
+  },
+  {
+    "text": "excited",
+    "start": 11.16,
+    "end": 11.52,
+    "id": "w47"
+  },
+  {
+    "text": "to",
+    "start": 11.52,
+    "end": 11.62,
+    "id": "w48"
+  },
+  {
+    "text": "see",
+    "start": 11.62,
+    "end": 11.77,
+    "id": "w49"
+  },
+  {
+    "text": "where",
+    "start": 11.77,
+    "end": 12.03,
+    "id": "w50"
+  },
+  {
+    "text": "tonight",
+    "start": 12.03,
+    "end": 12.48,
+    "id": "w51"
+  },
+  {
+    "text": "goes",
+    "start": 12.48,
+    "end": 13.04,
+    "id": "w52"
+  },
+  {
+    "text": "and",
+    "start": 13.04,
+    "end": 13.18,
+    "id": "w53"
+  },
+  {
+    "text": "this",
+    "start": 13.18,
+    "end": 13.37,
+    "id": "w54"
+  },
+  {
+    "text": "is",
+    "start": 13.37,
+    "end": 13.46,
+    "id": "w55"
+  },
+  {
+    "text": "good",
+    "start": 13.46,
+    "end": 13.65,
+    "id": "w56"
+  },
+  {
+    "text": "there's",
+    "start": 13.65,
+    "end": 13.97,
+    "id": "w57"
+  },
+  {
+    "text": "gonna",
+    "start": 13.97,
+    "end": 14.2,
+    "id": "w58"
+  },
+  {
+    "text": "be",
+    "start": 14.2,
+    "end": 14.29,
+    "id": "w59"
+  },
+  {
+    "text": "super",
+    "start": 14.29,
+    "end": 14.52,
+    "id": "w60"
+  },
+  {
+    "text": "fun",
+    "start": 14.52,
+    "end": 14.72,
+    "id": "w61"
+  }
+]

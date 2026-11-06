@@ -1,0 +1,20 @@
+[
+  {
+    "text": "Are",
+    "start": 0.01,
+    "end": 0.17,
+    "id": "w0"
+  },
+  {
+    "text": "you",
+    "start": 0.17,
+    "end": 0.34,
+    "id": "w1"
+  },
+  {
+    "text": "ready?",
+    "start": 0.34,
+    "end": 0.82,
+    "id": "w2"
+  }
+]

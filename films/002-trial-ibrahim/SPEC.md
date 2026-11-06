@@ -1,3 +1,25 @@
+# 002 · Paid trial edit for Ibrahim Ansari: v3 "Lock in" (current)
+
+The v1/v2 plan below this section is kept for history; v3 replaced it after the critic pass and the person's direction
+("study the reference specifically; find a voiceover in the assets; a better storyline").
+
+- STORY (his own words, 8 lines cut from 4 clips found in the 186 GB Dropbox via its listing):
+  "Feeling like your dreams are impossible? This is the video for you. If you're earning under $1,000 monthly, you're fighting
+  an uphill battle. And this is the most honest conversation I've ever had about what really changed my life."
+  → discipline montage (waking, prayer, treadmill, pulldown, push-ups, ice bath, night work, his Stripe dashboard $8,293 and a
+  $5,489.75 payout notification) → half a beat of black silence → DROP on "10 million dollars in valuations going up." →
+  jetski (speed ramp) / desert ATV / falcon / wakesurf / jetski / starlight Rolls → "And now we're launching another software company"
+  (Dubai podcast, then his night balcony) → "Lock in boys, lock in. Let's go." (his yacht selfie). 30.16 s.
+- HOOK: frame 1 = three bodies mid-air off a yacht (B&W for 0.25 s, then colour, the reference's opening pop) + his voice
+  "Feeling like your dreams are impossible?". Three options were weighed in v1; this one now has his voice on it.
+- REFERENCE: see REFERENCE.md (Montserrat Bold + Parisienne, word-on-onset, script wipe 3 f, sans fade 2 f, staircase blocks,
+  scene tint, light-leak transitions). Applied exactly.
+- MUSIC: Mixkit #364, enters at 3.731 s so its first 808 (14.769 s, measured) lands on "10 million" at 18.5 s; ducked under the voice
+  by sidechain; true silence 18.157–18.5 s. SFX: splash, a quiet alarm, Stripe pops + coins, riser, impact, spray. -14 LUFS.
+- BUILD: build/cutlist.py → render_shots.py → mix.py → compose.py → npx hyperframes render.
+
+---
+
 # 002 · Paid trial edit for Ibrahim Ansari: "Everyone wants this"
 
 TYPE:    general edit (no client preset). References in refs/ apply to this film only.

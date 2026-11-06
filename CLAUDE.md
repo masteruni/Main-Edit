@@ -12,7 +12,9 @@ The person is a freelance video editor with several clients. Most jobs are **gen
 1. Invoke `/hyperframes`: the render contract and work loop. Non-negotiable.
 2. Invoke `/house`: our looks, anti-convergence rules, edit doctrine, critic loop.
 3. Real footage involved → also `/footage-edit`.
-4. Read `taste/BANNED.md`. Every film's `SPEC.md` BANNED line includes it.
+4. A reference was sent → study it per `.claude/skills/house/references/reference-study.md` and write the film's `REFERENCE.md` before editing (exact fonts, caption animation frame by frame, text effects). Standing instruction from the person.
+5. Footage with people → look for a voiceover in the assets first (talking, podcast, recording, vlog clips; transcribe them). A story carried by the subject's own voice beats written slogans. Standing instruction from the person.
+6. Read `taste/BANNED.md`. Every film's `SPEC.md` BANNED line includes it.
 
 ## Layout
 

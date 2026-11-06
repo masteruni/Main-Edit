@@ -42,6 +42,7 @@ Projects live in `films/NNN-slug/`. Scaffold with `npx hyperframes init films/NN
 | --- | --- |
 | Every film | `references/tells.md`, `references/retention.md`, `references/edit-doctrine.md` |
 | Client work, presets, references | `clients/README.md`, `clients/<slug>/PROFILE.md` |
+| **Any reference video/image the person sends** | `references/reference-study.md`: mandatory; write the film's `REFERENCE.md` (fonts identified by side-by-side render, caption animation measured frame by frame, text effects, edit grammar) before editing |
 | Choosing / writing a look | `looks/README.md`, then one `looks/<id>.md` |
 | Real footage: talking head, vlog, podcast, interview, B-roll | `/footage-edit` |
 | Copy on screen or in voiceover | `references/copy.md` |
