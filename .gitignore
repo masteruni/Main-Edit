@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+# HyperFrames working dirs
+films/*/.hyperframes/
+films/*/snapshots/
+films/*/.thumbnails/
+# Heavy source media stays out of git (share via Drive/links). Small renders are allowed explicitly.
+*.mov
+*.MOV
+*.mkv
+*.wav
+films/*/assets/footage/
+films/*/renders/*
+!films/*/renders/*.gif
+!films/*/renders/final.mp4

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 500; font-display: block; src: url("assets/fonts/barlow-condensed-500.woff2") format("woff2"); }
+      @font-face { font-family: "Barlow Condensed"; font-style: normal; font-weight: 700; font-display: block; src: url("assets/fonts/barlow-condensed-700.woff2") format("woff2"); }
+      :root {
+        --wall: #8c8a84;
+        --housing: #1e1f1d;
+        --tile-top: #2e2f2c;
+        --tile-bot: #2a2b28;
+        --split: #121311;
+        --ink: #efe7d3;
+        --amber: #ffb21a;
+        --lamp-off: #3a3528;
+        --face: "Barlow Condensed", sans-serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: var(--wall); }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; font-family: var(--face); }
+
+      /* ---- the world: a station wall with a board on it ---- */
+      #world { position: absolute; inset: 0; }
+      #cam { position: absolute; left: 0; top: 0; width: 2600px; height: 1600px; }
+      #wall {
+        position: absolute; inset: 0;
+        background-color: var(--wall);
+        background-image:
+          radial-gradient(ellipse 900px 520px at 1296px 160px, rgba(255, 253, 245, 0.16), rgba(255, 253, 245, 0) 70%),
+          url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='7'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.09 0'/></filter><rect width='400' height='400' filter='url(%23n)'/></svg>");
+      }
+      #stain { position: absolute; left: 1980px; top: 250px; width: 170px; height: 420px; background: linear-gradient(180deg, rgba(60, 58, 52, 0.1), rgba(60, 58, 52, 0)); }
+
+      #plaque {
+        position: absolute; left: 886px; top: 372px; width: 820px; height: 92px;
+        background: var(--housing); border-radius: 4px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, 0.28);
+        color: var(--ink); font: 700 46px/92px var(--face); letter-spacing: 0.14em; text-align: center;
+      }
+      .bolt { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #6d6c66; top: 41px; }
+
+      #board {
+        position: absolute; left: 350px; top: 520px; width: 1893px; height: 654px;
+        background: var(--housing); border-radius: 6px;
+        box-shadow: 0 18px 30px rgba(0, 0, 0, 0.32), inset 0 2px 0 rgba(255, 255, 255, 0.06);
+      }
+      .head { position: absolute; top: 44px; font: 500 22px var(--face); letter-spacing: 0.08em; color: rgba(239, 231, 211, 0.62); }
+
+      .tile { position: absolute; width: 52px; height: 76px; perspective: 260px; }
+      .half { position: absolute; left: 0; width: 52px; height: 38px; overflow: hidden; backface-visibility: hidden; }
+      .top { top: 0; background: var(--tile-top); border-radius: 3px 3px 0 0; transform-origin: 50% 100%; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22); }
+      .bot { top: 38px; background: var(--tile-bot); border-radius: 0 0 3px 3px; transform-origin: 50% 0; }
+      .half span { position: absolute; left: 0; top: 0; width: 52px; height: 76px; line-height: 78px; text-align: center; font: 700 62px var(--face); color: var(--ink); }
+      .bot span { top: -38px; }
+      .flap { visibility: hidden; z-index: 2; }
+      .split { position: absolute; left: 0; top: 37px; width: 52px; height: 2px; background: var(--split); z-index: 3; }
+      .wear { position: absolute; inset: 0; border-radius: 3px; z-index: 4; pointer-events: none; }
+
+      .lamp { position: absolute; width: 28px; height: 28px; border-radius: 50%; background: var(--lamp-off); box-shadow: inset 0 3px 4px rgba(0, 0, 0, 0.5); }
+      .lamp.on { background: var(--amber); box-shadow: inset 0 -3px 4px rgba(150, 90, 0, 0.45), 0 0 10px rgba(255, 178, 26, 0.55); }
+
+      /* ---- per-shot light: one marker per shot (data-shot) ---- */
+      .shot-light { position: absolute; inset: 0; pointer-events: none; }
+      .vignette { position: absolute; inset: 0; background: radial-gradient(ellipse 75% 70% at 50% 50%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.16) 100%); }
+      .flicker { position: absolute; inset: 0; background: #000; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="13.6" data-width="1920" data-height="1080">
+      <div id="world" class="clip" data-start="0" data-duration="13.6" data-track-index="0" data-layout-allow-overflow data-layout-allow-overlap>
+        <div id="cam">
+          <div id="wall"></div>
+          <div id="stain"></div>
+          <div id="plaque">MAIN EDIT · DEPARTURES<i class="bolt" style="left: 22px"></i><i class="bolt" style="right: 22px"></i></div>
+          <div id="board">
+            <div data-layout-ignore class="head" style="left: 86px">TIME</div>
+            <div data-layout-ignore class="head" style="left: 393px">DESTINATION</div>
+            <div data-layout-ignore class="head" style="left: 1213px">PLAT</div>
+            <div data-layout-ignore class="head" style="left: 1349px">REMARKS</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="shot-1" class="clip shot-light" data-shot data-start="0" data-duration="3.6" data-track-index="1"><div class="vignette"></div><div class="flicker"></div></div>
+      <div id="shot-2" class="clip shot-light" data-shot data-start="3.6" data-duration="0.8" data-track-index="1"><div class="vignette"></div></div>
+      <div id="shot-3" class="clip shot-light" data-shot data-start="4.4" data-duration="0.7" data-track-index="1"><div class="vignette"></div></div>
+      <div id="shot-4" class="clip shot-light" data-shot data-start="5.1" data-duration="0.8" data-track-index="1"><div class="vignette"></div></div>
+      <div id="shot-5" class="clip shot-light" data-shot data-hold data-start="5.9" data-duration="0.8" data-track-index="1"><div class="vignette"></div></div>
+      <div id="shot-6" class="clip shot-light" data-shot data-start="6.7" data-duration="3.0" data-track-index="1"><div class="vignette"></div></div>
+      <div id="shot-7" class="clip shot-light" data-shot data-start="9.7" data-duration="3.9" data-track-index="1"><div class="vignette"></div><div class="flicker"></div></div>
+
+      <audio id="sound" class="clip" data-start="0" data-duration="13.6" data-track-index="2" data-volume="1" src="assets/sound.m4a"></audio>
+    </div>
+
+    <script>
+      const SCHEDULE = /*SCHEDULE*/ {"alphabet":" ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:.-+&","cols":30,"rows":[[{"c0":"0","ev":[]},{"c0":"9","ev":[]},{"c0":":","ev":[]},{"c0":"0","ev":[]},{"c0":"0","ev":[]},{"c0":"D","ev":[{"t":0.7685,"from":"D","to":"S","n":15,"dt":0.026}]},{"c0":"A","ev":[]},{"c0":"R","ev":[{"t":0.8208,"from":"R","to":"M","n":37,"dt":0.0259}]},{"c0":"K","ev":[{"t":0.8552,"from":"K","to":"E","n":36,"dt":0.0238}]},{"c0":" ","ev":[]},{"c0":"V","ev":[{"t":0.9069,"from":"V","to":"L","n":32,"dt":0.0249}]},{"c0":"O","ev":[]},{"c0":"I","ev":[{"t":0.9714,"from":"I","to":"O","n":6,"dt":0.0283}]},{"c0":"D","ev":[{"t":1.0088,"from":"D","to":"K","n":7,"dt":0.0271}]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":"2","ev":[]},{"c0":" ","ev":[]},{"c0":"O","ev":[{"t":4.5155,"from":"O","to":"A","n":28,"dt":0.0294},{"t":9.8528,"from":"A","to":"C","n":2,"dt":0.0307}]},{"c0":"N","ev":[{"t":4.5354,"from":"N","to":"G","n":35,"dt":0.0288},{"t":9.8883,"from":"G","to":"A","n":36,"dt":0.0321}]},{"c0":" ","ev":[{"t":4.5644,"from":" ","to":"A","n":1,"dt":0.0305},{"t":9.9183,"from":"A","to":"N","n":13,"dt":0.0297}]},{"c0":"T","ev":[{"t":4.5933,"from":"T","to":"I","n":31,"dt":0.029},{"t":9.9443,"from":"I","to":"C","n":36,"dt":0.0282}]},{"c0":"I","ev":[{"t":4.6282,"from":"I","to":"N","n":5,"dt":0.0283},{"t":9.9735,"from":"N","to":"E","n":33,"dt":0.0292}]},{"c0":"M","ev":[{"t":4.6549,"from":"M","to":" ","n":29,"dt":0.0267},{"t":10.0168,"from":" ","to":"L","n":12,"dt":0.0283}]},{"c0":"E","ev":[{"t":4.6985,"from":"E","to":" ","n":37,"dt":0.0264},{"t":10.0351,"from":" ","to":"L","n":12,"dt":0.0327}]},{"c0":" ","ev":[{"t":10.0752,"from":" ","to":"E","n":5,"dt":0.0323}]},{"c0":" ","ev":[{"t":10.1093,"from":" ","to":"D","n":4,"dt":0.0313}]}],[{"c0":"0","ev":[]},{"c0":"9","ev":[]},{"c0":":","ev":[]},{"c0":"0","ev":[]},{"c0":"4","ev":[]},{"c0":"B","ev":[{"t":0.8483,"from":"B","to":"S","n":17,"dt":0.0267}]},{"c0":"L","ev":[{"t":0.872,"from":"L","to":"A","n":31,"dt":0.0254}]},{"c0":"U","ev":[{"t":0.9181,"from":"U","to":"M","n":34,"dt":0.0263}]},{"c0":"R","ev":[{"t":0.9426,"from":"R","to":"E","n":29,"dt":0.0264}]},{"c0":"-","ev":[{"t":0.9699,"from":"-","to":" ","n":3,"dt":0.0249}]},{"c0":"I","ev":[{"t":1.0073,"from":"I","to":"L","n":3,"dt":0.025}]},{"c0":"N","ev":[{"t":1.027,"from":"N","to":"O","n":1,"dt":0.0263}]},{"c0":" ","ev":[{"t":1.0619,"from":" ","to":"O","n":15,"dt":0.0238}]},{"c0":"T","ev":[{"t":1.0874,"from":"T","to":"K","n":33,"dt":0.0284}]},{"c0":"I","ev":[{"t":1.1202,"from":"I","to":" ","n":33,"dt":0.0239}]},{"c0":"T","ev":[{"t":1.1412,"from":"T","to":" ","n":22,"dt":0.028}]},{"c0":"L","ev":[{"t":1.1731,"from":"L","to":" ","n":30,"dt":0.0261}]},{"c0":"E","ev":[{"t":1.2019,"from":"E","to":" ","n":37,"dt":0.0257}]},{"c0":"S","ev":[{"t":1.2312,"from":"S","to":" ","n":23,"dt":0.026}]},{"c0":"4","ev":[]},{"c0":" ","ev":[]},{"c0":"O","ev":[{"t":2.7189,"from":"O","to":"A","n":28,"dt":0.0268},{"t":9.9733,"from":"A","to":"C","n":2,"dt":0.0305}]},{"c0":"N","ev":[{"t":2.7347,"from":"N","to":"G","n":35,"dt":0.0287},{"t":10.0049,"from":"G","to":"A","n":36,"dt":0.0299}]},{"c0":" ","ev":[{"t":2.7739,"from":" ","to":"A","n":1,"dt":0.0264},{"t":10.0362,"from":"A","to":"N","n":13,"dt":0.0283}]},{"c0":"T","ev":[{"t":2.8049,"from":"T","to":"I","n":31,"dt":0.0295},{"t":10.077,"from":"I","to":"C","n":36,"dt":0.0298}]},{"c0":"I","ev":[{"t":2.8275,"from":"I","to":"N","n":5,"dt":0.0285},{"t":10.1023,"from":"N","to":"E","n":33,"dt":0.0305}]},{"c0":"M","ev":[{"t":2.8646,"from":"M","to":" ","n":29,"dt":0.0282},{"t":10.123,"from":" ","to":"L","n":12,"dt":0.0315}]},{"c0":"E","ev":[{"t":2.8924,"from":"E","to":" ","n":37,"dt":0.0292},{"t":10.1615,"from":" ","to":"L","n":12,"dt":0.0307}]},{"c0":" ","ev":[{"t":10.1851,"from":" ","to":"E","n":5,"dt":0.027}]},{"c0":" ","ev":[{"t":10.2202,"from":" ","to":"D","n":4,"dt":0.0328}]}],[{"c0":"0","ev":[]},{"c0":"9","ev":[]},{"c0":":","ev":[]},{"c0":"0","ev":[]},{"c0":"8","ev":[]},{"c0":"C","ev":[{"t":0.9497,"from":"C","to":"S","n":16,"dt":0.0238}]},{"c0":"R","ev":[{"t":0.97,"from":"R","to":"A","n":25,"dt":0.0249}]},{"c0":"E","ev":[{"t":0.9957,"from":"E","to":"M","n":8,"dt":0.0282}]},{"c0":"A","ev":[{"t":1.0316,"from":"A","to":"E","n":4,"dt":0.027}]},{"c0":"M","ev":[{"t":1.0617,"from":"M","to":" ","n":29,"dt":0.0279}]},{"c0":" ","ev":[{"t":1.0935,"from":" ","to":"L","n":12,"dt":0.0253}]},{"c0":"+","ev":[{"t":1.1106,"from":"+","to":"O","n":17,"dt":0.0275}]},{"c0":" ","ev":[{"t":1.1467,"from":" ","to":"O","n":15,"dt":0.0283}]},{"c0":"S","ev":[{"t":1.1899,"from":"S","to":"K","n":34,"dt":0.0254}]},{"c0":"E","ev":[{"t":1.2127,"from":"E","to":" ","n":37,"dt":0.0275}]},{"c0":"R","ev":[{"t":1.2419,"from":"R","to":" ","n":24,"dt":0.0256}]},{"c0":"I","ev":[{"t":1.2776,"from":"I","to":" ","n":33,"dt":0.0254}]},{"c0":"F","ev":[{"t":1.3057,"from":"F","to":" ","n":36,"dt":0.0277}]},{"c0":" ","ev":[]},{"c0":"1","ev":[]},{"c0":" ","ev":[]},{"c0":"O","ev":[{"t":3.4569,"from":"O","to":"A","n":28,"dt":0.0254},{"t":10.105,"from":"A","to":"C","n":2,"dt":0.0302}]},{"c0":"N","ev":[{"t":3.4836,"from":"N","to":"G","n":35,"dt":0.0256},{"t":10.1307,"from":"G","to":"A","n":36,"dt":0.0289}]},{"c0":" ","ev":[{"t":3.515,"from":" ","to":"A","n":1,"dt":0.0272},{"t":10.15,"from":"A","to":"N","n":13,"dt":0.0293}]},{"c0":"T","ev":[{"t":3.5532,"from":"T","to":"I","n":31,"dt":0.0293},{"t":10.1869,"from":"I","to":"C","n":36,"dt":0.0307}]},{"c0":"I","ev":[{"t":3.5878,"from":"I","to":"N","n":5,"dt":0.03},{"t":10.2269,"from":"N","to":"E","n":33,"dt":0.0292}]},{"c0":"M","ev":[{"t":3.6178,"from":"M","to":" ","n":29,"dt":0.0303},{"t":10.245,"from":" ","to":"L","n":12,"dt":0.0286}]},{"c0":"E","ev":[{"t":3.6428,"from":"E","to":" ","n":37,"dt":0.0287},{"t":10.2798,"from":" ","to":"L","n":12,"dt":0.0314}]},{"c0":" ","ev":[{"t":10.3136,"from":" ","to":"E","n":5,"dt":0.0321}]},{"c0":" ","ev":[{"t":10.3401,"from":" ","to":"D","n":4,"dt":0.0278}]}],[{"c0":"0","ev":[]},{"c0":"9","ev":[]},{"c0":":","ev":[]},{"c0":"1","ev":[]},{"c0":"2","ev":[]},{"c0":"W","ev":[{"t":1.0206,"from":"W","to":"S","n":38,"dt":0.0268}]},{"c0":"O","ev":[{"t":1.0688,"from":"O","to":"A","n":28,"dt":0.0284}]},{"c0":"R","ev":[{"t":1.0966,"from":"R","to":"M","n":37,"dt":0.0278}]},{"c0":"D","ev":[{"t":1.1256,"from":"D","to":"E","n":1,"dt":0.0246}]},{"c0":"-","ev":[{"t":1.1593,"from":"-","to":" ","n":3,"dt":0.026}]},{"c0":"P","ev":[{"t":1.1825,"from":"P","to":"L","n":38,"dt":0.0274}]},{"c0":"O","ev":[]},{"c0":"P","ev":[{"t":1.2324,"from":"P","to":"O","n":41,"dt":0.0286}]},{"c0":" ","ev":[{"t":1.264,"from":" ","to":"K","n":11,"dt":0.0239}]},{"c0":"C","ev":[{"t":1.3049,"from":"C","to":" ","n":39,"dt":0.0261}]},{"c0":"A","ev":[{"t":1.3293,"from":"A","to":" ","n":41,"dt":0.0276}]},{"c0":"P","ev":[{"t":1.3594,"from":"P","to":" ","n":26,"dt":0.0284}]},{"c0":"S","ev":[{"t":1.3847,"from":"S","to":" ","n":23,"dt":0.0237}]},{"c0":" ","ev":[]},{"c0":"3","ev":[]},{"c0":" ","ev":[]},{"c0":"O","ev":[{"t":4.3647,"from":"O","to":"A","n":28,"dt":0.0293},{"t":10.2133,"from":"A","to":"C","n":2,"dt":0.0323}]},{"c0":"N","ev":[{"t":4.3866,"from":"N","to":"G","n":35,"dt":0.0254},{"t":10.2404,"from":"G","to":"A","n":36,"dt":0.0306}]},{"c0":" ","ev":[{"t":4.4274,"from":" ","to":"A","n":1,"dt":0.0257},{"t":10.2877,"from":"A","to":"N","n":13,"dt":0.0288}]},{"c0":"T","ev":[{"t":4.4446,"from":"T","to":"I","n":31,"dt":0.0285},{"t":10.3056,"from":"I","to":"C","n":36,"dt":0.0329}]},{"c0":"I","ev":[{"t":4.4847,"from":"I","to":"N","n":5,"dt":0.0288},{"t":10.3343,"from":"N","to":"E","n":33,"dt":0.0285}]},{"c0":"M","ev":[{"t":4.5135,"from":"M","to":" ","n":29,"dt":0.0304},{"t":10.3797,"from":" ","to":"L","n":12,"dt":0.0328}]},{"c0":"E","ev":[{"t":4.5342,"from":"E","to":" ","n":37,"dt":0.0253},{"t":10.4083,"from":" ","to":"L","n":12,"dt":0.0274}]},{"c0":" ","ev":[{"t":10.4363,"from":" ","to":"E","n":5,"dt":0.0299}]},{"c0":" ","ev":[{"t":10.4689,"from":" ","to":"D","n":4,"dt":0.0276}]}],[{"c0":"0","ev":[]},{"c0":"9","ev":[]},{"c0":":","ev":[]},{"c0":"1","ev":[]},{"c0":"6","ev":[]},{"c0":"N","ev":[{"t":1.1183,"from":"N","to":"S","n":5,"dt":0.0248}]},{"c0":"E","ev":[{"t":1.1569,"from":"E","to":"A","n":38,"dt":0.0256}]},{"c0":"O","ev":[{"t":1.1745,"from":"O","to":"M","n":40,"dt":0.0252}]},{"c0":"N","ev":[{"t":1.2171,"from":"N","to":"E","n":33,"dt":0.0283}]},{"c0":" ","ev":[]},{"c0":"G","ev":[{"t":1.279,"from":"G","to":"L","n":5,"dt":0.0258}]},{"c0":"L","ev":[{"t":1.2997,"from":"L","to":"O","n":3,"dt":0.0264}]},{"c0":"O","ev":[]},{"c0":"W","ev":[{"t":1.36,"from":"W","to":"K","n":30,"dt":0.0239}]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":" ","ev":[]},{"c0":"2","ev":[]},{"c0":" ","ev":[]},{"c0":"O","ev":[{"t":4.6228,"from":"O","to":"A","n":28,"dt":0.0274},{"t":10.3413,"from":"A","to":"C","n":2,"dt":0.0304}]},{"c0":"N","ev":[{"t":4.6697,"from":"N","to":"G","n":35,"dt":0.0287},{"t":10.3654,"from":"G","to":"A","n":36,"dt":0.0302}]},{"c0":" ","ev":[{"t":4.6893,"from":" ","to":"A","n":1,"dt":0.0288},{"t":10.3939,"from":"A","to":"N","n":13,"dt":0.0304}]},{"c0":"T","ev":[{"t":4.7134,"from":"T","to":"I","n":31,"dt":0.0266},{"t":10.4321,"from":"I","to":"C","n":36,"dt":0.0328}]},{"c0":"I","ev":[{"t":4.7444,"from":"I","to":"N","n":5,"dt":0.0295},{"t":10.4501,"from":"N","to":"E","n":33,"dt":0.0292}]},{"c0":"M","ev":[{"t":4.7844,"from":"M","to":" ","n":29,"dt":0.029},{"t":10.4933,"from":" ","to":"L","n":12,"dt":0.0299}]},{"c0":"E","ev":[{"t":4.817,"from":"E","to":" ","n":37,"dt":0.0268},{"t":10.5271,"from":" ","to":"L","n":12,"dt":0.0288}]},{"c0":" ","ev":[{"t":10.556,"from":" ","to":"E","n":5,"dt":0.0272}]},{"c0":" ","ev":[{"t":10.5708,"from":" ","to":"D","n":4,"dt":0.0299}]}],[{"c0":" ","ev":[{"t":6.7631,"from":" ","to":"1","n":28,"dt":0.0438}]},{"c0":" ","ev":[{"t":6.7925,"from":" ","to":"0","n":27,"dt":0.0394}]},{"c0":" ","ev":[{"t":6.8234,"from":" ","to":":","n":37,"dt":0.038}]},{"c0":" ","ev":[{"t":6.8415,"from":" ","to":"0","n":27,"dt":0.0409}]},{"c0":" ","ev":[{"t":6.8736,"from":" ","to":"0","n":27,"dt":0.0392}]},{"c0":" ","ev":[{"t":6.8034,"from":" ","to":"S","n":19,"dt":0.0369}]},{"c0":" ","ev":[{"t":6.8484,"from":" ","to":"O","n":15,"dt":0.0423}]},{"c0":" ","ev":[{"t":6.8669,"from":" ","to":"M","n":13,"dt":0.041}]},{"c0":" ","ev":[{"t":6.9035,"from":" ","to":"E","n":5,"dt":0.0375}]},{"c0":" ","ev":[{"t":6.9216,"from":" ","to":"W","n":23,"dt":0.0436}]},{"c0":" ","ev":[{"t":6.9587,"from":" ","to":"H","n":8,"dt":0.0398}]},{"c0":" ","ev":[{"t":6.9986,"from":" ","to":"E","n":5,"dt":0.0376}]},{"c0":" ","ev":[{"t":7.0105,"from":" ","to":"R","n":18,"dt":0.0416}]},{"c0":" ","ev":[{"t":7.0548,"from":" ","to":"E","n":5,"dt":0.0401}]},{"c0":" ","ev":[]},{"c0":" ","ev":[{"t":7.1187,"from":" ","to":"E","n":5,"dt":0.041}]},{"c0":" ","ev":[{"t":7.1326,"from":" ","to":"L","n":12,"dt":0.0418}]},{"c0":" ","ev":[{"t":7.1724,"from":" ","to":"S","n":19,"dt":0.0411}]},{"c0":" ","ev":[{"t":7.1967,"from":" ","to":"E","n":5,"dt":0.0389}]},{"c0":" ","ev":[{"t":6.8617,"from":" ","to":"1","n":28,"dt":0.0378}]},{"c0":" ","ev":[]},{"c0":" ","ev":[{"t":6.9058,"from":" ","to":"B","n":2,"dt":0.0436}]},{"c0":" ","ev":[{"t":6.9396,"from":" ","to":"O","n":15,"dt":0.042}]},{"c0":" ","ev":[{"t":6.9698,"from":" ","to":"A","n":1,"dt":0.0376}]},{"c0":" ","ev":[{"t":7.0088,"from":" ","to":"R","n":18,"dt":0.043}]},{"c0":" ","ev":[{"t":7.0274,"from":" ","to":"D","n":4,"dt":0.0391}]},{"c0":" ","ev":[{"t":7.0592,"from":" ","to":"I","n":9,"dt":0.0416}]},{"c0":" ","ev":[{"t":7.0983,"from":" ","to":"N","n":14,"dt":0.0406}]},{"c0":" ","ev":[{"t":7.1159,"from":" ","to":"G","n":7,"dt":0.0364}]},{"c0":" ","ev":[]}]],"lampRow":5,"lampOn":8.349} /*END*/;
+      const A = SCHEDULE.alphabet;
+      const L = A.length;
+      const PITCH = 57, GAP = 22, X0 = 86, Y0 = 82, ROW = 92;
+      const group = (i) => (i < 5 ? 0 : i < 19 ? 1 : i < 21 ? 2 : 3);
+      const tileX = (i) => X0 + i * PITCH + GAP * group(i);
+      const rowY = (r) => Y0 + r * ROW;
+
+      // seeded wear (10% of tiles)
+      function mulberry32(a) { return () => { a |= 0; a = (a + 0x6d2b79f5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+      const rnd = mulberry32(31);
+
+      const board = document.getElementById("board");
+      const tiles = [];
+      const lamps = [];
+      SCHEDULE.rows.forEach((row, r) => {
+        const lamp = document.createElement("div");
+        lamp.className = "lamp";
+        lamp.style.left = "36px";
+        lamp.style.top = rowY(r) + 24 + "px";
+        board.appendChild(lamp);
+        lamps.push(lamp);
+        row.forEach((data, i) => {
+          const el = document.createElement("div");
+          el.className = "tile";
+          el.style.left = tileX(i) + "px";
+          el.style.top = rowY(r) + "px";
+          el.innerHTML = '<div class="half top" data-layout-allow-occlusion><span></span></div><div class="half bot" data-layout-allow-occlusion><span></span></div><div class="half top flap" data-layout-allow-occlusion><span></span></div><div class="half bot flap" data-layout-allow-occlusion><span></span></div><div class="split" data-layout-allow-occlusion></div>';
+          if (rnd() < 0.1) {
+            const w = document.createElement("div");
+            w.className = "wear";
+            w.setAttribute("data-layout-allow-occlusion", "");
+            w.style.background = `radial-gradient(circle at ${20 + rnd() * 60}% ${20 + rnd() * 60}%, rgba(255,255,255,${(0.03 + rnd() * 0.05).toFixed(3)}), rgba(255,255,255,0) 60%)`;
+            el.appendChild(w);
+          }
+          board.appendChild(el);
+          const [st, sb, ft, fb] = el.querySelectorAll(".half");
+          tiles.push({ data, st: st.firstChild, sb: sb.firstChild, ft, fb, ftS: ft.firstChild, fbS: fb.firstChild, last: "" });
+        });
+      });
+
+      function tileState(d, t) {
+        let e = null;
+        for (const ev of d.ev) if (ev.t <= t) e = ev;
+        if (!e) return { idle: d.c0 };
+        const el = t - e.t;
+        const k = Math.floor(el / e.dt);
+        if (k >= e.n) return { idle: e.to };
+        const ia = (A.indexOf(e.from) + k) % L;
+        return { a: A[ia], b: A[(ia + 1) % L], p: (el - k * e.dt) / e.dt };
+      }
+
+      const flickers = [...document.querySelectorAll(".flicker")];
+      function renderAt(t) {
+        for (const tile of tiles) {
+          const s = tileState(tile.data, t);
+          if (s.idle !== undefined) {
+            const key = "i" + s.idle;
+            if (tile.last === key) continue;
+            tile.last = key;
+            tile.st.textContent = tile.sb.textContent = s.idle;
+            tile.ft.style.visibility = tile.fb.style.visibility = "hidden";
+            continue;
+          }
+          tile.last = "";
+          tile.st.textContent = s.b; // next char's top is revealed behind the falling flap
+          tile.sb.textContent = s.a; // old char's bottom stays until the new bottom flap covers it
+          if (s.p < 0.5) {
+            tile.ftS.textContent = s.a;
+            tile.ft.style.visibility = "visible";
+            tile.ft.style.transform = `rotateX(${(-180 * s.p).toFixed(2)}deg)`;
+            tile.ft.style.filter = `brightness(${(1 - s.p * 0.5).toFixed(3)})`;
+            tile.fb.style.visibility = "hidden";
+          } else {
+            tile.fbS.textContent = s.b;
+            tile.fb.style.visibility = "visible";
+            tile.fb.style.transform = `rotateX(${(90 - 180 * (s.p - 0.5)).toFixed(2)}deg)`;
+            tile.fb.style.filter = `brightness(${(1.35 - (s.p - 0.5) * 0.7).toFixed(3)})`;
+            tile.ft.style.visibility = "hidden";
+          }
+        }
+        // the one lamp: 1 frame on, 3 frames of overshoot, then steady
+        const lamp = lamps[SCHEDULE.lampRow];
+        const on = t >= SCHEDULE.lampOn;
+        lamp.classList.toggle("on", on);
+        lamp.style.filter = on && t < SCHEDULE.lampOn + 0.1 ? "brightness(1.25)" : "none";
+        // hall light flicker, wide shots only: ±2% at 0.5 Hz
+        const f = (0.01 + 0.01 * Math.sin(2 * Math.PI * 0.5 * t)).toFixed(4);
+        for (const el of flickers) el.style.opacity = f;
+      }
+
+      // ---- camera: hard cuts between framings, linear dollies inside shots ----
+      const BX = 350, BY = 520;
+      const frame = (cx, cy, w) => { const s = 1920 / w; return { x: 960 - s * cx, y: 540 - s * cy, scale: s }; };
+      const rowCY = (r) => BY + rowY(r) + 38;
+      const tl = gsap.timeline({ paused: true });
+      const cam = "#cam";
+      gsap.set(cam, { transformOrigin: "0 0" });
+      const shot = (t0, dur, from, to) => {
+        tl.set(cam, from, t0);
+        tl.fromTo(cam, from, { ...to, duration: dur, ease: "none", immediateRender: false }, t0);
+      };
+      shot(0.0, 3.6, frame(1262, 800, 2200), frame(1318, 800, 2200));         // S1 wide, dolly right 15 px/s in frame
+      shot(3.6, 0.8, frame(1612, rowCY(1), 1240), frame(1636, rowCY(1), 1240)); // S2 row 2 remarks
+      shot(4.4, 0.7, frame(1640, rowCY(2), 1240), frame(1619, rowCY(2), 1240)); // S3 row 3, dolly the other way
+      shot(5.1, 0.8, frame(1612, rowCY(3), 1240), frame(1636, rowCY(3), 1240)); // S4 row 4
+      shot(5.9, 0.8, frame(BX + 300, rowCY(5), 560), frame(BX + 300, rowCY(5), 560)); // S5 blank tiles, dead still
+      shot(6.7, 3.0, frame(946, rowCY(5) - 40, 1330), frame(990, rowCY(5) - 40, 1330)); // S6 lamp + time + destination
+      shot(9.7, 3.9, frame(1330, 800, 2200), frame(1270, 800, 2200));          // S7 wide, dolly left
+
+      const clock = { t: 0 };
+      tl.fromTo(clock, { t: 0 }, { t: 13.6, duration: 13.6, ease: "none", onUpdate: () => renderAt(clock.t) }, 0);
+      renderAt(0);
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
