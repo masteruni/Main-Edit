@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face { font-family: "Pinyon Script"; font-style: normal; font-weight: 400; font-display: block; src: url("assets/fonts/pinyon-script-400.woff2") format("woff2"); }
+      @font-face { font-family: "Hanken Grotesk"; font-style: normal; font-weight: 800; font-display: block; src: url("assets/fonts/hanken-grotesk-800.woff2") format("woff2"); }
+      :root { --ink: #f6f2ea; --script: "Pinyon Script", cursive; --sans: "Hanken Grotesk", sans-serif; }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1080px; height: 1920px; overflow: hidden; background: #0b0b0c; }
+      #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
+      .cam { position: absolute; inset: 0; overflow: hidden; }
+      .cam video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
+      .cap { position: absolute; left: 96px; right: 96px; z-index: 100; display: flex; flex-direction: column; color: var(--ink);
+              text-shadow: 0 4px 22px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.35); }
+      .cap.left { align-items: flex-start; } .cap.right { align-items: flex-end; } .cap.center { align-items: center; }
+      .cap span { display: block; transform-origin: 30% 60%; }
+      .sans { font-family: var(--sans); font-weight: 800; letter-spacing: -0.015em; line-height: 0.98; }
+      .script { font-family: var(--script); font-weight: 400; line-height: 0.8; margin: -0.05em 0 0.08em -0.04em; }
+      .flash { position: absolute; inset: 0; z-index: 200; pointer-events: none; }
+      .flash i { position: absolute; inset: 0; background: #fffaf0; opacity: 0; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="25.828" data-width="1080" data-height="1920">
+      <div class="cam" id="cam00" style="z-index:1"><video id="v00" class="clip" src="assets/shots/00.mp4" muted playsinline data-start="0.000" data-duration="1.828" data-track-index="0"></video></div>
+      <div class="cam" id="cam01" style="z-index:2"><video id="v01" class="clip" src="assets/shots/01.mp4" muted playsinline data-start="1.828" data-duration="1.372" data-track-index="0"></video></div>
+      <div class="cam" id="cam02" style="z-index:3"><video id="v02" class="clip" src="assets/shots/02.mp4" muted playsinline data-start="3.200" data-duration="0.685" data-track-index="0"></video></div>
+      <div class="cam" id="cam03" style="z-index:4"><video id="v03" class="clip" src="assets/shots/03.mp4" muted playsinline data-start="3.885" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam04" style="z-index:5"><video id="v04" class="clip" src="assets/shots/04.mp4" muted playsinline data-start="4.571" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam05" style="z-index:6"><video id="v05" class="clip" src="assets/shots/05.mp4" muted playsinline data-start="5.257" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam06" style="z-index:7"><video id="v06" class="clip" src="assets/shots/06.mp4" muted playsinline data-start="5.600" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam07" style="z-index:8"><video id="v07" class="clip" src="assets/shots/07.mp4" muted playsinline data-start="5.943" data-duration="0.685" data-track-index="0"></video></div>
+      <div class="cam" id="cam08" style="z-index:9"><video id="v08" class="clip" src="assets/shots/08.mp4" muted playsinline data-start="6.628" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam09" style="z-index:10"><video id="v09" class="clip" src="assets/shots/09.mp4" muted playsinline data-start="7.314" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam10" style="z-index:11"><video id="v10" class="clip" src="assets/shots/10.mp4" muted playsinline data-start="8.000" data-duration="1.371" data-track-index="0"></video></div>
+      <div class="cam" id="cam11" style="z-index:12"><video id="v11" class="clip" src="assets/shots/11.mp4" muted playsinline data-start="9.371" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam12" style="z-index:13"><video id="v12" class="clip" src="assets/shots/12.mp4" muted playsinline data-start="10.057" data-duration="1.371" data-track-index="0"></video></div>
+      <div class="cam" id="cam13" style="z-index:14"><video id="v13" class="clip" src="assets/shots/13.mp4" muted playsinline data-start="11.428" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam14" style="z-index:15"><video id="v14" class="clip" src="assets/shots/14.mp4" muted playsinline data-start="12.114" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam15" style="z-index:16"><video id="v15" class="clip" src="assets/shots/15.mp4" muted playsinline data-start="12.457" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam16" style="z-index:17"><video id="v16" class="clip" src="assets/shots/16.mp4" muted playsinline data-start="12.800" data-duration="0.685" data-track-index="0"></video></div>
+      <div class="cam" id="cam17" style="z-index:18"><video id="v17" class="clip" src="assets/shots/17.mp4" muted playsinline data-start="13.485" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam18" style="z-index:19"><video id="v18" class="clip" src="assets/shots/18.mp4" muted playsinline data-start="14.171" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam19" style="z-index:20"><video id="v19" class="clip" src="assets/shots/19.mp4" muted playsinline data-start="14.857" data-duration="0.685" data-track-index="0"></video></div>
+      <div class="cam" id="cam20" style="z-index:21"><video id="v20" class="clip" src="assets/shots/20.mp4" muted playsinline data-start="15.542" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam21" style="z-index:22"><video id="v21" class="clip" src="assets/shots/21.mp4" muted playsinline data-start="16.228" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam22" style="z-index:23"><video id="v22" class="clip" src="assets/shots/22.mp4" muted playsinline data-start="16.571" data-duration="0.343" data-track-index="0"></video></div>
+      <div class="cam" id="cam23" style="z-index:24"><video id="v23" class="clip" src="assets/shots/23.mp4" muted playsinline data-start="16.914" data-duration="0.685" data-track-index="0"></video></div>
+      <div class="cam" id="cam24" style="z-index:25"><video id="v24" class="clip" src="assets/shots/24.mp4" muted playsinline data-start="17.599" data-duration="0.686" data-track-index="0"></video></div>
+      <div class="cam" id="cam25" style="z-index:26"><video id="v25" class="clip" src="assets/shots/25.mp4" muted playsinline data-start="18.285" data-duration="2.743" data-track-index="0"></video></div>
+      <div class="cam" id="cam26" style="z-index:27"><video id="v26" class="clip" src="assets/shots/26.mp4" muted playsinline data-start="21.028" data-duration="1.371" data-track-index="0"></video></div>
+      <div class="cam" id="cam27" style="z-index:28"><video id="v27" class="clip" src="assets/shots/27.mp4" muted playsinline data-start="22.399" data-duration="3.429" data-track-index="0"></video></div>
+      <div id="cap0" class="clip cap left" style="top:1180px" data-start="0.100" data-duration="1.728" data-track-index="1" data-layout-allow-overlap><span id="w0_0" class="sans" style="font-size:92px">Everyone</span><span id="w0_1" class="sans" style="font-size:92px">wants</span><span id="w0_2" class="script" style="font-size:230px">this.</span></div>
+      <div id="cap1" class="clip cap left" style="top:330px" data-start="1.928" data-duration="1.272" data-track-index="1" data-layout-allow-overlap><span id="w1_0" class="sans" style="font-size:92px">Nobody</span><span id="w1_1" class="sans" style="font-size:92px">wants</span><span id="w1_2" class="script" style="font-size:230px">this.</span></div>
+      <div id="cap2" class="clip cap left" style="top:330px" data-start="3.200" data-duration="0.685" data-track-index="1" data-layout-allow-overlap><span id="w2_0" class="sans" style="font-size:150px">5 AM.</span></div>
+      <div id="cap3" class="clip cap right" style="top:300px" data-start="3.885" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w3_0" class="sans" style="font-size:96px">No one</span><span id="w3_1" class="script" style="font-size:190px">watching.</span></div>
+      <div id="cap4" class="clip cap left" style="top:300px" data-start="5.257" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w4_0" class="sans" style="font-size:96px">Every</span><span id="w4_1" class="script" style="font-size:190px">single</span><span id="w4_2" class="sans" style="font-size:96px">day.</span></div>
+      <div id="cap5" class="clip cap left" style="top:300px" data-start="6.628" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w5_0" class="sans" style="font-size:110px">Until</span><span id="w5_1" class="sans" style="font-size:110px">…</span></div>
+      <div id="cap6" class="clip cap center" style="top:360px" data-start="8.000" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w6_0" class="script" style="font-size:250px">it pays.</span></div>
+      <div id="cap7" class="clip cap left" style="top:330px" data-start="18.385" data-duration="2.643" data-track-index="1" data-layout-allow-overlap><span id="w7_0" class="script" style="font-size:220px">Same</span><span id="w7_1" class="sans" style="font-size:104px">24 hours.</span></div>
+      <div id="cap8" class="clip cap left" style="top:1180px" data-start="23.085" data-duration="2.743" data-track-index="1" data-layout-allow-overlap><span id="w8_0" class="sans" style="font-size:92px">Now everyone</span><span id="w8_1" class="sans" style="font-size:92px">wants</span><span id="w8_2" class="script" style="font-size:230px">this.</span></div>
+      <div id="flash0" class="clip flash" data-start="8.000" data-duration="0.2" data-track-index="2"><i></i></div>
+      <audio id="soundtrack" class="clip" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="25.828" data-track-index="3" data-volume="1"></audio>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#cam10", {scale: 1}, {scale: 1.06, duration: 1.371, ease: "sine.inOut"}, 8.000);
+      tl.fromTo("#cam12", {scale: 1}, {scale: 1.07, duration: 1.371, ease: "sine.inOut"}, 10.057);
+      tl.fromTo("#cam25", {scale: 1}, {scale: 1.06, duration: 2.743, ease: "sine.inOut"}, 18.285);
+      tl.fromTo("#cam27", {scale: 1}, {scale: 1.05, duration: 3.429, ease: "sine.inOut"}, 22.399);
+      tl.fromTo("#cam10", {scale: 1.16}, {scale: 1, duration: 0.32, ease: "power3.out", immediateRender: false}, 8.000);
+      tl.to("#cam10", {scale: 1.06, duration: 1.051, ease: "sine.inOut"}, 8.320);
+      tl.fromTo("#cam14", {scale: 1.1}, {scale: 1, duration: 0.32, ease: "power3.out", immediateRender: false}, 12.114);
+      tl.fromTo("#cam26", {scale: 1.08}, {scale: 1, duration: 0.32, ease: "power3.out", immediateRender: false}, 21.028);
+      tl.fromTo("#w0_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 0.100);
+      tl.fromTo("#w0_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 0.457);
+      tl.set("#w0_1", {opacity: 0}, 0.100);
+      tl.fromTo("#w0_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 1.143);
+      tl.set("#w0_2", {opacity: 0}, 0.100);
+      tl.fromTo("#w1_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 1.928);
+      tl.fromTo("#w1_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 2.171);
+      tl.set("#w1_1", {opacity: 0}, 1.928);
+      tl.fromTo("#w1_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 2.514);
+      tl.set("#w1_2", {opacity: 0}, 1.928);
+      tl.fromTo("#w2_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 3.200);
+      tl.fromTo("#w3_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 3.885);
+      tl.fromTo("#w3_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 4.571);
+      tl.set("#w3_1", {opacity: 0}, 3.885);
+      tl.fromTo("#w4_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 5.257);
+      tl.fromTo("#w4_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 5.600);
+      tl.set("#w4_1", {opacity: 0}, 5.257);
+      tl.fromTo("#w4_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 5.943);
+      tl.set("#w4_2", {opacity: 0}, 5.257);
+      tl.fromTo("#w5_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 6.628);
+      tl.fromTo("#w5_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 7.314);
+      tl.set("#w5_1", {opacity: 0}, 6.628);
+      tl.fromTo("#w6_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 8.000);
+      tl.fromTo("#w7_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 18.385);
+      tl.fromTo("#w7_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 18.971);
+      tl.set("#w7_1", {opacity: 0}, 18.385);
+      tl.fromTo("#w8_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.085);
+      tl.fromTo("#w8_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.771);
+      tl.set("#w8_1", {opacity: 0}, 23.085);
+      tl.fromTo("#w8_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 24.456);
+      tl.set("#w8_2", {opacity: 0}, 23.085);
+      tl.fromTo("#flash0 i", {opacity: 0.9}, {opacity: 0, duration: 0.18, ease: "power2.out"}, 8.000);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

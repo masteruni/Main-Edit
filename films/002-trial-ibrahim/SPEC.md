@@ -4,7 +4,7 @@ TYPE:    general edit (no client preset). References in refs/ apply to this film
 GOAL:    a stranger scrolling Reels stops on a mid-air yacht jump, feels the contrast between the reward everyone wants and the
          5 AM discipline nobody films, and gets paid off on a drop that turns the discipline into the reward. Loops on replay.
 OUTPUT:  1080 x 1920, 30 fps, ~26 s, IG Reel / TikTok / Short. Burned-in kinetic captions (no VO in the footage).
-SOUND:   Mixkit "Waka Floka Type" (id 364, Arabic-flavoured trap, ~86 BPM, beat 0.697 s), entered at 6.0 s so its drop
+SOUND:   Mixkit "Waka Floka Type" (id 364, Arabic-flavoured trap, 87.5 BPM, beat 0.686 s), entered at 6.0 s so its drop
          (14.0 s) lands at video 8.0 s. Mixkit SFX with a visible cause only. Target −14 LUFS, true peak ≤ −1 dBTP.
 
 ## Reference grammar (refs/ref1.mp4, refs/ref2.mp4): measured, used for this film only
@@ -20,7 +20,7 @@ B. Result first: a Stripe notification ("$50k today") as frame 1. Rejected: the 
    and money-first reads as a course ad.
 C. Mid-action: a cold-plunge face shot with "5 AM." Rejected: strong image, but no promise until the payoff.
 
-## Story & shot list (cuts on beats; music beats at video t = 0.342 + 0.6969·n)
+## Story & shot list (cuts on beats; music beats at video t = 0.457 + 0.6857·n)
 | # | time | shot (proxy) | text | sound |
 |---|------|--------------|------|-------|
 | 1 | 0.00–1.74 | yacht jump, 0.5× slow-mo | Everyone wants / *this.* | music intro, water splash on landing |
