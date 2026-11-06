@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """v4: the story is Ibrahim's own voice (assets/vo-video, from the client's Dropbox), cut into one arc,
-over Mixkit "Dreaming Big" with its drum entry (measured 30.22 s) on "10 million dollars".
+over Mixkit "Driving Ambition" with its full-band hit (measured 37.66 s) on "10 million dollars".
 
-Grid: beat n = DROP + 0.6734 n (89.1 BPM); B-roll cuts sit on it, talking-head cuts sit on the words.
+Grid: beat n = DROP + 0.6037 n (99.4 BPM); B-roll cuts sit on it, talking-head cuts sit on the words.
 Shot tuple: (start, end, source, src_in, speed, zoom, cx, cy, grade, fx)
   source = proxy slug (read from the 4K original in the Dropbox zip) or "vo:<file>" (assets/vo-video)
   fx     = "" | "bw-open" (first 0.25 s black & white, the reference's opening pop) | "ramp" (100→30→100 % speed)
 """
-BEAT = 0.6734                     # Mixkit #31 "Dreaming Big" (Ahjay Stelino), 89.1 BPM
+BEAT = 0.6037                     # Mixkit #32 "Driving Ambition" (Ahjay Stelino), 99.4 BPM (measured)
 DROP = 18.5
-MUSIC_FILE = "music-mixkit-31-dreaming-big.mp3"
-MUSIC_DROP = 30.22                # measured: drums/percussion entry in the track
+MUSIC_FILE = "music-mixkit-32-driving-ambition.mp3"
+MUSIC_DROP = 37.66                # measured: the full band hits (+13 dB bass) in the track
 MUSIC_IN = DROP - MUSIC_DROP      # negative: the track is entered 11.72 s in (soft piano) at video 0
 
 
@@ -22,7 +22,7 @@ def h(n):
     return round(DROP + BEAT * n + BEAT / 2, 3)
 
 
-END = b(18)  # 30.621: one beat after "Let's go."
+END = b(20)  # 30.574: just after "Let's go."
 
 # Voiceover: (key, file in assets/vo-candidates/*.wav + vo-video, src_in, src_out, place at video t)
 VO = [
@@ -31,7 +31,7 @@ VO = [
     ("V3a", "ibrahim-recording-in-miami-crib", 2.24, 5.52, 4.20),  # If you're earning under $1,000 monthly, you're fighting
     ("V3b", "ibrahim-recording-in-miami-crib", 12.97, 14.55, 7.48),  # an uphill battle.
     ("V4", "ibrahim-filming-and-talking", 9.24, 14.04, 9.25),   # This is the most honest conversation ... changed my life.
-    ("V5", "ibrahim-and-ramin-podcast-in-dubai", 0.00, 2.33, DROP),  # 10 million dollars in valuations going up.
+    ("V5", "ibrahim-and-ramin-podcast-in-dubai", 0.00, 2.33, DROP + 0.30),  # the hit lands first, then his line  # 10 million dollars in valuations going up.
     ("V6", "ibrahim-and-ramin-podcast-in-dubai", 7.63, 10.50, 23.985),  # And now we're launching another software company
     ("V7", "ibrahim-selfie-on-yacht", 0.00, 3.11, 26.95),         # Lock in boys, lock in. Let's go.
 ]
@@ -70,8 +70,8 @@ SHOTS = [
     (h(6), b(7), "jetski-spin", 3.9, 1.0, 1.15, 0.50, 0.50, "day", ""),
     (b(7), 23.985, "rolls-royce-inside", 1.0, 1.0, 1.0, 0.50, 0.50, "night", ""),
     # "And now we're launching another software company", in sync, then his night
-    (23.985, b(10), POD, 7.63, 1.0, 1.7, 0.27, 0.52, "day", ""),
-    (b(10), 27.55, "ibrahim-cigar", 2.0, 1.0, 1.05, 0.50, 0.45, "night", ""),
+    (23.985, b(11), POD, 7.63, 1.0, 1.7, 0.27, 0.52, "day", ""),
+    (b(11), 27.55, "ibrahim-cigar", 2.0, 1.0, 1.05, 0.50, 0.45, "night", ""),
     # "Lock in boys, lock in. Let's go." (the selfie; its first 0.6 s of audio plays under the last cigar frames)
     (27.55, END, SELFIE, 0.60, 1.0, 1.25, 0.45, 0.45, "day", ""),  # in sync with V7 (placed 26.95)
 ]

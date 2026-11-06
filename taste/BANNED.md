@@ -39,3 +39,6 @@ Format: `- <the tell, concretely> → <what to do instead>  (source)`
 - Unreadable proof-of-income screenshot → punch to ≥ 200% on the one number or don't show it  (films/002-trial-ibrahim)
 - Payoff line at ~30% of runtime, then a victory-lap montage → hold the answer to 70–90%, open a second loop at the drop  (films/002-trial-ibrahim)
 - Callback ending that repeats the opening with "Now" → the last line turns the meaning  (films/002-trial-ibrahim)
+- Caption words flashing for < 0.35 s, each restarting a blur/scale entrance → group fast speech so every caption holds ≥ 0.36 s  (films/002-trial-ibrahim v4, person's note "stuttery")
+- Reference typography approximated by eye → measure it side by side (word width as % of frame, stack alignment, shadow) before shipping  (films/002-trial-ibrahim v4)
+- A voice line starting exactly on the music drop under sidechain ducking → let the hit land 0.2–0.3 s before the line  (films/002-trial-ibrahim)

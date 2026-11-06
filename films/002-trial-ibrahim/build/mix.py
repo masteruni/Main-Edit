@@ -25,17 +25,14 @@ GAP = (h(-1), DROP)
 PEAKS = {"563": 0.10, "1143": 0.50, "786": 3.80, "790": 2.40, "1180": 0.30, "175": 0.40}
 
 # (target time, file, gain dB, length s, mode) — mode "peak": align the file's peak to target; "end": the file is cut at target
-SFX = [
-    (1.25, "1180", -12, 1.6, "peak"),        # the jump hits the water (subtle; the image already says it)
-    (11.40, "175", -18, 0.6, "peak"),        # one air sweep into the montage, under the light leak
-    (GAP[0], "786", -10, 3.8, "end"),        # long swell under the montage, cut dead at the silence
-    (GAP[0], "790", -14, 2.4, "end"),        # riser layered on top of the swell's last 2.4 s
-    (DROP, "1143", -6, 2.2, "peak"),         # sub-boom on the drop
-    (DROP, "563", -9, 1.6, "peak"),          # punch layered on the boom
+SFX = [  # minimal & clean (the person's choice): one soft impact on the drop, a soft whoosh on three big cuts
+    (2.05, "175", -20, 0.6, "peak"),         # the jump → the man saying it
+    (11.40, "175", -20, 0.6, "peak"),        # into the discipline montage
+    (DROP, "563", -12, 1.4, "peak"),         # one soft impact on the drop
+    (23.985, "175", -21, 0.6, "peak"),       # into "And now we're launching..."
 ]
 
-# the footage's own sound under the B-roll (shot index, gain dB); 1x-speed shots only
-NATIVE = [(14, -14), (15, -20), (17, -18), (18, -18), (19, -24)]
+NATIVE = []  # no footage sound in the minimal mix
 
 
 def native_inputs():
@@ -78,7 +75,7 @@ def main():
     inputs += ["-ss", f"{-MUSIC_IN:.3f}", "-i", os.path.join(A, MUSIC_FILE)]
     parts.append(f"[{mi}:a]aresample=48000,aformat=channel_layouts=stereo,apad,atrim=0:{END},"
                  f"volume=0:enable='between(t,{GAP[0]},{GAP[1]})',volume=0.85[mraw]")
-    parts.append("[mraw][vside]sidechaincompress=threshold=0.03:ratio=4:attack=30:release=400:makeup=1[mus]")
+    parts.append("[mraw][vside]sidechaincompress=threshold=0.03:ratio=3:attack=40:release=400:makeup=1[mus]")
     labels = ["[vox]", "[mus]"]
     idx = mi + 1
 

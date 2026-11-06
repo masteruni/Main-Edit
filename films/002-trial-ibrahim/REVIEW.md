@@ -1,4 +1,22 @@
-# Review · 002 trial edit (v4)
+# Review · 002 trial edit (v5)
+
+## v5 changes (person's notes: captions don't look like the reference and stutter; didn't like the music or SFX)
+- **Captions, re-measured side by side against ref3:**
+  - Key words now ~50% of frame width (v4 ran 65–85%).
+  - Small words sit on one line, left-aligned on top of the key word, tight.
+  - Single filler words are small; firmer offset drop shadow; blur-in without scale.
+- **Stutter fixed:** units are grouped so every caption holds ≥ 0.36 s (v4 flashed words for 0.12–0.2 s, each re-triggering the blur and scale).
+- **Music (the person's pick):** Mixkit #32 "Driving Ambition" (uplifting brass + drums, 99.4 BPM).
+  - Entered so its full-band hit (37.66 s, measured) lands on the drop; B-roll re-cut to the new grid.
+  - "10 million" now starts 0.3 s after the hit, so the ducking doesn't swallow it. The drop is the loudest moment (−11.4 dB vs −14).
+- **SFX (the person's pick: minimal & clean):** one soft impact on the drop and a soft whoosh on three big cuts. Nothing else.
+- Loudness −14.0 LUFS, true peak −1.4 dBTP, no clipping. Measured, not heard.
+- `hyperframes check` hung at its final analysis step this round, so it is unverified for v5.
+  - Earlier it was blocked by a stuck background check process and browser, which I killed.
+  - Lint: 0 errors. The render completed normally.
+
+---
+
 
 ## v4 changes (person's notes: "this kind of typography", motivational music, more professional SFX)
 - **Typography:** ref3 studied (REFERENCE.md "ref3").
@@ -19,8 +37,8 @@
 ---
 
 
-Delivered: `renders/ibrahim-trial-edit.mp4`, 1080×1920, 30 fps, 30.6 s, H.264 CRF 17 + AAC 256k (141 MB; not in git).
-Preview: `renders/v4-preview.mp4` (26 MB).
+Delivered: `renders/ibrahim-trial-edit.mp4`, 1080×1920, 30 fps, 30.6 s, H.264 CRF 17 + AAC 256k (not in git).
+Preview: `renders/v5-preview.mp4`.
 
 ## Scroll test (v3)
 | Time | What a stranger sees and hears | Stay? |
