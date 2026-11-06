@@ -17,7 +17,7 @@ BREATHER = (b(26), b(30))            # "Same 24 hours": music low-passed under t
 
 # (time, file, gain dB, max length s)
 SFX = [
-    (1.31, "sfx/1180.mp3", -5, 1.5),          # yacht jump: hitting the water (source 4.1 s)
+    (1.25, "sfx/1180.mp3", -5, 1.5),          # yacht jump: hitting the water (source 4.1 s at 0.6x)
     (b(2), "sfx/988.mp3", -11, 1.35),        # alarm on the cut to waking up
     (b(4), "sfx/498.mp3", -9, 1.5),          # low heartbeat hit under "5 AM."
     (GAP[0] - 2.0, "sfx/790.mp3", -7, 2.0),  # riser into the gap

@@ -23,7 +23,7 @@ END = b(37)  # 25.828: last downbeat; the replay loops back into the hook
 # (start, end, proxy, src_in, speed, zoom, cx, cy, grade)
 SHOTS = [
     # HOOK: the reward everyone wants, then the part nobody wants
-    (0.0, b(2), "ibrahim-yacht-jump", 3.05, 0.8, 1.45, 0.50, 0.30, "day"),
+    (0.0, b(2), "ibrahim-yacht-jump", 3.35, 0.6, 1.25, 0.55, 0.32, "day"),  # all three mid-air on frame 1
     (b(2), b(4), "ibrahim-waking-up", 1.35, 1.0, 1.08, 0.50, 0.55, "dawn"),
     # BUILD: discipline, shots getting shorter into the drop
     (b(4), b(5), "ibrahim-praying", 22.85, 1.0, 1.15, 0.50, 0.62, "night"),
@@ -37,13 +37,13 @@ SHOTS = [
     # DROP: it pays
     (b(11), b(13), "jetski-takeoff", 5.3, 0.75, 1.1, 0.48, 0.55, "day"),
     (b(13), b(14), "burj-khalifa-clip", 2.0, 1.0, 1.0, 0.50, 0.40, "night"),
-    (b(14), b(16), "ibrahim-desert-eagle", 0.6, 0.5, 1.12, 0.50, 0.45, "golden"),
+    (b(14), b(16), "ibrahim-desert-eagle", 7.1, 0.5, 1.12, 0.50, 0.45, "golden"),
     (b(16), b(17), "ibrahim-atv-desert", 4.0, 1.0, 1.0, 0.50, 0.50, "golden"),
     (b(17), h(17), "ibrahim-wakesurfing", 6.0, 1.0, 1.15, 0.50, 0.40, "day"),
     (h(17), b(18), "jetski-spin", 3.9, 1.0, 1.15, 0.50, 0.50, "day"),
     (b(18), b(19), "ibrahim-yacht-king", 1.5, 1.0, 1.12, 0.45, 0.62, "day"),
     (b(19), b(20), "rolls-royce-inside", 1.0, 1.0, 1.0, 0.50, 0.50, "night"),
-    (b(20), b(21), "jetski-drone-ibrahim", 4.0, 1.0, 1.1, 0.50, 0.50, "day"),
+    (b(20), b(21), "jetski-drone-ibrahim", 14.8, 1.0, 1.1, 0.50, 0.50, "day"),
     (b(21), b(22), "ibrahim-rolls-royce", 1.0, 1.0, 1.0, 0.50, 0.55, "night"),
     (b(22), b(23), "ibrahim-driving-boat", 5.0, 1.0, 1.0, 0.50, 0.50, "day"),
     (b(23), h(23), "dubai-yachts", 1.0, 1.0, 1.25, 0.50, 0.45, "golden"),
@@ -54,5 +54,5 @@ SHOTS = [
     (b(26), b(30), "ibrahim-riding-horse", 29.0, 0.5, 1.05, 0.50, 0.50, "day"),
     # RETURN + LOOP
     (b(30), b(32), "ibrahim-with-friends", 1.8, 0.75, 1.0, 0.50, 0.50, "golden"),
-    (b(32), END, "fireworks-broll-yacht", 4.0, 1.0, 1.0, 0.50, 0.50, "night"),
+    (b(32), END, "fireworks-broll-yacht", 9.5, 1.0, 1.0, 0.50, 0.50, "night"),
 ]

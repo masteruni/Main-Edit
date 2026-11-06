@@ -13,15 +13,15 @@ from cutlist import SHOTS, END, b, h  # noqa: E402
 S, B = "script", "sans"
 # Caption groups: (start, end, top px, align, [(word, style, size px, appear time)])
 CAPTIONS = [
-    (0.10, b(2), 1180, "left", [("Everyone", B, 92, 0.10), ("wants", B, 92, b(0)), ("this.", S, 230, b(1))]),
-    (b(2) + 0.1, b(4), 330, "left", [("Nobody", B, 92, b(2) + 0.10), ("wants", B, 92, h(2)), ("this.", S, 230, b(3))]),
-    (b(4), b(5), 330, "left", [("5 AM.", B, 150, b(4))]),
-    (b(5), b(7), 300, "right", [("No one", B, 96, b(5)), ("watching.", S, 190, b(6))]),
-    (b(7), b(9), 300, "left", [("Every", B, 96, b(7)), ("single", S, 190, h(7)), ("day.", B, 96, b(8))]),
-    (b(9), b(11), 300, "left", [("Until", B, 110, b(9)), ("…", B, 110, b(10))]),
-    (b(11), b(13), 360, "center", [("it pays.", S, 250, b(11))]),
-    (b(26) + 0.1, b(30), 330, "left", [("Same", S, 220, b(26) + 0.1), ("24 hours.", B, 104, b(27))]),
-    (b(33), END, 1180, "left", [("Now everyone", B, 92, b(33)), ("wants", B, 92, b(34)), ("this.", S, 230, b(35))]),
+    (0.10, b(2), 1180, "left", [("Everyone", B, 115, 0.10), ("wants", B, 115, b(0)), ("this.", S, 276, b(1))]),
+    (b(2) + 0.1, b(4), 330, "left", [("Nobody", B, 115, b(2) + 0.10), ("wants", B, 115, h(2)), ("this.", S, 276, b(3))]),
+    (b(4), b(5), 330, "left", [("5 AM.", B, 188, b(4))]),
+    (b(5), b(7), 300, "right", [("No one", B, 120, b(5)), ("watching.", S, 228, b(6))]),
+    (b(7), b(9), 300, "left", [("Every", B, 120, b(7)), ("single", S, 228, h(7)), ("day.", B, 120, b(8))]),
+    (b(9), b(11), 300, "left", [("Until", B, 138, b(9)), ("…", B, 200, b(10))]),
+    (b(11), b(13), 360, "center", [("it pays.", S, 300, b(11))]),
+    (b(26) + 0.1, b(30), 330, "left", [("Same", S, 264, b(26) + 0.1), ("24 hours.", B, 130, b(27))]),
+    (b(32) + 0.3, END, 1180, "left", [("Now everyone", B, 115, b(32) + 0.3), ("wants", B, 115, b(33)), ("this.", S, 276, b(34))]),
 ]
 PUNCH = [(b(11), 1.16), (b(17), 1.10), (b(30), 1.08)]       # instant scale on the cut, settles in 0.3 s
 PUSH = {10: 1.06, 12: 1.07, 25: 1.06, 27: 1.05}               # hero shots: slow push across the shot
@@ -35,7 +35,7 @@ def html():
             f'      <div class="cam" id="cam{i:02d}" style="z-index:{i + 1}">'
             f'<video id="v{i:02d}" class="clip" src="assets/shots/{i:02d}.mp4" muted playsinline '
             f'data-start="{st:.3f}" data-duration="{en - st:.3f}" data-track-index="0"></video></div>')
-        if i in PUSH:
+        if i in PUSH and not any(abs(st - t) < 1e-3 for t, _ in PUNCH):  # punched shots resume their push after the punch
             tl.append(f'tl.fromTo("#cam{i:02d}", {{scale: 1}}, {{scale: {PUSH[i]}, duration: {en - st:.3f}, ease: "sine.inOut"}}, {st:.3f});')
     for t, sc in PUNCH:
         i = next(k for k, s in enumerate(SHOTS) if abs(s[0] - t) < 1e-3)
@@ -73,10 +73,11 @@ def html():
       #root {{ position: relative; width: 100%; height: 100%; overflow: hidden; }}
       .cam {{ position: absolute; inset: 0; overflow: hidden; }}
       .cam video {{ position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }}
-      .cap {{ position: absolute; left: 96px; right: 96px; z-index: 100; display: flex; flex-direction: column; color: var(--ink);
-              text-shadow: 0 4px 22px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.35); }}
+      .cap {{ position: absolute; left: 80px; right: 80px; z-index: 100; display: flex; flex-direction: column; color: var(--ink);
+              text-shadow: 0 4px 26px rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.45); }}
+      .cap::before {{ content: ''; position: absolute; inset: -60px -80px; z-index: 0; background: radial-gradient(closest-side, rgba(0,0,0,.34), rgba(0,0,0,0)); }}
       .cap.left {{ align-items: flex-start; }} .cap.right {{ align-items: flex-end; }} .cap.center {{ align-items: center; }}
-      .cap span {{ display: block; transform-origin: 30% 60%; }}
+      .cap span {{ display: block; position: relative; z-index: 1; transform-origin: 30% 60%; }}
       .sans {{ font-family: var(--sans); font-weight: 800; letter-spacing: -0.015em; line-height: 0.98; }}
       .script {{ font-family: var(--script); font-weight: 400; line-height: 0.8; margin: -0.05em 0 0.08em -0.04em; }}
       .flash {{ position: absolute; inset: 0; z-index: 200; pointer-events: none; }}

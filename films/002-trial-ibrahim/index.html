@@ -13,10 +13,11 @@
       #root { position: relative; width: 100%; height: 100%; overflow: hidden; }
       .cam { position: absolute; inset: 0; overflow: hidden; }
       .cam video { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; object-fit: cover; }
-      .cap { position: absolute; left: 96px; right: 96px; z-index: 100; display: flex; flex-direction: column; color: var(--ink);
-              text-shadow: 0 4px 22px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.35); }
+      .cap { position: absolute; left: 80px; right: 80px; z-index: 100; display: flex; flex-direction: column; color: var(--ink);
+              text-shadow: 0 4px 26px rgba(0,0,0,.6), 0 2px 6px rgba(0,0,0,.45); }
+      .cap::before { content: ''; position: absolute; inset: -60px -80px; z-index: 0; background: radial-gradient(closest-side, rgba(0,0,0,.34), rgba(0,0,0,0)); }
       .cap.left { align-items: flex-start; } .cap.right { align-items: flex-end; } .cap.center { align-items: center; }
-      .cap span { display: block; transform-origin: 30% 60%; }
+      .cap span { display: block; position: relative; z-index: 1; transform-origin: 30% 60%; }
       .sans { font-family: var(--sans); font-weight: 800; letter-spacing: -0.015em; line-height: 0.98; }
       .script { font-family: var(--script); font-weight: 400; line-height: 0.8; margin: -0.05em 0 0.08em -0.04em; }
       .flash { position: absolute; inset: 0; z-index: 200; pointer-events: none; }
@@ -53,21 +54,20 @@
       <div class="cam" id="cam25" style="z-index:26"><video id="v25" class="clip" src="assets/shots/25.mp4" muted playsinline data-start="18.285" data-duration="2.743" data-track-index="0"></video></div>
       <div class="cam" id="cam26" style="z-index:27"><video id="v26" class="clip" src="assets/shots/26.mp4" muted playsinline data-start="21.028" data-duration="1.371" data-track-index="0"></video></div>
       <div class="cam" id="cam27" style="z-index:28"><video id="v27" class="clip" src="assets/shots/27.mp4" muted playsinline data-start="22.399" data-duration="3.429" data-track-index="0"></video></div>
-      <div id="cap0" class="clip cap left" style="top:1180px" data-start="0.100" data-duration="1.728" data-track-index="1" data-layout-allow-overlap><span id="w0_0" class="sans" style="font-size:92px">Everyone</span><span id="w0_1" class="sans" style="font-size:92px">wants</span><span id="w0_2" class="script" style="font-size:230px">this.</span></div>
-      <div id="cap1" class="clip cap left" style="top:330px" data-start="1.928" data-duration="1.272" data-track-index="1" data-layout-allow-overlap><span id="w1_0" class="sans" style="font-size:92px">Nobody</span><span id="w1_1" class="sans" style="font-size:92px">wants</span><span id="w1_2" class="script" style="font-size:230px">this.</span></div>
-      <div id="cap2" class="clip cap left" style="top:330px" data-start="3.200" data-duration="0.685" data-track-index="1" data-layout-allow-overlap><span id="w2_0" class="sans" style="font-size:150px">5 AM.</span></div>
-      <div id="cap3" class="clip cap right" style="top:300px" data-start="3.885" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w3_0" class="sans" style="font-size:96px">No one</span><span id="w3_1" class="script" style="font-size:190px">watching.</span></div>
-      <div id="cap4" class="clip cap left" style="top:300px" data-start="5.257" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w4_0" class="sans" style="font-size:96px">Every</span><span id="w4_1" class="script" style="font-size:190px">single</span><span id="w4_2" class="sans" style="font-size:96px">day.</span></div>
-      <div id="cap5" class="clip cap left" style="top:300px" data-start="6.628" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w5_0" class="sans" style="font-size:110px">Until</span><span id="w5_1" class="sans" style="font-size:110px">…</span></div>
-      <div id="cap6" class="clip cap center" style="top:360px" data-start="8.000" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w6_0" class="script" style="font-size:250px">it pays.</span></div>
-      <div id="cap7" class="clip cap left" style="top:330px" data-start="18.385" data-duration="2.643" data-track-index="1" data-layout-allow-overlap><span id="w7_0" class="script" style="font-size:220px">Same</span><span id="w7_1" class="sans" style="font-size:104px">24 hours.</span></div>
-      <div id="cap8" class="clip cap left" style="top:1180px" data-start="23.085" data-duration="2.743" data-track-index="1" data-layout-allow-overlap><span id="w8_0" class="sans" style="font-size:92px">Now everyone</span><span id="w8_1" class="sans" style="font-size:92px">wants</span><span id="w8_2" class="script" style="font-size:230px">this.</span></div>
+      <div id="cap0" class="clip cap left" style="top:1180px" data-start="0.100" data-duration="1.728" data-track-index="1" data-layout-allow-overlap><span id="w0_0" class="sans" style="font-size:115px">Everyone</span><span id="w0_1" class="sans" style="font-size:115px">wants</span><span id="w0_2" class="script" style="font-size:276px">this.</span></div>
+      <div id="cap1" class="clip cap left" style="top:330px" data-start="1.928" data-duration="1.272" data-track-index="1" data-layout-allow-overlap><span id="w1_0" class="sans" style="font-size:115px">Nobody</span><span id="w1_1" class="sans" style="font-size:115px">wants</span><span id="w1_2" class="script" style="font-size:276px">this.</span></div>
+      <div id="cap2" class="clip cap left" style="top:330px" data-start="3.200" data-duration="0.685" data-track-index="1" data-layout-allow-overlap><span id="w2_0" class="sans" style="font-size:188px">5 AM.</span></div>
+      <div id="cap3" class="clip cap right" style="top:300px" data-start="3.885" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w3_0" class="sans" style="font-size:120px">No one</span><span id="w3_1" class="script" style="font-size:228px">watching.</span></div>
+      <div id="cap4" class="clip cap left" style="top:300px" data-start="5.257" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w4_0" class="sans" style="font-size:120px">Every</span><span id="w4_1" class="script" style="font-size:228px">single</span><span id="w4_2" class="sans" style="font-size:120px">day.</span></div>
+      <div id="cap5" class="clip cap left" style="top:300px" data-start="6.628" data-duration="1.372" data-track-index="1" data-layout-allow-overlap><span id="w5_0" class="sans" style="font-size:138px">Until</span><span id="w5_1" class="sans" style="font-size:200px">…</span></div>
+      <div id="cap6" class="clip cap center" style="top:360px" data-start="8.000" data-duration="1.371" data-track-index="1" data-layout-allow-overlap><span id="w6_0" class="script" style="font-size:300px">it pays.</span></div>
+      <div id="cap7" class="clip cap left" style="top:330px" data-start="18.385" data-duration="2.643" data-track-index="1" data-layout-allow-overlap><span id="w7_0" class="script" style="font-size:264px">Same</span><span id="w7_1" class="sans" style="font-size:130px">24 hours.</span></div>
+      <div id="cap8" class="clip cap left" style="top:1180px" data-start="22.699" data-duration="3.129" data-track-index="1" data-layout-allow-overlap><span id="w8_0" class="sans" style="font-size:115px">Now everyone</span><span id="w8_1" class="sans" style="font-size:115px">wants</span><span id="w8_2" class="script" style="font-size:276px">this.</span></div>
       <div id="flash0" class="clip flash" data-start="8.000" data-duration="0.2" data-track-index="2"><i></i></div>
       <audio id="soundtrack" class="clip" src="assets/audio/soundtrack.m4a" data-start="0" data-duration="25.828" data-track-index="3" data-volume="1"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      tl.fromTo("#cam10", {scale: 1}, {scale: 1.06, duration: 1.371, ease: "sine.inOut"}, 8.000);
       tl.fromTo("#cam12", {scale: 1}, {scale: 1.07, duration: 1.371, ease: "sine.inOut"}, 10.057);
       tl.fromTo("#cam25", {scale: 1}, {scale: 1.06, duration: 2.743, ease: "sine.inOut"}, 18.285);
       tl.fromTo("#cam27", {scale: 1}, {scale: 1.05, duration: 3.429, ease: "sine.inOut"}, 22.399);
@@ -101,11 +101,11 @@
       tl.fromTo("#w7_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 18.385);
       tl.fromTo("#w7_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 18.971);
       tl.set("#w7_1", {opacity: 0}, 18.385);
-      tl.fromTo("#w8_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.085);
-      tl.fromTo("#w8_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.771);
-      tl.set("#w8_1", {opacity: 0}, 23.085);
-      tl.fromTo("#w8_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 24.456);
-      tl.set("#w8_2", {opacity: 0}, 23.085);
+      tl.fromTo("#w8_0", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 22.699);
+      tl.fromTo("#w8_1", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.085);
+      tl.set("#w8_1", {opacity: 0}, 22.699);
+      tl.fromTo("#w8_2", {opacity: 0, scale: 1.22}, {opacity: 1, scale: 1, duration: 0.14, ease: "power3.out", immediateRender: false}, 23.771);
+      tl.set("#w8_2", {opacity: 0}, 22.699);
       tl.fromTo("#flash0 i", {opacity: 0.9}, {opacity: 0, duration: 0.18, ease: "power2.out"}, 8.000);
       window.__timelines["main"] = tl;
     </script>
