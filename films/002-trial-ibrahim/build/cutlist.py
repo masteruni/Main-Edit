@@ -48,7 +48,7 @@ SHOTS = [
     (2.05, 4.20, FILM, 2.57, 1.0, 1.75, 0.57, 0.42, "neon", ""),
     # the problem, in sync; the jump cut is hidden by a 1.4x change of framing
     (4.20, 7.48, MIAMI, 2.24, 1.0, 1.55, 0.56, 0.56, "warm", ""),
-    (7.48, 9.25, MIAMI, 12.97, 1.0, 2.15, 0.55, 0.58, "warm", ""),
+    (7.48, 9.25, MIAMI, 12.93, 1.0, 2.15, 0.55, 0.58, "warm", ""),  # 40 ms early: the source ends a frame before the shot
     # "This is the most honest conversation..." in sync, then L-cut into the discipline
     (9.25, 11.40, FILM, 9.24, 1.0, 1.75, 0.60, 0.42, "neon", ""),
     (11.40, b(-9), "ibrahim-waking-up", 1.35, 1.0, 1.25, 0.48, 0.58, "dawn", ""),
