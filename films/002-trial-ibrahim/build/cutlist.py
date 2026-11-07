@@ -56,14 +56,14 @@ SHOTS = [
     (b(-7), b(-6), "ibrahim-running-2", 8.4, 1.0, 1.0, 0.50, 0.50, "day", ""),
     (b(-6), b(-5), "ibrahim-pulldown", 11.2, 1.0, 1.05, 0.50, 0.45, "warm", ""),
     (b(-5), h(-5), "ibrahim-clap-pushups", 14.0, 1.0, 1.0, 0.50, 0.50, "warm", ""),
-    (h(-5), b(-4), "cold-plunge-ibrahim", 2.2, 1.0, 1.1, 0.50, 0.45, "day", ""),
+    (h(-5), b(-4), "ibrahim-curls", 12.0, 1.0, 1.05, 0.50, 0.42, "day", ""),  # was the cold plunge (person: replace)
     (b(-4), b(-3), "ibrahim-night-work", 6.0, 1.0, 1.1, 0.55, 0.45, "neon", ""),
     # proof, punched until the number reads on a phone
     (b(-3), b(-2), "stripe-payment-2", 0.6, 1.0, 2.6, 0.27, 0.86, "night", ""),
     (b(-2), h(-1), "stripe-payment", 0.05, 1.0, 2.3, 0.54, 0.53, "night", ""),
     # (h(-1) → DROP: half a beat of black and silence)
     # DROP: "10 million dollars in valuations going up."
-    (b(0), b(2), "jetski-takeoff", 5.3, 1.0, 1.1, 0.48, 0.55, "day", "ramp"),
+    (b(0), b(2), "jetski-takeoff", 5.3, 1.0, 1.1, 0.48, 0.55, "day", ""),  # no ramp: the source is 30 fps, slowing it stutters
     (b(2), b(3), "ibrahim-atv-desert", 4.0, 1.0, 1.0, 0.50, 0.50, "golden", ""),
     (b(3), b(6), "ibrahim-desert-eagle", 6.9, 0.5, 1.12, 0.50, 0.45, "golden", ""),
     (b(6), h(6), "ibrahim-wakesurfing", 6.0, 1.0, 1.15, 0.50, 0.40, "day", ""),
@@ -77,3 +77,9 @@ SHOTS = [
 ]
 
 LEAKS = [4.20, 9.25, 11.40]   # light-leak / prism-streak transitions (3 frames), as in ref1
+
+
+# Snap every cut to the 30 fps frame grid: a cut between frames repeats the last frame of the outgoing shot (a visible hitch).
+FPS = 30
+SHOTS = [(round(st * FPS) / FPS, round(en * FPS) / FPS, *rest) for st, en, *rest in SHOTS]
+END = round(END * FPS) / FPS
