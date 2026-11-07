@@ -15,6 +15,8 @@ from cutlist import SHOTS, VO, END, DROP, LEAKS, b  # noqa: E402
 
 SMALL = {"is", "the", "a", "in", "an", "for", "my", "to", "and", "of", "i've", "if", "you're", "we're", "about", "what", "this", "are", "like", "your", "had", "ever", "now"}
 
+# Shot clips are written with data-start 0.5 ms early at 4 decimals: a cut at 13.0667 s rounded to "13.067" would start
+# after its frame (392/30 = 13.06667) and the outgoing shot would hold one extra frame.
 # ref3 captions (v5), grouping measured against the reference:
 # - a unit is 1-3 consecutive spoken words that stays on screen >= MIN_HOLD (the ref never flashes a word for < ~0.4 s);
 # - in a multi-word unit the key word is big and the others are small, stacked LEFT-aligned on top of it, tight;
@@ -51,7 +53,7 @@ def html():
     cams, caps, tl = [], [], []
     for i, (st, en, *_r) in enumerate(SHOTS):
         cams.append(f'      <div class="cam" id="cam{i:02d}" style="z-index:{i + 1}"><video id="v{i:02d}" class="clip" '
-                    f'src="assets/shots/{i:02d}.mp4" muted playsinline data-start="{st:.3f}" data-duration="{en - st:.3f}" '
+                    f'src="assets/shots/{i:02d}.mp4" muted playsinline data-start="{st - 0.0005:.4f}" data-duration="{en - st:.4f}" '
                     f'data-track-index="0"></video></div>')
         punched = any(abs(st - t) < 1e-3 for t, _ in PUNCH)
         if i in PUSH and not punched:
